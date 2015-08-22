@@ -8,9 +8,10 @@ var router = express.Router();
 
 router.get('/', function(request, response) {
 	response.json({foo: 'bar'});
-	console.log('Got a request!');
+	console.log('Got an API request!');
 });
 
+app.use(express.static('content'));
 app.use('/api', router);
 
 app.listen(port);
