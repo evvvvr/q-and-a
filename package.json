@@ -1,0 +1,11 @@
+{
+  "name": "q-and-a-app",
+  "version": "0.0.1",
+  "description": "Simple Q&A App Like Stackoverflow.com",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.13.3"
+  }
+}
