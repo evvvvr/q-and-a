@@ -13,8 +13,23 @@ var AppDefaults = {
 
 var QuestionType = {
 	All : -1,
+
 	NotAnswered : 0,
+
 	Answered: 1,
+
+	parse : function (value) {
+		switch (value.toLowerCase()) {
+			case "yes":
+				return this.Answered;
+
+			case "no":
+				return this.NotAnswered;
+
+			default:
+				throw "Invalid value";
+		}
+	}
 };
 
 function isPositiveInt(value) {
@@ -49,19 +64,10 @@ router.get('/questions', function(request, response) {
 	var questionType = QuestionType.All;
 
 	if (request.query.isAnswered) {
-		var answeredValue = request.query.isAnswered;
-
-		switch (answeredValue.toLowerCase()) {
-			case "yes":
-				questionType = QuestionType.Answered;
-				break;
-
-			case "no":
-				questionType = QuestionType.NotAnswered;
-				break;
-
-			default:
-				response.sendStatus(400);
+		try {
+			questionType = QuestionType.parse(request.query.isAnswered);			
+		} catch (err) {
+			response.sendStatus(400);
 		}
 	}
 
