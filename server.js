@@ -89,6 +89,17 @@ router.post('/questions', function(request, response) {
 	response.sendStatus(201);
 });
 
+router.get('/questions/:questionId/answers', parsePagingParams);
+router.get('/questions/:questionId/answers', function(request, response) {
+	var questionId = request.params.questionId;
+
+	console.log('Retrieving answers for question with id ' + questionId 
+		+ ' for page number ' + request.pageNo + " page size is "
+		+ request.pageSize);
+
+	response.sendStatus(200);
+});
+
 router.post('/questions/:questionId/answers', function(request, response) {
 	var questionId = request.params.questionId;
 
