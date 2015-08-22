@@ -72,6 +72,12 @@ router.get('/questions', function(request, response) {
 	response.sendStatus(200);
 });
 
+router.post('/questions', function(request, response) {
+	console.log('Posting a question');
+
+	response.sendStatus(201);
+});
+
 router.get('/questions/:questionId', parsePagingParams);
 router.get('/questions/:questionId', function(request, response) {
 	var questionId = request.params.questionId;
@@ -81,12 +87,6 @@ router.get('/questions/:questionId', function(request, response) {
 		+ request.pageSize);
 
 	response.sendStatus(200);
-});
-
-router.post('/questions', function(request, response) {
-	console.log('Posting a question');
-
-	response.sendStatus(201);
 });
 
 router.get('/questions/:questionId/answers', parsePagingParams);
@@ -106,11 +106,6 @@ router.post('/questions/:questionId/answers', function(request, response) {
 	console.log('Posting an answer for question with id ' + questionId);
 
 	response.sendStatus(201);
-});
-
-router.get('/', function(request, response) {
-	response.json({foo: 'bar'});
-	console.log('Got an API request!');
 });
 
 app.use(express.static('content'));
