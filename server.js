@@ -78,8 +78,8 @@ router.post('/questions', function(request, response) {
 	response.sendStatus(201);
 });
 
-router.get('/questions/:questionId', parsePagingParams);
-router.get('/questions/:questionId', function(request, response) {
+router.get('/questions/:questionId(\\d+)', parsePagingParams);
+router.get('/questions/:questionId(\\d+)', function(request, response) {
 	var questionId = request.params.questionId;
 
 	console.log('Retrieving question with id ' + questionId 
@@ -89,8 +89,8 @@ router.get('/questions/:questionId', function(request, response) {
 	response.sendStatus(200);
 });
 
-router.get('/questions/:questionId/answers', parsePagingParams);
-router.get('/questions/:questionId/answers', function(request, response) {
+router.get('/questions/:questionId(\\d+)/answers', parsePagingParams);
+router.get('/questions/:questionId(\\d+)/answers', function(request, response) {
 	var questionId = request.params.questionId;
 
 	console.log('Retrieving answers for question with id ' + questionId 
@@ -100,7 +100,7 @@ router.get('/questions/:questionId/answers', function(request, response) {
 	response.sendStatus(200);
 });
 
-router.post('/questions/:questionId/answers', function(request, response) {
+router.post('/questions/:questionId(\\d+)/answers', function(request, response) {
 	var questionId = request.params.questionId;
 
 	console.log('Posting an answer for question with id ' + questionId);
