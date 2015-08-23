@@ -3,7 +3,7 @@
 module.exports.QuestionType = {
 	All : -1,
 
-	NotAnswered : 0,
+	Unanswered : 0,
 
 	Answered: 1,
 
@@ -13,7 +13,7 @@ module.exports.QuestionType = {
 				return this.Answered;
 
 			case "no":
-				return this.NotAnswered;
+				return this.Unanswered;
 
 			default:
 				throw "Invalid value";

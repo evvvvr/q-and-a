@@ -44,19 +44,49 @@ function startApp() {
 				response.sendStatus(404);
 			}
 		}
-
-		console.log('Retrieving questions with status ' + questionType
-			+ ' for page number ' + request.pageNo + " page size is "
-			+ request.pageSize);
-
+		
 		if (questionType === questions.QuestionType.All) {
+			console.info('Retrieving all questions');
+
 			var db = new sqlite3.Database('data.db');
 
 			db.all('Select  Questions.id as id, Questions.Text as text, '
 				+ 'Users.Login as user, Questions.DateTimeAsked as dateTimeAsked '
 				+ 'From Questions '
 				+ 'Inner Join Users On Users.Id = Questions.UserAsked '
-				+ ' Order By datetime(Questions.DateTimeAsked) desc',
+				+ 'Order By datetime(Questions.DateTimeAsked) desc',
+				function (err, res) {
+					db.close();
+					console.info('Returning ' + res.length + ' questions');
+					response.json(res).status(200);
+				});
+		} else if (questionType === questions.QuestionType.Unanswered) {
+			console.info('Retrieving unanswered questions');
+
+			var db = new sqlite3.Database('data.db');
+
+			db.all('Select  Questions.id as id, Questions.Text as text, '
+				+ 'Users.Login as user, Questions.DateTimeAsked as dateTimeAsked '
+				+ 'From Questions '
+				+ 'Inner Join Users On Users.Id = Questions.UserAsked '
+				+ 'Where Not Exists (Select * From Answers Where Answers.QuestionId = Questions.Id) '
+				+ 'Order By datetime(Questions.DateTimeAsked) desc',
+				function (err, res) {
+					db.close();
+					console.info('Returning ' + res.length + ' questions');
+					response.json(res).status(200);
+				});
+		} else if (questionType === questions.QuestionType.Answered) {
+			console.info('Retrieving answered questions');
+			
+			var db = new sqlite3.Database('data.db');
+
+			db.all('Select  Questions.id as id, Questions.Text as text, '
+				+ 'Users.Login as user, Questions.DateTimeAsked as dateTimeAsked '
+				+ 'From Questions '
+				+ 'Inner Join Users On Users.Id = Questions.UserAsked '
+				+ 'Where Exists (Select * From Answers Where Answers.QuestionId = Questions.Id) '
+				+ 'Order By datetime(Questions.DateTimeAsked) desc',
 				function (err, res) {
 					db.close();
 					console.info('Returning ' + res.length + ' questions');
