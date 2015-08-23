@@ -1,2 +1,6 @@
-exports.PageNo = 1;
-exports.PageSize = 10;
+'use strict';
+
+module.exports = {
+	PageNo : 1,
+	PageSize : 10
+};

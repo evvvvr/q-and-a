@@ -2,7 +2,7 @@
 
 var AppDefaults = require('./app-defaults.js');
 
-exports.parsePagingParams = function (request, response, next) {
+module.exports.parsePagingParams = function (request, response, next) {
 	function isPositiveInt(value) {
 		return /^([1-9]\d*)$/.test(value);
 	}

@@ -1,4 +1,6 @@
-exports.QuestionType = {
+'use strict';
+
+module.exports.QuestionType = {
 	All : -1,
 
 	NotAnswered : 0,
