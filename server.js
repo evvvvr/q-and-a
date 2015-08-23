@@ -1,6 +1,5 @@
 'use strict';
 
-var R = require('ramda');
 var fs = require('fs');
 var sqlite3 = require('sqlite3');
 var express = require('express');
