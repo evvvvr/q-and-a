@@ -1,5 +1,6 @@
 'use strict';
 
+var R = require('ramda');
 var fs = require('fs');
 var sqlite3 = require('sqlite3');
 var express = require('express');
@@ -147,11 +148,38 @@ function startApp() {
 		function(request, response) {
 			var questionId = request.params.questionId;
 
-			console.log('Retrieving question with id ' + questionId 
-				+ ' for page number ' + request.pageNo + " page size is "
-				+ request.pageSize);
+			console.info('Retrieving question with id ' + questionId); 
+			
+			var db = new sqlite3.Database('data.db');
 
-			response.sendStatus(200);
+			db.get('Select Questions.Id as id, Users.Login as user, '
+				+ 'Questions.Text as text, Questions.DateTimeAsked as dateTimeAsked '
+				+ 'From Questions '
+				+ 'Inner Join Users On Users.Id = Questions.UserAsked '
+				+ 'Where Questions.Id = $questionid', {
+					$questionid : questionId
+				}, function (error, question) {
+					if (!question) {
+						db.close();
+						var errorMessage = 'Question with id ' + questionId
+							+ ' was not found.';
+
+						console.error(errorMessage);
+						response.status(404).send(errorMessage);
+					} else {
+						db.all('Select Users.Login as user, Answers.Text as text, '
+							+ ' Answers.DateTimeAnswered as dateTimeAnswered From Answers '
+							+ 'Inner Join Users On Users.Id = Answers.UserAnswered '
+							+ 'Where Answers.QuestionId = $questionIdForAnswers '
+							+ 'Order By datetime(Answers.DateTimeAnswered) desc, '
+							+ 'Answers.Id desc', {
+								$questionIdForAnswers : questionId
+							}, function (err, answers) {
+								question.answers = answers;
+								response.json(question).status(200);
+							});
+					}
+				});
 	}]);
 
 	router.get('/questions/:questionId(\\d+)/answers', [middleware.parsePagingParams,
