@@ -125,9 +125,59 @@ function startApp() {
 	router.post('/questions/:questionId(\\d+)/answers', function(request, response) {
 		var questionId = request.params.questionId;
 
-		console.log('Posting an answer for question with id ' + questionId);
+		var requestData = JSON.stringify(request.body);
 
-		response.sendStatus(201);
+		console.log('Posting an answer for question with id ' + questionId
+			+ ". Data is: " + requestData);
+
+		var objectValidator = new Validator();
+		var validationResult = objectValidator.validate(request.body,
+			objectSchemas.Answer);
+
+		if (!validationResult.valid) {
+			var errorMessage = validationResult.errors[0].stack;
+			console.error('Bad request: ' + errorMessage);
+			response.status(400).send(errorMessage);
+		} else {
+			var db = new sqlite3.Database('data.db');
+
+			db.serialize(function () {
+				db.run('Insert or Ignore Into "Users" (Login) Values ($login)', {
+					$login: request.body.user
+				});
+
+				db.run('Insert Into Answers (Text, DateTimeAnswered, QuestionId, UserAnswered) ' 
+					+ 'Select $text, datetime(\'now\'), Questions.Id, Users.Id from Users '
+					+ 'cross join Questions '
+					+ 'Where Users.Login = $login and Questions.Id = $questionid', {
+						$text : request.body.text,
+						$login : request.body.user,
+						$questionid : questionId
+				}, function (error) {
+					if (error) {
+						console.error(error);
+						response.sendStatus(500);
+					} else {
+						var newAnswerId = this.lastID;
+
+						if (newAnswerId === 0) {
+							var errorMessage = 'Question with id ' + questionId
+								+ ' was not found.';
+
+							console.error(errorMessage);
+							response.status(404).send(errorMessage);
+						} else {
+							console.info('New answer has been posted. Id is '
+								+ newAnswerId);
+
+							response.sendStatus(201);
+						}
+					}
+
+					db.close();
+				})
+			});
+		}
 	});
 
 	app.use(express.static('content'));
