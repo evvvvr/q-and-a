@@ -75,6 +75,11 @@ function startApp() {
 					console.info('New question has been posted. Id is '
 						+ newQuestionId);
 
+					var protocol = request.protocol;
+					var host = request.hostname;
+					var newQuestionLocation = protocol + "://" + host + ':' + port
+						+ '/api/questions/'+ newQuestionId;
+					response.setHeader('Location', newQuestionLocation);
 					response.sendStatus(201);
 				}
 
