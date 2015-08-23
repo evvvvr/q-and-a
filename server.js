@@ -3,6 +3,7 @@
 var fs = require('fs');
 var sqlite3 = require('sqlite3');
 var express = require('express');
+var bodyParser = require('body-parser');
 var AppDefaults = require('./app-defaults.js');
 var middleware = require('./middleware.js');
 var questions = require('./questions.js');
@@ -50,24 +51,30 @@ function startApp() {
 	}]);
 
 	router.post('/questions', function(request, response) {
-		console.info('Posting a question');
+		var requestData = JSON.stringify(request.body);
+
+		console.info('Posting a question. Data is: ' + requestData);
 
 		var db = new sqlite3.Database('data.db');
 
 		db.serialize(function () {
 			db.run('Insert or Ignore Into "Users" (Login) Values ($login)', {
-				$login: 'voga'
+				$login: request.body.user
 			});
 
 			db.run('Insert Into Questions (Text, DateTimeAsked, UserAsked) ' 
 				+ 'Select $text, datetime(\'now\'), Id from Users '
 				+ 'Where Login = $login', {
-					$text : 'foo',
-					$login : 'voga'
+					$text : request.body.text,
+					$login : request.body.user
 			}, function (error) {
 				if (error) {
 					response.sendStatus(500);
 				} else {
+					var newQuestionId = this.lastID;
+					console.info('New question has been posted. Id is '
+						+ newQuestionId);
+
 					response.sendStatus(201);
 				}
 
@@ -107,6 +114,7 @@ function startApp() {
 	});
 
 	app.use(express.static('content'));
+	app.use(bodyParser.json());
 	app.use('/api', router);
 
 	app.listen(port);
