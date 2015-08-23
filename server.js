@@ -54,7 +54,7 @@ function startApp() {
 				+ 'Users.Login as user, Questions.DateTimeAsked as dateTimeAsked '
 				+ 'From Questions '
 				+ 'Inner Join Users On Users.Id = Questions.UserAsked '
-				+ 'Order By datetime(Questions.DateTimeAsked) desc',
+				+ 'Order By datetime(Questions.DateTimeAsked) desc, id desc',
 				function (err, res) {
 					db.close();
 					console.info('Returning ' + res.length + ' questions');
@@ -70,7 +70,7 @@ function startApp() {
 				+ 'From Questions '
 				+ 'Inner Join Users On Users.Id = Questions.UserAsked '
 				+ 'Where Not Exists (Select * From Answers Where Answers.QuestionId = Questions.Id) '
-				+ 'Order By datetime(Questions.DateTimeAsked) desc',
+				+ 'Order By datetime(Questions.DateTimeAsked) desc, id desc',
 				function (err, res) {
 					db.close();
 					console.info('Returning ' + res.length + ' questions');
@@ -86,7 +86,7 @@ function startApp() {
 				+ 'From Questions '
 				+ 'Inner Join Users On Users.Id = Questions.UserAsked '
 				+ 'Where Exists (Select * From Answers Where Answers.QuestionId = Questions.Id) '
-				+ 'Order By datetime(Questions.DateTimeAsked) desc',
+				+ 'Order By datetime(Questions.DateTimeAsked) desc, id desc',
 				function (err, res) {
 					db.close();
 					console.info('Returning ' + res.length + ' questions');
