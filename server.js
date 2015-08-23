@@ -10,8 +10,7 @@ var app = express();
 
 var router = express.Router();
 
-router.get('/questions', middleware.parsePagingParams);
-router.get('/questions', function(request, response) {
+router.get('/questions', [middleware.parsePagingParams, function(request, response) {
 	var questionType = questions.QuestionType.All;
 
 	if (request.query.isAnswered) {
@@ -28,7 +27,7 @@ router.get('/questions', function(request, response) {
 		+ request.pageSize);
 
 	response.sendStatus(200);
-});
+}]);
 
 router.post('/questions', function(request, response) {
 	console.log('Posting a question');
@@ -36,16 +35,16 @@ router.post('/questions', function(request, response) {
 	response.sendStatus(201);
 });
 
-router.get('/questions/:questionId(\\d+)', middleware.parsePagingParams);
-router.get('/questions/:questionId(\\d+)', function(request, response) {
-	var questionId = request.params.questionId;
+router.get('/questions/:questionId(\\d+)', [middleware.parsePagingParams,
+	function(request, response) {
+		var questionId = request.params.questionId;
 
-	console.log('Retrieving question with id ' + questionId 
-		+ ' for page number ' + request.pageNo + " page size is "
-		+ request.pageSize);
+		console.log('Retrieving question with id ' + questionId 
+			+ ' for page number ' + request.pageNo + " page size is "
+			+ request.pageSize);
 
-	response.sendStatus(200);
-});
+		response.sendStatus(200);
+	}]);
 
 router.get('/questions/:questionId(\\d+)/answers', middleware.parsePagingParams);
 router.get('/questions/:questionId(\\d+)/answers', function(request, response) {
