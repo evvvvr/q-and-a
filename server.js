@@ -1,10 +1,11 @@
 'use strict';
 
 var express = require('express');
+var AppDefaults = require('./app-defaults.js');
 var middleware = require('./middleware.js');
 var questions = require('./questions.js');
 
-var port = process.env.PORT || 8080;
+var port = process.env.PORT || AppDefaults.Port;
 
 var app = express();
 
@@ -44,18 +45,18 @@ router.get('/questions/:questionId(\\d+)', [middleware.parsePagingParams,
 			+ request.pageSize);
 
 		response.sendStatus(200);
-	}]);
+}]);
 
-router.get('/questions/:questionId(\\d+)/answers', middleware.parsePagingParams);
-router.get('/questions/:questionId(\\d+)/answers', function(request, response) {
-	var questionId = request.params.questionId;
+router.get('/questions/:questionId(\\d+)/answers', [middleware.parsePagingParams,
+	function(request, response) {
+		var questionId = request.params.questionId;
 
-	console.log('Retrieving answers for question with id ' + questionId 
-		+ ' for page number ' + request.pageNo + " page size is "
-		+ request.pageSize);
+		console.log('Retrieving answers for question with id ' + questionId 
+			+ ' for page number ' + request.pageNo + " page size is "
+			+ request.pageSize);
 
-	response.sendStatus(200);
-});
+		response.sendStatus(200);
+}]);
 
 router.post('/questions/:questionId(\\d+)/answers', function(request, response) {
 	var questionId = request.params.questionId;
