@@ -4,6 +4,8 @@ var fs = require('fs');
 var sqlite3 = require('sqlite3');
 var express = require('express');
 var bodyParser = require('body-parser');
+var Validator = require('jsonschema').Validator;
+var objectSchemas = require('./json-schemas.js');
 var AppDefaults = require('./app-defaults.js');
 var middleware = require('./middleware.js');
 var questions = require('./questions.js');
@@ -55,37 +57,47 @@ function startApp() {
 
 		console.info('Posting a question. Data is: ' + requestData);
 
-		var db = new sqlite3.Database('data.db');
+		var objectValidator = new Validator();
+		var validationResult = objectValidator.validate(request.body,
+			objectSchemas.Question);
 
-		db.serialize(function () {
-			db.run('Insert or Ignore Into "Users" (Login) Values ($login)', {
-				$login: request.body.user
+		if (!validationResult.valid) {
+			var errorMessage = validationResult.errors[0].stack;
+			console.error('Bad request: ' + errorMessage);
+			response.status(400).send(errorMessage);
+		} else {
+			var db = new sqlite3.Database('data.db');
+
+			db.serialize(function () {
+				db.run('Insert or Ignore Into "Users" (Login) Values ($login)', {
+					$login: request.body.user
+				});
+
+				db.run('Insert Into Questions (Text, DateTimeAsked, UserAsked) ' 
+					+ 'Select $text, datetime(\'now\'), Id from Users '
+					+ 'Where Login = $login', {
+						$text : request.body.text,
+						$login : request.body.user
+				}, function (error) {
+					if (error) {
+						response.sendStatus(500);
+					} else {
+						var newQuestionId = this.lastID;
+						console.info('New question has been posted. Id is '
+							+ newQuestionId);
+
+						var protocol = request.protocol;
+						var host = request.hostname;
+						var newQuestionLocation = protocol + "://" + host + ':' + port
+							+ '/api/questions/'+ newQuestionId;
+						response.setHeader('Location', newQuestionLocation);
+						response.sendStatus(201);
+					}
+
+					db.close();
+				})
 			});
-
-			db.run('Insert Into Questions (Text, DateTimeAsked, UserAsked) ' 
-				+ 'Select $text, datetime(\'now\'), Id from Users '
-				+ 'Where Login = $login', {
-					$text : request.body.text,
-					$login : request.body.user
-			}, function (error) {
-				if (error) {
-					response.sendStatus(500);
-				} else {
-					var newQuestionId = this.lastID;
-					console.info('New question has been posted. Id is '
-						+ newQuestionId);
-
-					var protocol = request.protocol;
-					var host = request.hostname;
-					var newQuestionLocation = protocol + "://" + host + ':' + port
-						+ '/api/questions/'+ newQuestionId;
-					response.setHeader('Location', newQuestionLocation);
-					response.sendStatus(201);
-				}
-
-				db.close();
-			})
-		});
+		}
 	});
 
 	router.get('/questions/:questionId(\\d+)', [middleware.parsePagingParams,
