@@ -49,7 +49,20 @@ function startApp() {
 			+ ' for page number ' + request.pageNo + " page size is "
 			+ request.pageSize);
 
-		response.sendStatus(200);
+		if (questionType === questions.QuestionType.All) {
+			var db = new sqlite3.Database('data.db');
+
+			db.all('Select  Questions.id as id, Questions.Text as text, '
+				+ 'Users.Login as user, Questions.DateTimeAsked as dateTimeAsked '
+				+ 'From Questions '
+				+ 'Inner Join Users On Users.Id = Questions.UserAsked '
+				+ ' Order By datetime(Questions.DateTimeAsked) desc',
+				function (err, res) {
+					db.close();
+					console.info('Returning ' + res.length + ' questions');
+					response.json(res).status(200);
+				});
+		}
 	}]);
 
 	router.post('/questions', function(request, response) {
