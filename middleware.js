@@ -1,3 +1,5 @@
+'use strict';
+
 var AppDefaults = require('./app-defaults.js');
 
 exports.parsePagingParams = function (request, response, next) {

@@ -1,3 +1,5 @@
+'use strict';
+
 var express = require('express');
 var middleware = require('./middleware.js');
 var questions = require('./questions.js');
