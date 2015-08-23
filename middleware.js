@@ -14,7 +14,7 @@ module.exports.parsePagingParams = function (request, response, next) {
 		if (isPositiveInt(request.query.pageNo)) {
 			request.pageNo = request.query.pageNo;
 		} else {
-			response.sendStatus(400);
+			response.sendStatus(404);
 		}
 	}
 
@@ -22,7 +22,7 @@ module.exports.parsePagingParams = function (request, response, next) {
 		if (isPositiveInt(request.query.pageSize)) {
 			request.pageSize = request.query.pageSize;
 		} else {
-			response.sendStatus(400);
+			response.sendStatus(404);
 		}
 	}
 

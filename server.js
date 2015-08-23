@@ -19,7 +19,7 @@ router.get('/questions', [middleware.parsePagingParams, function(request, respon
 			questionType = questions.QuestionType.parse(
 				request.query.isAnswered);			
 		} catch (err) {
-			response.sendStatus(400);
+			response.sendStatus(404);
 		}
 	}
 
