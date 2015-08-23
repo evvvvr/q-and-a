@@ -12,8 +12,8 @@ Create Table If Not Exists Questions
 
 Create Table If Not Exists Answers
 	(Id Integer Primary Key Autoincrement, Text Varchar(3000) Not Null,
-		DateTimeAnswered Varchar(500) Not Null, QuestionId Integer Not Null, 
-		UserAnswered Integer Not Null,
+		DateTimeAnswered Varchar(500) Not Null,
+		QuestionId Integer Not Null, UserAnswered Integer Not Null,
 		Foreign Key (QuestionId) References Questions(Id) On Delete Cascade,
 		Foreign Key (UserAnswered) References Users(Id) On Delete Cascade);
 

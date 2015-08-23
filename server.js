@@ -50,9 +50,30 @@ function startApp() {
 	}]);
 
 	router.post('/questions', function(request, response) {
-		console.log('Posting a question');
+		console.info('Posting a question');
 
-		response.sendStatus(201);
+		var db = new sqlite3.Database('data.db');
+
+		db.serialize(function () {
+			db.run('Insert or Ignore Into "Users" (Login) Values ($login)', {
+				$login: 'voga'
+			});
+
+			db.run('Insert Into Questions (Text, DateTimeAsked, UserAsked) ' 
+				+ 'Select $text, datetime(\'now\'), Id from Users '
+				+ 'Where Login = $login', {
+					$text : 'foo',
+					$login : 'voga'
+			}, function (error) {
+				if (error) {
+					response.sendStatus(500);
+				} else {
+					response.sendStatus(201);
+				}
+
+				db.close();
+			})
+		});
 	});
 
 	router.get('/questions/:questionId(\\d+)', [middleware.parsePagingParams,
