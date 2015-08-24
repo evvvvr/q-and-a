@@ -86,39 +86,19 @@ router.post('/questions', function(request, response) {
 		console.error('Bad request: ' + errorMessage);
 		response.status(400).send(errorMessage);
 	} else {
-		var db = new sqlite3.Database('data.db');
-
-		db.serialize(function () {
-			db.run('Insert or Ignore Into "Users" (Login) Values ($login)', {
-				$login: request.body.user
+		DbService.insertQuestion(request.body, function (error, newQuestionId) {
+			console.info('New question has been posted. Id is ' + newQuestionId);
+			
+			var newQuestionURL = url.format({
+				protocol : request.protocol,
+				hostname : request.hostname,
+				port : port,
+				pathname : (request.baseUrl !== '/' ?
+					request.baseUrl : '') + '/questions/'+ newQuestionId
 			});
 
-			db.run('Insert Into Questions (Text, DateTimeAsked, UserAsked) ' 
-				+ 'Select $text, datetime(\'now\'), Id from Users '
-				+ 'Where Login = $login', {
-					$text : request.body.text,
-					$login : request.body.user
-			}, function (error) {
-				if (error) {
-					response.sendStatus(500);
-				} else {
-					var newQuestionId = this.lastID;
-					console.info('New question has been posted. Id is '
-						+ newQuestionId);
-					
-					var newQuestionURL = url.format({
-						protocol : request.protocol,
-						hostname : request.hostname,
-						port : port,
-						pathname : request.baseUrl + '/questions/'+ newQuestionId
-					});
-
-					response.setHeader('Location', newQuestionURL);
-					response.sendStatus(201);
-				}
-
-				db.close();
-			})
+			response.setHeader('Location', newQuestionURL);
+			response.sendStatus(201);
 		});
 	}
 });

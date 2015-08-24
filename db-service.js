@@ -21,6 +21,12 @@ var GET_ANSWERED_QUESTIONS_SQL = 'Select  Questions.id as id, Questions.Text as 
 	+ 'Where Exists (Select * From Answers Where Answers.QuestionId = Questions.Id) '
 	+ 'Order By datetime(Questions.DateTimeAsked) desc, id desc';
 
+var INSERT_USER_SQL = 'Insert or Ignore Into "Users" (Login) Values ($login)';
+
+var INSERT_QUESTION_SQL = 'Insert Into Questions (Text, DateTimeAsked, UserAsked) ' 
+	+ 'Select $text, datetime(\'now\'), Id from Users '
+	+ 'Where Login = $login';
+
 function runAll(query, callback) {
 	var db = new sqlite3.Database(AppDefaults.DbFilename);
 
@@ -40,4 +46,20 @@ module.exports.getUnansweredQuestions = function (callback) {
 
 module.exports.getAnsweredQuestions = function (callback) {
 	runAll(GET_ANSWERED_QUESTIONS_SQL, callback);
+};
+
+module.exports.insertQuestion = function (question, callback) {
+	var db = new sqlite3.Database(AppDefaults.DbFilename);
+
+	db.serialize(function () {
+		db.run(INSERT_USER_SQL, { $login: question.user });
+
+		db.run(INSERT_QUESTION_SQL, {
+			$text : question.text,
+			$login : question.user
+			}, function (err) {
+				db.close();
+				callback(err, this.lastID);
+			});
+	});
 };
