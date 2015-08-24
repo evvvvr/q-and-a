@@ -50,40 +50,25 @@ router.get('/questions', [middleware.parsePagingParams, function(request, respon
 
 		DbService.getAllQuestions(function (err, res) {
 			console.info('Returning ' + res.length + ' questions');
+
 			response.json(res).status(200);
 		});
 	} else if (questionType === QuestionType.Unanswered) {
 		console.info('Retrieving unanswered questions');
 
-		var db = new sqlite3.Database('data.db');
+		DbService.getUnansweredQuestions(function (err, res) {
+			console.info('Returning ' + res.length + ' questions');
 
-		db.all('Select  Questions.id as id, Questions.Text as text, '
-			+ 'Users.Login as user, Questions.DateTimeAsked as dateTimeAsked '
-			+ 'From Questions '
-			+ 'Inner Join Users On Users.Id = Questions.UserAsked '
-			+ 'Where Not Exists (Select * From Answers Where Answers.QuestionId = Questions.Id) '
-			+ 'Order By datetime(Questions.DateTimeAsked) desc, id desc',
-			function (err, res) {
-				db.close();
-				console.info('Returning ' + res.length + ' questions');
-				response.json(res).status(200);
-			});
+			response.json(res).status(200);
+		});
 	} else if (questionType === QuestionType.Answered) {
 		console.info('Retrieving answered questions');
 		
-		var db = new sqlite3.Database('data.db');
+		DbService.getAnsweredQuestions(function (err, res) {
+			console.info('Returning ' + res.length + ' questions');
 
-		db.all('Select  Questions.id as id, Questions.Text as text, '
-			+ 'Users.Login as user, Questions.DateTimeAsked as dateTimeAsked '
-			+ 'From Questions '
-			+ 'Inner Join Users On Users.Id = Questions.UserAsked '
-			+ 'Where Exists (Select * From Answers Where Answers.QuestionId = Questions.Id) '
-			+ 'Order By datetime(Questions.DateTimeAsked) desc, id desc',
-			function (err, res) {
-				db.close();
-				console.info('Returning ' + res.length + ' questions');
-				response.json(res).status(200);
-			});
+			response.json(res).status(200);
+		});
 	}
 }]);
 
