@@ -1,10 +1,10 @@
 'use strict';
 
-var express = require('express');
-var bodyParser = require('body-parser');
-var AppDefaults = require('./app-defaults.js');
-var initializeDatabase = require('./db-initializer.js');
-var questionsController = require('./questions-controller.js');
+var express = require('express'),
+	bodyParser = require('body-parser'),
+	AppDefaults = require('./app-defaults.js'),
+	initializeDatabase = require('./db-initializer.js'),
+	questionsController = require('./questions-controller.js');
 
 initializeDatabase(startApp);
 
