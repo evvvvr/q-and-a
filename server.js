@@ -18,7 +18,7 @@ function startApp(error) {
 	var port = process.env.PORT || AppDefaults.Port;
 	var app = express();
 
-	app.use(express.static('content'));
+	app.use(express.static('assets'));
 	app.use('/api', bodyParser.json());
 	app.use('/api', questionsController);
 	app.use(middleware.handleError);

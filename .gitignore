@@ -29,4 +29,4 @@ node_modules
 
 data.db
 data.db-journal
-content/js
+assets/js
