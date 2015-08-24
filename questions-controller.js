@@ -107,38 +107,17 @@ router.get('/questions/:questionId(\\d+)', [middleware.parsePagingParams,
 	function(request, response) {
 		var questionId = request.params.questionId;
 
-		console.info('Retrieving question with id ' + questionId); 
-		
-		var db = new sqlite3.Database('data.db');
+		console.info('Retrieving question with id ' + questionId);
 
-		db.get('Select Questions.Id as id, Users.Login as user, '
-			+ 'Questions.Text as text, Questions.DateTimeAsked as dateTimeAsked '
-			+ 'From Questions '
-			+ 'Inner Join Users On Users.Id = Questions.UserAsked '
-			+ 'Where Questions.Id = $questionid', {
-				$questionid : questionId
-			}, function (error, question) {
-				if (!question) {
-					db.close();
-					var errorMessage = 'Question with id ' + questionId
-						+ ' was not found.';
-
-					console.error(errorMessage);
-					response.status(404).send(errorMessage);
-				} else {
-					db.all('Select Users.Login as user, Answers.Text as text, '
-						+ ' Answers.DateTimeAnswered as dateTimeAnswered From Answers '
-						+ 'Inner Join Users On Users.Id = Answers.UserAnswered '
-						+ 'Where Answers.QuestionId = $questionIdForAnswers '
-						+ 'Order By datetime(Answers.DateTimeAnswered) desc, '
-						+ 'Answers.Id desc', {
-							$questionIdForAnswers : questionId
-						}, function (err, answers) {
-							question.answers = answers;
-							response.json(question).status(200);
-						});
-				}
-			});
+		DbService.getQuestion(questionId, function (error, question) {
+			if (!question) {
+				console.error('Question with id %d not found', questionId);
+				response.sendStatus(404);
+			} else {
+				console.info('Question found');
+				response.status(200).json(question);
+			}
+		});
 }]);
 
 router.get('/questions/:questionId(\\d+)/answers', [middleware.parsePagingParams,
