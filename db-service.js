@@ -73,12 +73,12 @@ module.exports.insertQuestion = function (question, callback) {
 		db.run(INSERT_USER_SQL, { $login: question.user });
 
 		db.run(INSERT_QUESTION_SQL, {
-			$text : question.text,
-			$login : question.user
+				$text : question.text,
+				$login : question.user
 			}, function (err) {
 				db.close();
 				callback(err, this.lastID);
-			});
+		});
 	});
 };
 
@@ -97,7 +97,7 @@ module.exports.getQuestion = function(id, callback) {
 
 					question.answers = answers;
 					callback(err, question);
-				});
+			});
 		}
 	});
 };

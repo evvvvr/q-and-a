@@ -154,8 +154,7 @@ router.post('/questions/:questionId(\\d+)/answers', function(request, response) 
 				} else {
 					response.sendStatus(201);
 				}
-			}
-		);
+		});
 	}
 });
 
