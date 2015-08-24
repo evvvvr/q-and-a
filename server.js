@@ -1,29 +1,19 @@
 'use strict';
 
-var fs = require('fs');
-var sqlite3 = require('sqlite3');
 var express = require('express');
 var bodyParser = require('body-parser');
 var AppDefaults = require('./app-defaults.js');
+var initializeDatabase = require('./db-initializer.js');
 var questionsController = require('./questions-controller.js');
 
-console.info('Initalizing database.');
+initializeDatabase(startApp);
 
-var db = new sqlite3.Database('data.db');
-var dbCreationScript = fs.readFileSync('./db/create.sql', 'utf8');
-
-db.exec(dbCreationScript, function (err) {
-	if (err) {
-		throw err;
+function startApp(error) {
+	if (error) {
+		console.error('Error starting application: ' + error);
+		return;
 	}
 
-	console.info('Database initialized.');
-	db.close();
-
-	startApp();
-});
-
-function startApp() {
 	var port = process.env.PORT || AppDefaults.Port;
 	var app = express();
 
