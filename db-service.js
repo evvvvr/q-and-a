@@ -40,6 +40,11 @@ var GET_ANSWERS_FOR_QUESTION = 'Select Users.Login as user, Answers.Text as text
 	+ 'Order By datetime(Answers.DateTimeAnswered) desc, '
 	+ 'Answers.Id desc';
 
+var INSERT_ANSWER_SQL = 'Insert Into Answers (Text, DateTimeAnswered, QuestionId, UserAnswered) ' 
+	+ 'Select $text, datetime(\'now\'), Questions.Id, Users.Id from Users '
+	+ 'cross join Questions '
+	+ 'Where Users.Login = $login and Questions.Id = $questionid';
+
 function runAll(query, callback) {
 	var db = new sqlite3.Database(AppDefaults.DbFilename);
 
@@ -78,7 +83,7 @@ module.exports.insertQuestion = function (question, callback) {
 };
 
 module.exports.getQuestion = function(id, callback) {
-	var db = new sqlite3.Database('data.db');
+	var db = new sqlite3.Database(AppDefaults.DbFilename);
 
 	db.get(GET_QUESTION_SQL, { $questionid : id }, function (error, question) {
 		if (!question) {
@@ -94,5 +99,23 @@ module.exports.getQuestion = function(id, callback) {
 					callback(err, question);
 				});
 		}
+	});
+};
+
+module.exports.insertAnswer = function (questionId, answer, callback) {
+	var db = new sqlite3.Database(AppDefaults.DbFilename);
+
+	db.serialize(function () {
+		db.run(INSERT_USER_SQL, { $login: answer.user });
+
+		db.run(INSERT_ANSWER_SQL, {
+				$text : answer.text,
+				$login : answer.user,
+				$questionid : questionId
+			}, function (error) {
+				db.close();
+
+				callback(error, this.lastID);
+		});
 	});
 };

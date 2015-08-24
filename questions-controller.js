@@ -2,7 +2,6 @@
 
 var express = require('express'),
 	middleware = require('./middleware.js'),
-	sqlite3 = require('sqlite3'),
 	Validator = require('jsonschema').Validator,
 	objectSchemas = require('./json-schemas.js'),
 	router = express.Router(),
@@ -134,10 +133,8 @@ router.get('/questions/:questionId(\\d+)/answers', [middleware.parsePagingParams
 router.post('/questions/:questionId(\\d+)/answers', function(request, response) {
 	var questionId = request.params.questionId;
 
-	var requestData = JSON.stringify(request.body);
-
-	console.log('Posting an answer for question with id ' + questionId
-		+ ". Data is: " + requestData);
+	console.info('Posting an answer for question with id %d. Data is %j',
+		questionId, request.body);
 
 	var objectValidator = new Validator();
 	var validationResult = objectValidator.validate(request.body,
@@ -145,47 +142,20 @@ router.post('/questions/:questionId(\\d+)/answers', function(request, response) 
 
 	if (!validationResult.valid) {
 		var errorMessage = validationResult.errors[0].stack;
-		console.error('Bad request: ' + errorMessage);
+
+		console.info('Bad request: %s', errorMessage);
 		response.status(400).send(errorMessage);
 	} else {
-		var db = new sqlite3.Database('data.db');
-
-		db.serialize(function () {
-			db.run('Insert or Ignore Into "Users" (Login) Values ($login)', {
-				$login: request.body.user
-			});
-
-			db.run('Insert Into Answers (Text, DateTimeAnswered, QuestionId, UserAnswered) ' 
-				+ 'Select $text, datetime(\'now\'), Questions.Id, Users.Id from Users '
-				+ 'cross join Questions '
-				+ 'Where Users.Login = $login and Questions.Id = $questionid', {
-					$text : request.body.text,
-					$login : request.body.user,
-					$questionid : questionId
-			}, function (error) {
-				if (error) {
-					console.error(error);
-					response.sendStatus(500);
+		DbService.insertAnswer(questionId, request.body,
+			function (error, newAnswerId) {
+				if (newAnswerId === 0) {
+					console.info('Question with id %d not found', questionId);
+					response.sendStatus(404)
 				} else {
-					var newAnswerId = this.lastID;
-
-					if (newAnswerId === 0) {
-						var errorMessage = 'Question with id ' + questionId
-							+ ' was not found.';
-
-						console.error(errorMessage);
-						response.status(404).send(errorMessage);
-					} else {
-						console.info('New answer has been posted. Id is '
-							+ newAnswerId);
-
-						response.sendStatus(201);
-					}
+					response.sendStatus(201);
 				}
-
-				db.close();
-			})
-		});
+			}
+		);
 	}
 });
 
