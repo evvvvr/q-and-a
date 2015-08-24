@@ -1,3 +1,5 @@
+'use strict';
+
 var fs = require('fs'),
 	sqlite3 = require('sqlite3'),
 	AppDefaults = require('./app-defaults.js');;
