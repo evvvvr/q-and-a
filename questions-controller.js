@@ -7,6 +7,7 @@ var express = require('express'),
 	objectSchemas = require('./json-schemas.js'),
 	router = express.Router(),
 	url = require('url'),
+	DbService = require('./db-service.js'),
 	AppDefaults = require('./app-defaults.js');
 
 var QuestionType = {
@@ -47,18 +48,10 @@ router.get('/questions', [middleware.parsePagingParams, function(request, respon
 	if (questionType === QuestionType.All) {
 		console.info('Retrieving all questions');
 
-		var db = new sqlite3.Database('data.db');
-
-		db.all('Select  Questions.id as id, Questions.Text as text, '
-			+ 'Users.Login as user, Questions.DateTimeAsked as dateTimeAsked '
-			+ 'From Questions '
-			+ 'Inner Join Users On Users.Id = Questions.UserAsked '
-			+ 'Order By datetime(Questions.DateTimeAsked) desc, id desc',
-			function (err, res) {
-				db.close();
-				console.info('Returning ' + res.length + ' questions');
-				response.json(res).status(200);
-			});
+		DbService.getAllQuestions(function (err, res) {
+			console.info('Returning ' + res.length + ' questions');
+			response.json(res).status(200);
+		});
 	} else if (questionType === QuestionType.Unanswered) {
 		console.info('Retrieving unanswered questions');
 
