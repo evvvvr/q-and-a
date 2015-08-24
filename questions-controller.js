@@ -83,7 +83,7 @@ router.post('/questions', function(request, response) {
 	if (!validationResult.valid) {
 		var errorMessage = validationResult.errors[0].stack;
 		console.error('Bad request: %s', errorMessage);
-		response.status(400).send(errorMessage);
+		response.json({'error': errorMessage}).status(400);
 	} else {
 		DbService.insertQuestion(request.body, function (error, newQuestionId) {
 			console.info('New question has been posted. Id is %d', newQuestionId);
@@ -144,7 +144,7 @@ router.post('/questions/:questionId(\\d+)/answers', function(request, response) 
 		var errorMessage = validationResult.errors[0].stack;
 
 		console.info('Bad request: %s', errorMessage);
-		response.status(400).send(errorMessage);
+		response.json({'error': errorMessage}).status(400);
 	} else {
 		DbService.insertAnswer(questionId, request.body,
 			function (error, newAnswerId) {
