@@ -3,19 +3,15 @@ var fs = require('fs'),
 	AppDefaults = require('./app-defaults.js');;
 
 module.exports = function (callback) {
-	console.info('Initalizing database');
-
 	var db = new sqlite3.Database(AppDefaults.DbFilename),
 		dbCreationScript = fs.readFileSync('./db/create.sql', 'utf8');
 
 	db.exec(dbCreationScript, function (err) {
 		if (err) {
-			console.info('Database initalizion failed.');
+			callback(err);
 		} else {
-			console.info('Database initialized.');
-		}
-
-		db.close();
-		callback(err);
+			db.close();
+			callback();
+		}		
 	});
 }

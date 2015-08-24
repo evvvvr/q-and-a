@@ -48,15 +48,15 @@ router.get('/questions', [middleware.parsePagingParams, function(request, respon
 		console.info('Retrieving all questions');
 
 		DbService.getAllQuestions(function (err, res) {
-			console.info('Returning ' + res.length + ' questions');
+			console.info('Returning %d question(s)', res.length);
 
 			response.json(res).status(200);
 		});
 	} else if (questionType === QuestionType.Unanswered) {
-		console.info('Retrieving unanswered questions');
+		console.info('Retrieving unanswered question');
 
 		DbService.getUnansweredQuestions(function (err, res) {
-			console.info('Returning ' + res.length + ' questions');
+			console.info('Returning %d question(s)', res.length);
 
 			response.json(res).status(200);
 		});
@@ -64,7 +64,7 @@ router.get('/questions', [middleware.parsePagingParams, function(request, respon
 		console.info('Retrieving answered questions');
 		
 		DbService.getAnsweredQuestions(function (err, res) {
-			console.info('Returning ' + res.length + ' questions');
+			console.info('Returning %d question(s)', res.length);
 
 			response.json(res).status(200);
 		});
@@ -74,7 +74,7 @@ router.get('/questions', [middleware.parsePagingParams, function(request, respon
 router.post('/questions', function(request, response) {
 	var requestData = JSON.stringify(request.body);
 
-	console.info('Posting a question. Data is: ' + requestData);
+	console.info('Posting a question. Data is: %j', requestData);
 
 	var objectValidator = new Validator();
 	var validationResult = objectValidator.validate(request.body,
@@ -82,11 +82,11 @@ router.post('/questions', function(request, response) {
 
 	if (!validationResult.valid) {
 		var errorMessage = validationResult.errors[0].stack;
-		console.error('Bad request: ' + errorMessage);
+		console.error('Bad request: %s', errorMessage);
 		response.status(400).send(errorMessage);
 	} else {
 		DbService.insertQuestion(request.body, function (error, newQuestionId) {
-			console.info('New question has been posted. Id is ' + newQuestionId);
+			console.info('New question has been posted. Id is %d', newQuestionId);
 			
 			var newQuestionURL = url.format({
 				protocol : request.protocol,
@@ -106,7 +106,7 @@ router.get('/questions/:questionId(\\d+)', [middleware.parsePagingParams,
 	function(request, response) {
 		var questionId = request.params.questionId;
 
-		console.info('Retrieving question with id ' + questionId);
+		console.info('Retrieving question with id %d', questionId);
 
 		DbService.getQuestion(questionId, function (error, question) {
 			if (!question) {

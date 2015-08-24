@@ -10,7 +10,7 @@ initializeDatabase(startApp);
 
 function startApp(error) {
 	if (error) {
-		console.error('Error starting application: ' + error);
+		console.error('Error starting application: %j', error);
 		return;
 	}
 
@@ -21,6 +21,6 @@ function startApp(error) {
 	app.use('/api', bodyParser.json());
 	app.use('/api', questionsController);
 
-	console.info('Starting app on port ' + port);
+	console.info('Starting app on port %d', port);
 	app.listen(port);
 }
