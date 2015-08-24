@@ -1,13 +1,12 @@
 'use strict';
 
 var express = require('express'),
-	middleware = require('./middleware.js'),
 	Validator = require('jsonschema').Validator,
 	objectSchemas = require('./json-schemas.js'),
-	router = express.Router(),
 	url = require('url'),
 	DbService = require('./db-service.js'),
-	AppDefaults = require('./app-defaults.js');
+	AppDefaults = require('./app-defaults.js'),
+	router = express.Router();
 
 var QuestionType = {
 	All : -1,
@@ -32,13 +31,13 @@ var QuestionType = {
 
 var port = process.env.PORT || AppDefaults.Port;
 
-router.get('/questions', [middleware.parsePagingParams, function(request, response, next) {
+router.get('/questions', function(request, response, next) {
 	var questionType = QuestionType.All;
 
 	if (request.query.isAnswered) {
 		try {
 			questionType = QuestionType.parse(
-				request.query.isAnswered);			
+				request.query.isAnswered);
 		} catch (err) {
 			response.sendStatus(404);
 		}
@@ -81,7 +80,7 @@ router.get('/questions', [middleware.parsePagingParams, function(request, respon
 			response.json(res).status(200);
 		});
 	}
-}]);
+});
 
 router.post('/questions', function(request, response, next) {
 	var requestData = JSON.stringify(request.body);
@@ -118,37 +117,25 @@ router.post('/questions', function(request, response, next) {
 	}
 });
 
-router.get('/questions/:questionId(\\d+)', [middleware.parsePagingParams,
-	function(request, response, next) {
-		var questionId = request.params.questionId;
+router.get('/questions/:questionId(\\d+)', function(request, response, next) {
+	var questionId = request.params.questionId;
 
-		console.info('Retrieving question with id %d', questionId);
+	console.info('Retrieving question with id %d', questionId);
 
-		DbService.getQuestion(questionId, function (err, question) {
-			if (err) {
-				return next(err);
-			}
-			
-			if (!question) {
-				console.error('Question with id %d not found', questionId);
-				response.sendStatus(404);
-			} else {
-				console.info('Question found');
-				response.status(200).json(question);
-			}
-		});
-}]);
-
-router.get('/questions/:questionId(\\d+)/answers', [middleware.parsePagingParams,
-	function(request, response, next) {
-		var questionId = request.params.questionId;
-
-		console.log('Retrieving answers for question with id ' + questionId 
-			+ ' for page number ' + request.pageNo + " page size is "
-			+ request.pageSize);
-
-		response.sendStatus(200);
-}]);
+	DbService.getQuestion(questionId, function (err, question) {
+		if (err) {
+			return next(err);
+		}
+		
+		if (!question) {
+			console.error('Question with id %d not found', questionId);
+			response.sendStatus(404);
+		} else {
+			console.info('Question found');
+			response.status(200).json(question);
+		}
+	});
+});
 
 router.post('/questions/:questionId(\\d+)/answers', function(request, response, next) {
 	var questionId = request.params.questionId;
