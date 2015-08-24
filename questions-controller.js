@@ -32,7 +32,7 @@ var QuestionType = {
 
 var port = process.env.PORT || AppDefaults.Port;
 
-router.get('/questions', [middleware.parsePagingParams, function(request, response) {
+router.get('/questions', [middleware.parsePagingParams, function(request, response, next) {
 	var questionType = QuestionType.All;
 
 	if (request.query.isAnswered) {
@@ -48,6 +48,10 @@ router.get('/questions', [middleware.parsePagingParams, function(request, respon
 		console.info('Retrieving all questions');
 
 		DbService.getAllQuestions(function (err, res) {
+			if (err) {
+				return next(err);
+			}
+
 			console.info('Returning %d question(s)', res.length);
 
 			response.json(res).status(200);
@@ -56,6 +60,10 @@ router.get('/questions', [middleware.parsePagingParams, function(request, respon
 		console.info('Retrieving unanswered question');
 
 		DbService.getUnansweredQuestions(function (err, res) {
+			if (err) {
+				return next(err);
+			}
+
 			console.info('Returning %d question(s)', res.length);
 
 			response.json(res).status(200);
@@ -64,6 +72,10 @@ router.get('/questions', [middleware.parsePagingParams, function(request, respon
 		console.info('Retrieving answered questions');
 		
 		DbService.getAnsweredQuestions(function (err, res) {
+			if (err) {
+				return next(err);
+			}
+			
 			console.info('Returning %d question(s)', res.length);
 
 			response.json(res).status(200);
@@ -71,7 +83,7 @@ router.get('/questions', [middleware.parsePagingParams, function(request, respon
 	}
 }]);
 
-router.post('/questions', function(request, response) {
+router.post('/questions', function(request, response, next) {
 	var requestData = JSON.stringify(request.body);
 
 	console.info('Posting a question. Data is: %j', requestData);
@@ -85,7 +97,11 @@ router.post('/questions', function(request, response) {
 		console.error('Bad request: %s', errorMessage);
 		response.json({'error': errorMessage}).status(400);
 	} else {
-		DbService.insertQuestion(request.body, function (error, newQuestionId) {
+		DbService.insertQuestion(request.body, function (err, newQuestionId) {
+			if (err) {
+				return next(err);
+			}
+			
 			console.info('New question has been posted. Id is %d', newQuestionId);
 			
 			var newQuestionURL = url.format({
@@ -103,12 +119,16 @@ router.post('/questions', function(request, response) {
 });
 
 router.get('/questions/:questionId(\\d+)', [middleware.parsePagingParams,
-	function(request, response) {
+	function(request, response, next) {
 		var questionId = request.params.questionId;
 
 		console.info('Retrieving question with id %d', questionId);
 
-		DbService.getQuestion(questionId, function (error, question) {
+		DbService.getQuestion(questionId, function (err, question) {
+			if (err) {
+				return next(err);
+			}
+			
 			if (!question) {
 				console.error('Question with id %d not found', questionId);
 				response.sendStatus(404);
@@ -120,7 +140,7 @@ router.get('/questions/:questionId(\\d+)', [middleware.parsePagingParams,
 }]);
 
 router.get('/questions/:questionId(\\d+)/answers', [middleware.parsePagingParams,
-	function(request, response) {
+	function(request, response, next) {
 		var questionId = request.params.questionId;
 
 		console.log('Retrieving answers for question with id ' + questionId 
@@ -130,7 +150,7 @@ router.get('/questions/:questionId(\\d+)/answers', [middleware.parsePagingParams
 		response.sendStatus(200);
 }]);
 
-router.post('/questions/:questionId(\\d+)/answers', function(request, response) {
+router.post('/questions/:questionId(\\d+)/answers', function(request, response, next) {
 	var questionId = request.params.questionId;
 
 	console.info('Posting an answer for question with id %d. Data is %j',
@@ -147,7 +167,11 @@ router.post('/questions/:questionId(\\d+)/answers', function(request, response) 
 		response.json({'error': errorMessage}).status(400);
 	} else {
 		DbService.insertAnswer(questionId, request.body,
-			function (error, newAnswerId) {
+			function (err, newAnswerId) {
+				if (err) {
+					return next(err);
+				}
+			
 				if (newAnswerId === 0) {
 					console.info('Question with id %d not found', questionId);
 					response.sendStatus(404)

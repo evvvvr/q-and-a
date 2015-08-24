@@ -2,6 +2,7 @@
 
 var express = require('express'),
 	bodyParser = require('body-parser'),
+	middleware = require('./middleware.js'),
 	AppDefaults = require('./app-defaults.js'),
 	initializeDatabase = require('./db-initializer.js'),
 	questionsController = require('./questions-controller.js');
@@ -20,6 +21,7 @@ function startApp(error) {
 	app.use(express.static('content'));
 	app.use('/api', bodyParser.json());
 	app.use('/api', questionsController);
+	app.use(middleware.handleError);
 
 	console.info('Starting app on port %d', port);
 	app.listen(port);
