@@ -44,6 +44,12 @@ var Questions = Backbone.Collection.extend({
     },
     fetchAll : function() {
         this.fetch();
+    },
+    fetchAnswered : function() {
+        this.fetch({
+            traditional: true,
+            data: {'isAnswered': 'yes'}
+        });
     }
 });
 

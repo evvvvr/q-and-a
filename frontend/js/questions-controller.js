@@ -36,7 +36,7 @@ var QuestionsController = Marionette.Controller.extend({
 
     showAllQuestions: function () {
         this.questions.fetchAll();
-        
+
         this.layoutView.showChildView('main', new QuestionsView({
             collection: this.questions,
             type: 'all'
@@ -46,6 +46,8 @@ var QuestionsController = Marionette.Controller.extend({
     },
 
     showAnsweredQuestions: function () {
+        this.questions.fetchAnswered();
+
         this.layoutView.showChildView('main', new QuestionsView({
             collection: this.questions,
             type: 'answered'
