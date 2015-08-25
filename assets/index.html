@@ -64,6 +64,20 @@
             <%= dateTime(this.dateTimeAsked) %>
             By <span class="item-author"><%= user %></span>
         </p>
+        <div class="js-add-answer-region"></div>
+        <ul class="answers-list">
+            <% _.each(answers, function (answer) { %>
+                <li>
+                    <%= answer.text %>
+                    <p class="item-meta">
+                        <%= dateTime(answer.dateTimeAnswered) %>
+                        By <span class="item-author"><%= answer.user %></span>
+                    </p>
+                </li>
+            <% });%>
+        </ul>
+    </script>
+    <script type="text/template" id="answer-template">
         <form class="pure-form pure-form-stacked">
             <fieldset>
                 <legend>Please, enter your answer</legend>
@@ -80,18 +94,7 @@
                     Add
                 </button>
             </fieldset>
-        </form>        
-        <ul class="answers-list">
-            <% _.each(answers, function (answer) { %>
-                <li>
-                    <%= answer.text %>
-                    <p class="item-meta">
-                        <%= dateTime(answer.dateTimeAnswered) %>
-                        By <span class="item-author"><%= answer.user %></span>
-                    </p>
-                </li>
-            <% });%>
-        </ul>
+        </form>
     </script>
 
     <script type="text/javascript" src="/js/bundle.js" charset="utf-8"></script>

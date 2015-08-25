@@ -3,7 +3,6 @@
 var moment = require('moment');
 
 var Question = Backbone.Model.extend({
-    url: 'http://localhost:8080/api/questions',
     defaults: {
         text: '',
         user: ''
@@ -24,13 +23,13 @@ var Question = Backbone.Model.extend({
         }]
     },
     url: function() {
-        var url = 'http://localhost:8080/api/questions';
+        var questionsLink = 'http://localhost:8080/api/questions';
 
         if (this.isNew()) {
-            return url;
+            return questionsLink;
         }
 
-        return url + '/' + this.id;
+        return questionsLink + '/' + this.id;
     }
 });
 
