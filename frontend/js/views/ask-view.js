@@ -45,11 +45,11 @@ var AskView = Marionette.ItemView.extend({
         });
     },
     
-    showError: function () {
+    showError: function (model) {
         var errorString = '';
-        _.each(this.model.validationError, function (error) {
+        _.each(model.validationError, function (error) {
             errorString += '<div>' + error + '</div>';
-        })
+        });
         this.$('.js-error').html(errorString);
     }
 });
