@@ -57,6 +57,8 @@ var QuestionsController = Marionette.Controller.extend({
     },
 
     showUnansweredQuestions: function () {
+        this.questions.fetchUnanswered();
+
         this.layoutView.showChildView('main', new QuestionsView({
             collection: this.questions,
             type: 'unanswered'

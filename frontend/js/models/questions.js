@@ -50,6 +50,12 @@ var Questions = Backbone.Collection.extend({
             traditional: true,
             data: {'isAnswered': 'yes'}
         });
+    },
+    fetchUnanswered : function() {
+        this.fetch({
+            traditional: true,
+            data: {'isAnswered': 'no'}
+        });
     }
 });
 
