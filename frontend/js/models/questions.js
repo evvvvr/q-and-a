@@ -41,6 +41,9 @@ var Questions = Backbone.Collection.extend({
         }
 
         return 0;
+    },
+    fetchAll : function() {
+        this.fetch();
     }
 });
 

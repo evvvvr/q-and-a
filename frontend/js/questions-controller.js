@@ -35,6 +35,8 @@ var QuestionsController = Marionette.Controller.extend({
     },
 
     showAllQuestions: function () {
+        this.questions.fetchAll();
+        
         this.layoutView.showChildView('main', new QuestionsView({
             collection: this.questions,
             type: 'all'
