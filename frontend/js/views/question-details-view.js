@@ -18,9 +18,15 @@ var QuestionDetailsView = Marionette.LayoutView.extend({
         }
     },
     onShow: function() {
-        this.showChildView('answer', new AnswerView({
+        var answerView = new AnswerView({
             model: new Answer({questionId: this.model.id})
-        }));
+        });
+
+        this.listenTo(answerView, 'add', _.bind(function () {
+            this.trigger('add');
+        }, this));
+
+        this.showChildView('answer', answerView);
     }
 });
 

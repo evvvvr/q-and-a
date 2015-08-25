@@ -39,7 +39,7 @@ var AnswerView = Marionette.ItemView.extend({
             //TODO add server side error handling
             error: _.bind(function (mode, xhr, options) {
                 if (xhr.status === 201) {
-                    this.trigger('add', this.model);
+                    this.trigger('add');
                 }
             }, this)
         });

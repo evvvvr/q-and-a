@@ -82,8 +82,6 @@ var QuestionsController = Marionette.Controller.extend({
     },
 
     showQuestion: function(id) {
-        console.log('showing question ' + id);
-
         var model = new Question({id : id});
 
         model.fetch({
@@ -92,10 +90,8 @@ var QuestionsController = Marionette.Controller.extend({
                     model: model
                 });
 
-                this.listenTo(view, 'addAnswer', _.bind(function (answer) {
-                    console.log('Answer added');
-                    console.log(answer);
-                    this.router.navigate('#questions/' + id);
+                this.listenTo(view, 'add', _.bind(function () {
+                    this.showQuestion(id);
                 }, this));
 
                 this.layoutView.showChildView('main', view);
