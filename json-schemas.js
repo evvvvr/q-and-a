@@ -1,39 +1,39 @@
 'use strict';
 
 module.exports = {
-	Question :  {
-		'id' : '/question',
-		'type' : 'object',
-		'properties' : {
-			'user' : {
-				'type' : 'string',
-				'minLength' : 1,
-				'maxLength' : 255
+	Question:  {
+		'id': '/question',
+		'type': 'object',
+		'properties': {
+			'user': {
+				'type': 'string',
+				'minLength': 1,
+				'maxLength': 255
 			},
-			'text' : {
-				'type' : 'string',
-				'minLength' : 1,
-				'maxLength' : 3000
+			'text': {
+				'type': 'string',
+				'minLength': 1,
+				'maxLength': 3000
 			}
 		},
-		'required' : ['user', 'text']
+		'required': ['user', 'text']
 	},
 
 	Answer :  {
-		'id' : '/answer',
-		'type' : 'object',
-		'properties' : {
-			'user' : {
-				'type' : 'string',
-				'minLength' : 1,
-				'maxLength' : 255
+		'id': '/answer',
+		'type': 'object',
+		'properties': {
+			'user': {
+				'type': 'string',
+				'minLength': 1,
+				'maxLength': 255
 			},
-			'text' : {
+			'text': {
 				'type' : 'string',
-				'minLength' : 1,
-				'maxLength' : 3000
+				'minLength': 1,
+				'maxLength': 3000
 			}
 		},
-		'required' : ['user', 'text']
+		'required': ['user', 'text']
 	}
 };

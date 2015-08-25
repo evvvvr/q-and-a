@@ -9,13 +9,13 @@ var express = require('express'),
 	router = express.Router();
 
 var QuestionType = {
-	All : -1,
+	All: -1,
 
-	Unanswered : 0,
+	Unanswered: 0,
 
 	Answered: 1,
 
-	parse : function (value) {
+	parse: function (value) {
 		switch (value.toLowerCase()) {
 			case "yes":
 				return this.Answered;
