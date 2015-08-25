@@ -64,6 +64,23 @@
             <%= dateTime(this.dateTimeAsked) %>
             By <span class="item-author"><%= user %></span>
         </p>
+        <form class="pure-form pure-form-stacked">
+            <fieldset>
+                <legend>Please, enter your answer</legend>
+
+                <div class="error js-error"></div>
+                <input class="pure-input-2-3" type="text" name="user" placeholder="Your Name">
+                <textarea
+                    name="text"
+                    placeholder="Your Answer"
+                    class="pure-input-2-3 textarea-text"
+                    ></textarea>
+
+                <button type="submit" class="pure-button pure-button-primary js-add">
+                    Add
+                </button>
+            </fieldset>
+        </form>        
         <ul class="answers-list">
             <% _.each(answers, function (answer) { %>
                 <li>

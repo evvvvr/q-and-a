@@ -74,7 +74,6 @@ var QuestionsController = Marionette.Controller.extend({
         });
         
         this.listenTo(view, 'add', _.bind(function (model) {
-            this.questions.add(model);
             this.showAllQuestions();
             this.router.navigate('');
         }, this));
@@ -83,17 +82,22 @@ var QuestionsController = Marionette.Controller.extend({
     },
 
     showQuestion: function(id) {
+        console.log('showing question ' + id);
+
         var model = new Question({id : id});
-        var layoutView = this.layoutView;
 
         model.fetch({
-            success: function () {
+            success: _.bind(function () {
                 var view = new QuestionDetailsView({
                     model: model
                 });
 
-                layoutView.showChildView('main', view);
-            }
+                this.listenTo(view, 'addAnswer', _.bind(function (answer) {
+                    this.router.navigate('#questions/' + id);
+                }, this));
+
+                this.layoutView.showChildView('main', view);
+            }, this)
         });
     }
 });
