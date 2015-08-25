@@ -75,3 +75,12 @@ h3 {
 .textarea-text {
     height: 25em;
 }
+
+.answers-list {
+     list-style-type: none;
+     padding-left: 0;
+}
+
+.answers-list li {
+    padding-top: 5px;
+}
