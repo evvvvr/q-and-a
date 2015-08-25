@@ -79,6 +79,10 @@ var QuestionsController = Marionette.Controller.extend({
         }, this));
         
         this.layoutView.showChildView('main', view);
+    },
+
+    showQuestion: function(id) {
+        console.log('Show question # ' + id);
     }
 });
 

@@ -8,6 +8,7 @@ var QuestionRouter = Marionette.AppRouter.extend({
       '': 'showAllQuestions',
       'answered': 'showAnsweredQuestions',
       'unanswered': 'showUnansweredQuestions',
+      'questions/:id' : 'showQuestion'
     }
 });
 
