@@ -3,6 +3,14 @@
 var Marionette = require('backbone.marionette');
 var _ = require('underscore');
 
+function escapeHtml(str) {
+    var div = document.createElement('div');
+
+    div.appendChild(document.createTextNode(str));
+
+    return div.innerHTML;
+};
+
 var AskView = Marionette.ItemView.extend({
     template: '#add-template',
     ui: {
@@ -19,8 +27,9 @@ var AskView = Marionette.ItemView.extend({
 
     onAdd: function (e) {
         e.preventDefault();
-        var user = this.$('[name=user]').val();
-        var text = this.$('[name=text]').val();
+        var user = escapeHtml(this.$('[name=user]').val());
+        var text = escapeHtml(this.$('[name=text]').val());
+
         this.model.save({
             user: user,
             text: text
