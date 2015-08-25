@@ -68,7 +68,39 @@ var Questions = Backbone.Collection.extend({
     }
 });
 
+var Answer = Backbone.Model.extend({
+    defaults: {
+        text: '',
+        user: ''
+    },
+    validation: {
+        user: {
+            required: true,
+            msg: 'Please, enter your name'
+        },
+
+        text: [{
+            required: true,
+            msg: 'Please, enter your answer'
+        },
+        {
+            maxLength: 3000,
+            msg: 'Sorry, your answer is too long'
+        }]
+    },
+    initialize: function(options){
+        this.options = options || {};
+    },
+    url: function() {
+        var url = 'http://localhost:8080/api/questions/' + this.options.questionId
+            + '/answers';
+
+        return url;
+    }
+});
+
 module.exports = {
     Question: Question,
-    Questions: Questions
+    Questions: Questions,
+    Answer: Answer
 };

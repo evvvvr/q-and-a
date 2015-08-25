@@ -93,6 +93,8 @@ var QuestionsController = Marionette.Controller.extend({
                 });
 
                 this.listenTo(view, 'addAnswer', _.bind(function (answer) {
+                    console.log('Answer added');
+                    console.log(answer);
                     this.router.navigate('#questions/' + id);
                 }, this));
 
