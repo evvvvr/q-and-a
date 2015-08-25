@@ -14,7 +14,7 @@ var ItemView = Marionette.ItemView.extend({
     template: '#item-template',
     templateHelpers: function () {
         return {
-            dateTime: moment(this.model.get('dateTimeAsked'))
+            dateTime: moment.utc(this.model.get('dateTimeAsked')).local()
                 .format('dddd, MMMM Do YYYY, h:mm:ss a')
         }
     }
