@@ -58,6 +58,13 @@
             </fieldset>
         </form>
     </script>
+    <script type="text/template" id="question-details-template">
+        <%= text %>
+        <p class="item-meta">
+            <%= dateTime(this.dateTimeAsked) %>
+            By <span class="item-author"><%= user %></span>
+        </p>
+    </script>
 
     <script type="text/javascript" src="/js/bundle.js" charset="utf-8"></script>
     </body>

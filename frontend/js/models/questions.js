@@ -22,6 +22,15 @@ var Question = Backbone.Model.extend({
             maxLength: 3000,
             msg: 'Sorry, your question is too long'
         }]
+    },
+    url: function() {
+        var url = 'http://localhost:8080/api/questions';
+
+        if (this.isNew()) {
+            return url;
+        }
+
+        return url + '/' + this.id;
     }
 });
 

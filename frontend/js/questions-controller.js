@@ -8,6 +8,7 @@ var Question = require('./models/questions.js').Question;
 var Questions = require('./models/questions.js').Questions;
 var AppLayout = require('./views/app-layout.js');
 var QuestionsView = require('./views/questions-view.js');
+var QuestionDetailsView = require('./views/question-details-view.js');
 var AskView = require('./views/ask-view.js');
 
 var QuestionsController = Marionette.Controller.extend({
@@ -82,7 +83,18 @@ var QuestionsController = Marionette.Controller.extend({
     },
 
     showQuestion: function(id) {
-        console.log('Show question # ' + id);
+        var model = new Question({id : id});
+        var layoutView = this.layoutView;
+
+        model.fetch({
+            success: function () {
+                var view = new QuestionDetailsView({
+                    model: model
+                });
+
+                layoutView.showChildView('main', view);
+            }
+        });
     }
 });
 
