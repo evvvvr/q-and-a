@@ -14,10 +14,14 @@ function escapeHtml(str) {
 var AskView = Marionette.ItemView.extend({
     template: '#add-template',
     ui: {
-        'add': '.js-add'
+        'add': '.js-add',
+        'user': '[name=user]',
+        'text': '[name=text]'
     },
     events: {
-        'click @ui.add': 'onAdd'
+        'click @ui.add': 'onAdd',
+        'focus @ui.user': 'clearError',
+        'focus @ui.text': 'clearError'
     },
 
     initialize: function () {
@@ -55,7 +59,11 @@ var AskView = Marionette.ItemView.extend({
             errorString += '<div>' + error + '</div>';
         });
         this.$('.js-error').html(errorString);
-    }
+    },
+
+    clearError: function () {
+        this.$('.js-error').empty();
+    }    
 });
 
 module.exports = AskView;

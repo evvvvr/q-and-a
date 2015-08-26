@@ -14,10 +14,14 @@ function escapeHtml(str) {
 var AnswerView = Marionette.ItemView.extend({
     template: '#answer-template',
     ui: {
-        'add': '.js-add'
+        'add': '.js-add',
+        'user': '[name=user]',
+        'text': '[name=text]'
     },
     events: {
-        'click @ui.add': 'onAdd'
+        'click @ui.add': 'onAdd',
+        'focus @ui.user': 'clearError',
+        'focus @ui.text': 'clearError'
     },
 
     initialize: function () {
@@ -27,6 +31,7 @@ var AnswerView = Marionette.ItemView.extend({
 
     onAdd: function (e) {
         e.preventDefault();
+
         var user = escapeHtml(this.$('[name=user]').val());
         var text = escapeHtml(this.$('[name=text]').val());
 
@@ -55,6 +60,10 @@ var AnswerView = Marionette.ItemView.extend({
             errorString += '<div>' + error + '</div>';
         });
         this.$('.js-error').html(errorString);
+    },
+
+    clearError: function () {
+        this.$('.js-error').empty();
     }
 });
 
