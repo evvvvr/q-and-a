@@ -35,12 +35,10 @@ var AnswerView = Marionette.ItemView.extend({
             text: text
         }, {
             success: _.bind(function () {
+                this.trigger('add');
             }, this),
             //TODO add server side error handling
             error: _.bind(function (mode, xhr, options) {
-                if (xhr.status === 201) {
-                    this.trigger('add');
-                }
             }, this)
         });
     },

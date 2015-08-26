@@ -162,6 +162,9 @@ router.post('/questions/:questionId(\\d+)/answers', function(request, response, 
 		console.info('Bad request: %s', errorMessage);
 		response.json({'error': errorMessage}).status(400);
 	} else {
+		request.body.dateTimeAnswered = moment.utc()
+			.format(AppDefaults.DateTimeFormat);
+
 		DbService.insertAnswer(questionId, request.body,
 			function (err, newAnswerId) {
 				if (err) {
@@ -172,7 +175,10 @@ router.post('/questions/:questionId(\\d+)/answers', function(request, response, 
 					console.info('Question with id %d not found', questionId);
 					response.sendStatus(404)
 				} else {
-					response.sendStatus(201);
+					var newAnswer = _.clone(request.body);
+					newAnswer.id = newAnswerId;
+
+					response.json(newAnswer).status(201);
 				}
 		});
 	}

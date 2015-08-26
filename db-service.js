@@ -43,7 +43,7 @@ var GET_ANSWERS_FOR_QUESTION = 'Select Users.Login as user, Answers.Text as text
 	+ 'Answers.Id desc';
 
 var INSERT_ANSWER_SQL = 'Insert Into Answers (Text, DateTimeAnswered, QuestionId, UserAnswered) ' 
-	+ 'Select $text, datetime(\'now\'), Questions.Id, Users.Id from Users '
+	+ 'Select $text, datetime($dateTimeAnswered), Questions.Id, Users.Id from Users '
 	+ 'cross join Questions '
 	+ 'Where Users.Login = $login and Questions.Id = $questionid';
 
@@ -112,9 +112,10 @@ module.exports.insertAnswer = function (questionId, answer, callback) {
 		db.run(INSERT_USER_SQL, { $login: answer.user });
 
 		db.run(INSERT_ANSWER_SQL, {
-				$text : answer.text,
-				$login : answer.user,
-				$questionid : questionId
+				$text: answer.text,
+				$login: answer.user,
+				$questionid: questionId,
+				$dateTimeAnswered: answer.dateTimeAnswered
 			}, function (error) {
 				db.close();
 
