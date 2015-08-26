@@ -8,10 +8,14 @@ var Question = Backbone.Model.extend({
         user: ''
     },
     validation: {
-        user: {
+        user: [{
             required: true,
             msg: 'Please, enter your name'
         },
+        {
+            maxLength: 255,
+            msg: 'Sorry, your name is too long'
+        }],
 
         text: [{
             required: true,
@@ -73,10 +77,14 @@ var Answer = Backbone.Model.extend({
         user: ''
     },
     validation: {
-        user: {
+        user: [{
             required: true,
             msg: 'Please, enter your name'
         },
+        {
+            maxLength: 255,
+            msg: 'Sorry, your name is too long'
+        }],
 
         text: [{
             required: true,
