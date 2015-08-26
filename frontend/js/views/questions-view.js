@@ -1,7 +1,7 @@
 'use strict';
 
-var Marionette = require('backbone.marionette');
-var moment = require('moment');
+var Marionette = require('backbone.marionette'),
+    Util = require('../util.js');
 
 var titles = {
     'all': 'All Questions',
@@ -12,11 +12,8 @@ var titles = {
 var ItemView = Marionette.ItemView.extend({
     className: 'item',
     template: '#item-template',
-    templateHelpers: function () {
-        return {
-            dateTime: moment.utc(this.model.get('dateTimeAsked')).local()
-                .format('dddd, MMMM Do YYYY, h:mm:ss a')
-        }
+    templateHelpers: {
+        dateTime: Util.formatDateTime
     }
 });
 

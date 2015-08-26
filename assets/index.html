@@ -23,7 +23,7 @@
     <script type="text/template" id="item-template">
       <a href="#questions/<%= id %>"><%= text %></a>
       <p class="item-meta">
-        <%= dateTime %>
+        <%= dateTime(this.dateTimeAsked) %>
         By <span class="item-author"><%= user %></span>
       </p>
     </script>

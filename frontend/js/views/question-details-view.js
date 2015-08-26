@@ -2,7 +2,7 @@
 
 var Marionette = require('backbone.marionette'),
     _ = require('underscore'),
-    moment = require('moment'),
+    Util = require('../util.js'),
     Answer = require('../models/questions.js').Answer,
     AnswerView = require('./answer-view.js');
 
@@ -12,10 +12,7 @@ var QuestionDetailsView = Marionette.LayoutView.extend({
     },
     template: '#question-details-template',
     templateHelpers: {
-        dateTime: function(dateTime) {
-            return moment.utc(dateTime).local()
-                .format('dddd, MMMM Do YYYY, h:mm:ss a');
-        }
+        dateTime: Util.formatDateTime
     },
     onShow: function() {
         var answerView = new AnswerView({
