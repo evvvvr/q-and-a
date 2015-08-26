@@ -4,6 +4,8 @@ var express = require('express'),
 	Validator = require('jsonschema').Validator,
 	objectSchemas = require('./json-schemas.js'),
 	url = require('url'),
+	moment = require('moment'),
+	_ = require('underscore'),
 	DbService = require('./db-service.js'),
 	AppDefaults = require('./app-defaults.js'),
 	router = express.Router();
@@ -96,11 +98,18 @@ router.post('/questions', function(request, response, next) {
 		console.error('Bad request: %s', errorMessage);
 		response.json({'error': errorMessage}).status(400);
 	} else {
+		request.body.dateTimeAsked = moment.utc()
+			.format(AppDefaults.DateTimeFormat);
+
 		DbService.insertQuestion(request.body, function (err, newQuestionId) {
 			if (err) {
 				return next(err);
 			}
 			
+			var newQuestion = _.clone(request.body);
+			newQuestion.id = newQuestionId;
+			newQuestion.answers = [];
+
 			console.info('New question has been posted. Id is %d', newQuestionId);
 			
 			var newQuestionURL = url.format({
@@ -112,7 +121,7 @@ router.post('/questions', function(request, response, next) {
 			});
 
 			response.setHeader('Location', newQuestionURL);
-			response.sendStatus(201);
+			response.json(newQuestion).status(201);
 		});
 	}
 });

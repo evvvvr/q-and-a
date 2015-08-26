@@ -26,7 +26,7 @@ var GET_ANSWERED_QUESTIONS_SQL = 'Select  Questions.id as id, Questions.Text as 
 var INSERT_USER_SQL = 'Insert or Ignore Into "Users" (Login) Values ($login)';
 
 var INSERT_QUESTION_SQL = 'Insert Into Questions (Text, DateTimeAsked, UserAsked) ' 
-	+ 'Select $text, datetime(\'now\'), Id from Users '
+	+ 'Select $text, datetime($dateTimeAsked), Id from Users '
 	+ 'Where Login = $login';
 
 var GET_QUESTION_SQL = 'Select Questions.Id as id, Users.Login as user, '
@@ -75,8 +75,9 @@ module.exports.insertQuestion = function (question, callback) {
 		db.run(INSERT_USER_SQL, { $login: question.user });
 
 		db.run(INSERT_QUESTION_SQL, {
-				$text : question.text,
-				$login : question.user
+				$text: question.text,
+				$login: question.user,
+				$dateTimeAsked: question.dateTimeAsked
 			}, function (err) {
 				db.close();
 				callback(err, this.lastID);
