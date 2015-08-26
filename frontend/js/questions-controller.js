@@ -19,12 +19,7 @@ var QuestionsController = Marionette.Controller.extend({
     start: function () {
         this.showMenu('all');
         this.showAllQuestions(this.questions);
-        this.questions.on('all', this.updateHiddenElements, this);
         this.questions.fetch();
-    },
-
-    updateHiddenElements: function () {
-        $('#main').toggle(!!this.questions.length);
     },
 
     showMenu: function (type) {
