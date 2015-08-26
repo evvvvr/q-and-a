@@ -1,15 +1,14 @@
 'use strict';
 
-var Marionette = require('backbone.marionette');
-var $ = require('jquery');
-var _ = require('underscore');
-
-var Question = require('./models/questions.js').Question;
-var Questions = require('./models/questions.js').Questions;
-var AppLayout = require('./views/app-layout.js');
-var QuestionsView = require('./views/questions-view.js');
-var QuestionDetailsView = require('./views/question-details-view.js');
-var AskView = require('./views/ask-view.js');
+var Marionette = require('backbone.marionette'),
+    $ = require('jquery'),
+    _ = require('underscore'),
+    Question = require('./models/questions.js').Question,
+    Questions = require('./models/questions.js').Questions,
+    AppLayout = require('./views/app-layout.js'),
+    QuestionsView = require('./views/questions-view.js'),
+    QuestionDetailsView = require('./views/question-details-view.js'),
+    AskView = require('./views/ask-view.js');
 
 var QuestionsController = Marionette.Controller.extend({
     initialize: function () {

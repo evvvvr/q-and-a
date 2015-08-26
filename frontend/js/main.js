@@ -3,12 +3,13 @@
 require('../css/main.css');
 require('purecss');
 
-var Backbone = require('backbone');
-var Marionette = require('backbone.marionette');
+var Backbone = require('backbone'),
+	Marionette = require('backbone.marionette');
+
 require('backbone-validation');
 
-var QuestionRouter = require('./routers/router.js');
-var QuestionsController = require('./questions-controller.js');
+var QuestionRouter = require('./routers/router.js'),
+	QuestionsController = require('./questions-controller.js');
 
 var App = Marionette.Application.extend();
 var app = new App();

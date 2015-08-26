@@ -1,5 +1,7 @@
-var webpack = require('webpack');
-var path = require('path');
+'use strict';
+
+var webpack = require('webpack'),
+    path = require('path');
 
 module.exports = {
     entry: './frontend/js/main.js',

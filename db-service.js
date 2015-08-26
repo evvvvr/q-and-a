@@ -88,6 +88,7 @@ module.exports.insertQuestion = function (question, callback) {
 module.exports.getQuestion = function(id, callback) {
 	var db = new sqlite3.Database(AppDefaults.DbFilename);
 
+	//TODO: Retrieve question and its answers using join, not two queries
 	db.get(GET_QUESTION_SQL, { $questionid : id }, function (error, question) {
 		if (!question) {
 			db.close();
