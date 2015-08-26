@@ -1,15 +1,8 @@
 'use strict';
 
-var Marionette = require('backbone.marionette');
-var _ = require('underscore');
-
-function escapeHtml(str) {
-    var div = document.createElement('div');
-
-    div.appendChild(document.createTextNode(str));
-
-    return div.innerHTML;
-};
+var Marionette = require('backbone.marionette'),
+    _ = require('underscore'),
+    Util = require('../util.js');
 
 var AnswerView = Marionette.ItemView.extend({
     template: '#answer-template',
@@ -32,8 +25,8 @@ var AnswerView = Marionette.ItemView.extend({
     onAdd: function (e) {
         e.preventDefault();
 
-        var user = escapeHtml(this.$('[name=user]').val());
-        var text = escapeHtml(this.$('[name=text]').val());
+        var user = Util.escapeHtml(this.$('[name=user]').val());
+        var text = Util.escapeHtml(this.$('[name=text]').val());
 
         this.model.save({
             user: user,
