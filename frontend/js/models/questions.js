@@ -1,6 +1,7 @@
 'use strict';
 
-var moment = require('moment');
+var moment = require('moment'),
+    Config = require('../config.js');
 
 var Question = Backbone.Model.extend({
     defaults: {
@@ -27,19 +28,17 @@ var Question = Backbone.Model.extend({
         }]
     },
     url: function() {
-        var questionsLink = 'http://localhost:8080/api/questions';
-
         if (this.isNew()) {
-            return questionsLink;
+            return Config.API.questionsURL;
         }
 
-        return questionsLink + '/' + this.id;
+        return Config.API.buildQuestionURL(this.id);
     }
 });
 
 var Questions = Backbone.Collection.extend({
   model: Question,
-    url: 'http://localhost:8080/api/questions',
+    url: Config.API.questionsURL,
     comparator: function(item1, item2) {
         var firstItemDateTime = moment(item1.get('dateTimeAsked'));
         var secondItemDateTime = moment(item2.get('dateTimeAsked'));
@@ -99,10 +98,7 @@ var Answer = Backbone.Model.extend({
         this.options = options || {};
     },
     url: function() {
-        var url = 'http://localhost:8080/api/questions/' + this.options.questionId
-            + '/answers';
-
-        return url;
+        return Config.API.buildAnswersURL(this.options.questionId);
     }
 });
 
