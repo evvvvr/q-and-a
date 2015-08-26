@@ -37,8 +37,14 @@ var AnswerView = Marionette.ItemView.extend({
             success: _.bind(function () {
                 this.trigger('add');
             }, this),
-            //TODO add server side error handling
             error: _.bind(function (mode, xhr, options) {
+                var errorMessage = 'Something went bad';
+
+                if (response.responseJSON.error) {
+                    errorMessage = response.responseJSON.error;
+                }
+                
+                this.$('.js-error').html(errorMessage);
             }, this)
         });
     },

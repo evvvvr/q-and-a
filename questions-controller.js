@@ -55,7 +55,7 @@ router.get('/questions', function(request, response, next) {
 
 			console.info('Returning %d question(s)', res.length);
 
-			response.json(res).status(200);
+			response.status(200).json(res);
 		});
 	} else if (questionType === QuestionType.Unanswered) {
 		console.info('Retrieving unanswered question');
@@ -67,7 +67,7 @@ router.get('/questions', function(request, response, next) {
 
 			console.info('Returning %d question(s)', res.length);
 
-			response.json(res).status(200);
+			response.status(200).json(res);
 		});
 	} else if (questionType === QuestionType.Answered) {
 		console.info('Retrieving answered questions');
@@ -79,7 +79,7 @@ router.get('/questions', function(request, response, next) {
 			
 			console.info('Returning %d question(s)', res.length);
 
-			response.json(res).status(200);
+			response.status(200).json(res);
 		});
 	}
 });
@@ -96,7 +96,7 @@ router.post('/questions', function(request, response, next) {
 	if (!validationResult.valid) {
 		var errorMessage = validationResult.errors[0].stack;
 		console.error('Bad request: %s', errorMessage);
-		response.json({'error': errorMessage}).status(400);
+		response.status(400).json({'error': errorMessage});
 	} else {
 		request.body.dateTimeAsked = moment.utc()
 			.format(AppDefaults.DateTimeFormat);
@@ -121,7 +121,7 @@ router.post('/questions', function(request, response, next) {
 			});
 
 			response.setHeader('Location', newQuestionURL);
-			response.json(newQuestion).status(201);
+			response.status(201).json(newQuestion);
 		});
 	}
 });
@@ -160,7 +160,7 @@ router.post('/questions/:questionId(\\d+)/answers', function(request, response, 
 		var errorMessage = validationResult.errors[0].stack;
 
 		console.info('Bad request: %s', errorMessage);
-		response.json({'error': errorMessage}).status(400);
+		response.status(400).json({'error': errorMessage});
 	} else {
 		request.body.dateTimeAnswered = moment.utc()
 			.format(AppDefaults.DateTimeFormat);
@@ -178,7 +178,7 @@ router.post('/questions/:questionId(\\d+)/answers', function(request, response, 
 					var newAnswer = _.clone(request.body);
 					newAnswer.id = newAnswerId;
 
-					response.json(newAnswer).status(201);
+					response.status(201).json(newAnswer);
 				}
 		});
 	}
