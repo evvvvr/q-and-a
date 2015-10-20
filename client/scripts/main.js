@@ -1,8 +1,6 @@
-class Someboby {
-	sayGreeting() {
-		console.log('Hello ES6');
-	}
-}
+import React from 'react';
+import ReactDOM from 'react-dom';
+import QuestionsAndAnswersApp from './questions-and-answers-app';
 
-const person = new Someboby();
-person.sayGreeting();
+ReactDOM.render(<QuestionsAndAnswersApp name='Vova'/>,
+	document.getElementById('q-and-a-app'));
