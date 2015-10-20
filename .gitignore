@@ -30,4 +30,5 @@ node_modules
 data.db
 data.db-journal
 
-assets/js
+# Front-end build result
+dist
