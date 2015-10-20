@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "description": "Simple Q&A App Like Stackoverflow.com",
   "scripts": {
-    "start": "node backend/server.js"
+    "start": "node server/server.js"
   },
   "devDependencies": {
     "babel": "^5.8.23",

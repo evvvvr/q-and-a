@@ -6,7 +6,7 @@ var fs = require('fs'),
 
 module.exports = function (callback) {
 	var db = new sqlite3.Database(AppDefaults.DbFilename),
-		dbCreationScript = fs.readFileSync('backend/db-scripts/create.sql', 'utf8');
+		dbCreationScript = fs.readFileSync('server/db-scripts/create.sql', 'utf8');
 
 	db.exec(dbCreationScript, function (err) {
 		if (err) {

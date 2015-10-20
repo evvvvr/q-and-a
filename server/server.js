@@ -1,5 +1,7 @@
 'use strict';
 
+require('app-module-path').addPath(__dirname + '/server');
+
 var express = require('express'),
 	bodyParser = require('body-parser'),
 	middleware = require('./middleware.js'),
