@@ -5,7 +5,7 @@ var webpack = require('webpack'),
 
 module.exports = {
     entry: {
-        javascript: path.resolve(__dirname, 'scripts/main.js'),
+        javascript: path.resolve(__dirname, 'scripts/index.jsx'),
         html: path.resolve(__dirname, 'index.html')
     },
     output: {
@@ -18,5 +18,8 @@ module.exports = {
             { test: path.resolve(__dirname, 'scripts'), loader: 'babel' },
             { test: /\.css$/, loader: 'style!css' }
         ]
+    },
+    resolve: {
+        extensions: ['', '.js', '.jsx']
     }
 };
