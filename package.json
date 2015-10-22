@@ -16,9 +16,6 @@
   },
   "dependencies": {
     "app-module-path": "^1.0.4",
-    "backbone": "^1.2.1",
-    "backbone-validation": "^0.11.5",
-    "backbone.marionette": "^2.4.2",
     "body-parser": "^1.13.3",
     "express": "^4.13.3",
     "jquery": "^2.1.4",
