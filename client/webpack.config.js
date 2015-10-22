@@ -14,9 +14,9 @@ module.exports = {
     },
     module: {
         loaders: [
-            { test: /\.html$/, loader: 'file?name=[name].[ext]' },
-            { test: path.resolve(__dirname, './scripts'), loader: 'babel' },
-            { test: /\.css$/, loader: 'style!css' }
+            {test: /\.html$/, loader: 'file?name=[name].[ext]'},
+            {test: path.resolve(__dirname, './scripts'), loader: 'babel'},
+            {test: /\.css$/, loader: 'style!css'}
         ]
     },
     resolve: {

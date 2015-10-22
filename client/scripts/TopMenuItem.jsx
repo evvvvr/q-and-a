@@ -7,13 +7,13 @@ export default class TopMenuItem extends React.Component {
 	}
 
 	render() {
-		const itemClass = classNames({
+		const ItemClass = classNames({
 			'pure-menu-item': true,
 			'pure-menu-selected': this.props.isSelected
 		});
 
 		return (
-			<li className={itemClass}>
+			<li className={ItemClass}>
 				<a
 					href='#'
 					className='pure-menu-link'
