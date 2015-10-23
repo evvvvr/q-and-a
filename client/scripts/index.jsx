@@ -3,9 +3,9 @@ import 'purecss';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import QuestionsAndAnswersApp from './QuestionsAndAnswersApp';
-import MenuItems from './MenuItems';
+import { TopMenuItems } from './TopMenu/TopMenu';
 
 ReactDOM.render(
-	<QuestionsAndAnswersApp initialSelectedMenuItem={MenuItems.Questions} />,
+	<QuestionsAndAnswersApp initialSelectedMenuItem={TopMenuItems.Questions} />,
 	document.getElementById('q-and-a-app')
 );

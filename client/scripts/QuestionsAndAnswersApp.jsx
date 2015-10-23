@@ -1,16 +1,15 @@
 import React from 'react';
-import TopMenu from './TopMenu';
-import MenuItems from './MenuItems';
-import QuestionsView from './QuestionsView';
-import AnsweredView from './AnsweredView';
-import UnansweredView from './UnansweredView';
-import AskQuestionView from './AskQuestionView';
+import TopMenu, { TopMenuItems } from './TopMenu/TopMenu';
+import QuestionsView from './MainContent/QuestionsView';
+import AnsweredView from './MainContent/AnsweredView';
+import UnansweredView from './MainContent/UnansweredView';
+import AskQuestionView from './MainContent/AskQuestionView';
 
 const MenuItemToViewRender = new Map();
-MenuItemToViewRender.set(MenuItems.Questions, () => { return <QuestionsView />; });
-MenuItemToViewRender.set(MenuItems.Answered, () => { return <AnsweredView />; });
-MenuItemToViewRender.set(MenuItems.Unanswered, () => { return <UnansweredView />; });
-MenuItemToViewRender.set(MenuItems.AskQuestion, () => { return <AskQuestionView />; });
+MenuItemToViewRender.set(TopMenuItems.Questions, () => { return <QuestionsView />; });
+MenuItemToViewRender.set(TopMenuItems.Answered, () => { return <AnsweredView />; });
+MenuItemToViewRender.set(TopMenuItems.Unanswered, () => { return <UnansweredView />; });
+MenuItemToViewRender.set(TopMenuItems.AskQuestion, () => { return <AskQuestionView />; });
 
 export default class QuestionsAndAnswersApp extends React.Component {
     constructor(props) {

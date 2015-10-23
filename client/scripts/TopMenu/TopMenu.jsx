@@ -1,7 +1,13 @@
 import React from 'react';
 import TopMenuItem from './TopMenuItem';
 import TopMenuButton from './TopMenuButton';
-import MenuItems from './MenuItems';
+
+export const TopMenuItems = {
+    Questions: Symbol(),
+    Answered: Symbol(),
+    Unanswered: Symbol(),
+    AskQuestion: Symbol()
+};
 
 export default class TopMenu extends React.Component {
     handleMenuItemSelected(menuItem) {
@@ -17,26 +23,26 @@ export default class TopMenu extends React.Component {
 				<ul className='pure-menu-list'>
         			<TopMenuItem
                         text="Questions"
-                        type={MenuItems.Questions}
+                        type={TopMenuItems.Questions}
+                        isSelected={this.props.selectedMenuItem === TopMenuItems.Questions}
                         onMenuItemSelected={this.handleMenuItemSelected.bind(this)}
-                        isSelected={this.props.selectedMenuItem === MenuItems.Questions} 
                     />
                     <TopMenuItem
                         text="Answered"
-                        type={MenuItems.Answered}
+                        type={TopMenuItems.Answered}
+                        isSelected={this.props.selectedMenuItem === TopMenuItems.Answered}
                         onMenuItemSelected={this.handleMenuItemSelected.bind(this)}
-                        isSelected={this.props.selectedMenuItem === MenuItems.Answered}
                     />
                     <TopMenuItem
                         text="Unanswered"
-                        type={MenuItems.Unanswered}
+                        type={TopMenuItems.Unanswered}
+                        isSelected={this.props.selectedMenuItem === TopMenuItems.Unanswered}
                         onMenuItemSelected={this.handleMenuItemSelected.bind(this)}
-                        isSelected={this.props.selectedMenuItem === MenuItems.Unanswered}
                     />
                 </ul>
                 <TopMenuButton
                     text="Ask Question"
-                    type={MenuItems.AskQuestion}
+                    type={TopMenuItems.AskQuestion}
                     onMenuItemSelected={this.handleMenuItemSelected.bind(this)}
                 />
 			</div>
