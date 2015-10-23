@@ -14,14 +14,14 @@ export default class TopMenu extends React.Component {
         this.props.onMenuItemSelected(menuItem);
     }
 
-	render() {
-		return (
+    render() {
+        return (
             <div
-				id='topMenu'
-				className='pure-menu pure-menu-horizontal'
-			>
-				<ul className='pure-menu-list'>
-        			<TopMenuItem
+                id='topMenu'
+                className='pure-menu pure-menu-horizontal'
+            >
+                <ul className='pure-menu-list'>
+                    <TopMenuItem
                         text="Questions"
                         type={TopMenuItems.Questions}
                         isSelected={this.props.selectedMenuItem === TopMenuItems.Questions}
@@ -45,7 +45,7 @@ export default class TopMenu extends React.Component {
                     type={TopMenuItems.AskQuestion}
                     onMenuItemSelected={this.handleMenuItemSelected.bind(this)}
                 />
-			</div>
+            </div>
         );
-	}
+    }
 }
