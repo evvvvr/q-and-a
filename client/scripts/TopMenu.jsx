@@ -4,13 +4,8 @@ import TopMenuButton from './TopMenuButton';
 import MenuItems from './MenuItems';
 
 export default class TopMenu extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {selectedMenuItem: props.initialSelectedMenuItem};
-    }
-
     handleMenuItemSelected(menuItem) {
-        this.setState({selectedMenuItem: menuItem});
+        this.props.onMenuItemSelected(menuItem);
     }
 
 	render() {
@@ -24,19 +19,19 @@ export default class TopMenu extends React.Component {
                         text="Questions"
                         type={MenuItems.Questions}
                         onMenuItemSelected={this.handleMenuItemSelected.bind(this)}
-                        isSelected={this.state.selectedMenuItem === MenuItems.Questions} 
+                        isSelected={this.props.selectedMenuItem === MenuItems.Questions} 
                     />
                     <TopMenuItem
                         text="Answered"
                         type={MenuItems.Answered}
                         onMenuItemSelected={this.handleMenuItemSelected.bind(this)}
-                        isSelected={this.state.selectedMenuItem === MenuItems.Answered}
+                        isSelected={this.props.selectedMenuItem === MenuItems.Answered}
                     />
                     <TopMenuItem
                         text="Unanswered"
                         type={MenuItems.Unanswered}
                         onMenuItemSelected={this.handleMenuItemSelected.bind(this)}
-                        isSelected={this.state.selectedMenuItem === MenuItems.Unanswered}
+                        isSelected={this.props.selectedMenuItem === MenuItems.Unanswered}
                     />
                 </ul>
                 <TopMenuButton
