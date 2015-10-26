@@ -8,8 +8,8 @@ export default class TopMenuButton extends React.Component {
     render() {
         return (
             <a
-                className='pure-button pure-button-primary'
-                href='#'
+                className="pure-button pure-button-primary"
+                href="#"
                 onClick={this.handleClick.bind(this)}
             >
                 {this.props.text}

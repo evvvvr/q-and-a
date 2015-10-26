@@ -15,8 +15,8 @@ export default class TopMenuItem extends React.Component {
         return (
             <li className={ItemClass}>
                 <a
-                    href='#'
-                    className='pure-menu-link'
+                    href="#"
+                    className="pure-menu-link"
                     onClick={this.handleClick.bind(this)}
                 >
                     {this.props.text}

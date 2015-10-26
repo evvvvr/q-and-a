@@ -17,10 +17,10 @@ export default class TopMenu extends React.Component {
     render() {
         return (
             <div
-                id='topMenu'
-                className='pure-menu pure-menu-horizontal'
+                id="topMenu"
+                className="pure-menu pure-menu-horizontal"
             >
-                <ul className='pure-menu-list'>
+                <ul className="pure-menu-list">
                     <TopMenuItem
                         text="Questions"
                         type={TopMenuItems.Questions}

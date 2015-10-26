@@ -1,15 +1,38 @@
 import React from 'react';
 import TopMenu, { TopMenuItems } from './TopMenu/TopMenu';
-import QuestionsView from './MainContent/QuestionsView';
-import AnsweredView from './MainContent/AnsweredView';
-import UnansweredView from './MainContent/UnansweredView';
+import QuestionsView, { QuestionsType } from './MainContent/QuestionsView';
 import AskQuestionView from './MainContent/AskQuestionView';
 
 const MenuItemToViewRender = new Map();
-MenuItemToViewRender.set(TopMenuItems.Questions, () => { return <QuestionsView />; });
-MenuItemToViewRender.set(TopMenuItems.Answered, () => { return <AnsweredView />; });
-MenuItemToViewRender.set(TopMenuItems.Unanswered, () => { return <UnansweredView />; });
-MenuItemToViewRender.set(TopMenuItems.AskQuestion, () => { return <AskQuestionView />; });
+MenuItemToViewRender
+    .set(
+        TopMenuItems.Questions,
+        () => {
+            return <QuestionsView questionsType={QuestionsType.AllQuestions} />;
+        }
+    );
+
+MenuItemToViewRender
+    .set(
+        TopMenuItems.Answered,
+        () => {
+            return <QuestionsView questionsType={QuestionsType.Answered} />;
+        }
+    );
+
+MenuItemToViewRender
+    .set(
+        TopMenuItems.Unanswered,
+        () => {
+            return <QuestionsView questionsType={QuestionsType.Unanswered} />;
+        }
+    );
+
+MenuItemToViewRender
+    .set(
+        TopMenuItems.AskQuestion,
+        () => { return <AskQuestionView />; }
+    );
 
 export default class QuestionsAndAnswersApp extends React.Component {
     constructor(props) {
@@ -31,9 +54,9 @@ export default class QuestionsAndAnswersApp extends React.Component {
                     selectedMenuItem={this.state.selectedMenuItem}
                     onMenuItemSelected={this.handleMenuItemSelected.bind(this)}
                 />
-                <div className='pure-g'>
-                    <div className='content pure-u-1 pure-u-md-3-4'>
-                        <section id='mainContent'>{MainViewToRender}</section>
+                <div className="pure-g">
+                    <div className="content pure-u-1 pure-u-md-3-4">
+                        <section id="mainContent">{MainViewToRender}</section>
                     </div>
                 </div>
             </div>
