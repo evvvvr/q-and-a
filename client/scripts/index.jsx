@@ -3,9 +3,9 @@ import 'purecss';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import QuestionsAndAnswersApp from './QuestionsAndAnswersApp';
-import { TopMenuItems } from './TopMenu/TopMenu';
+import ScreenType from './screen-type';
 
 ReactDOM.render(
-    <QuestionsAndAnswersApp initialSelectedMenuItem={TopMenuItems.Questions} />,
+    <QuestionsAndAnswersApp initialScreen={ScreenType.Questions} />,
     document.getElementById('q-and-a-app')
 );

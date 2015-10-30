@@ -1,57 +1,86 @@
 import React from 'react';
-import TopMenu, { TopMenuItems } from './TopMenu/TopMenu';
-import QuestionsView, { QuestionsType } from './MainContent/QuestionsView';
-import AskQuestionView from './MainContent/AskQuestionView';
-
-const MenuItemToViewRender = new Map();
-MenuItemToViewRender
-    .set(
-        TopMenuItems.Questions,
-        () => {
-            return <QuestionsView questionsType={QuestionsType.AllQuestions} />;
-        }
-    );
-
-MenuItemToViewRender
-    .set(
-        TopMenuItems.Answered,
-        () => {
-            return <QuestionsView questionsType={QuestionsType.Answered} />;
-        }
-    );
-
-MenuItemToViewRender
-    .set(
-        TopMenuItems.Unanswered,
-        () => {
-            return <QuestionsView questionsType={QuestionsType.Unanswered} />;
-        }
-    );
-
-MenuItemToViewRender
-    .set(
-        TopMenuItems.AskQuestion,
-        () => { return <AskQuestionView />; }
-    );
+import ScreenType from './screen-type';
+import TopMenu from './TopMenu/TopMenu';
+import Questions, { QuestionsType } from './MainContent/Questions';
+import QuestionDetails from './MainContent/QuestionDetails/QuestionDetails';
+import AskQuestionForm from './MainContent/AskQuestionForm';
+import Data from './mock/data.js';
 
 export default class QuestionsAndAnswersApp extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {selectedMenuItem: props.initialSelectedMenuItem};
+
+        this.ScreenTypeToViewRendererMap = new Map();
+
+        this.ScreenTypeToViewRendererMap
+            .set(
+                ScreenType.Questions,
+                () => (
+                        <Questions
+                            questionsType={QuestionsType.AllQuestions}
+                            onQuestionSelected={this.handleQuestionSelected.bind(this)}
+                        />
+                    )
+            );
+
+        this.ScreenTypeToViewRendererMap
+            .set(
+                ScreenType.Answered,
+                () => (
+                        <Questions
+                            questionsType={QuestionsType.Answered}
+                            onQuestionSelected={this.handleQuestionSelected.bind(this)}
+                        />
+                    )
+            );
+
+        this.ScreenTypeToViewRendererMap
+            .set(
+                ScreenType.Unanswered,
+                () => (
+                        <Questions
+                            questionsType={QuestionsType.Unanswered}
+                            onQuestionSelected={this.handleQuestionSelected.bind(this)}
+                        />
+                    )
+            );
+
+        this.ScreenTypeToViewRendererMap
+            .set(
+                ScreenType.AskQuestion,
+                () => <AskQuestionForm />
+            );
+
+        this.ScreenTypeToViewRendererMap
+            .set(
+                ScreenType.Question,
+                () => <QuestionDetails {...Data.questionDetails} />
+            );
+
+        this.state = { screenType: props.initialScreen };
     }
 
-    handleMenuItemSelected(menuItem) {
-        this.setState({selectedMenuItem: menuItem});
+    handleMenuItemSelected(eventArgs) {
+        this.setState({ screenType: eventArgs.menuItemValue });
+    }
+
+    handleQuestionSelected(eventArgs) {
+        console.log(`Question #${eventArgs.questionId} selected`);
+
+        this.setState({
+                screenType: ScreenType.Question,
+                questionId: eventArgs.questionId
+            });
     }
 
     render() {
-        const MainViewToRender = MenuItemToViewRender
-            .get(this.state.selectedMenuItem)();
+        const MainViewToRender = this.ScreenTypeToViewRendererMap
+            .get(this.state.screenType)();
 
         return (
             <div>
                 <TopMenu
-                    selectedMenuItem={this.state.selectedMenuItem}
+                    selectedMenuItem={this.state.screenType}
                     onMenuItemSelected={this.handleMenuItemSelected.bind(this)}
                 />
                 <div className="pure-g">

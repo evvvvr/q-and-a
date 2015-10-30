@@ -1,5 +1,5 @@
 import React from 'react';
-import QuestionsList from './QuestionsList';
+import QuestionList from './QuestionList/QuestionList';
 import Data from '../mock/data.js';
 
 export const QuestionsType = {
@@ -30,7 +30,11 @@ QuestionsTypeToMockData
 QuestionsTypeToMockData
     .set(QuestionsType.Unanswered, Data.unansweredQuestions);
 
-export default class QuestionsView extends React.Component {
+export default class Questions extends React.Component {
+    handleQuestionSelected(eventArgs) {
+        this.props.onQuestionSelected(eventArgs);
+    }
+
     render() {
         const HeaderText = QuestionsTypeToHeaderText
             .get(this.props.questionsType);
@@ -41,7 +45,10 @@ export default class QuestionsView extends React.Component {
         return (
             <div>
                 <h3>{HeaderText}</h3>
-                <QuestionsList questions={QuestionsData} />
+                <QuestionList
+                    questions={QuestionsData}
+                    onQuestionSelected={this.handleQuestionSelected.bind(this)}
+                />
             </div>
         );
     }
