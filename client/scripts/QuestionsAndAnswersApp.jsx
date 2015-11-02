@@ -52,7 +52,7 @@ export default class QuestionsAndAnswersApp extends React.Component {
 
         this.ScreenTypeToViewRendererMap.set(
             ScreenType.Question,
-            () => <QuestionDetails {...Data.questionDetails} />
+            () => <QuestionDetails {...this.state.question} />
         );
     }
 
@@ -105,8 +105,8 @@ export default class QuestionsAndAnswersApp extends React.Component {
 
         this.setState({
             screenType: ScreenType.Question,
-            questionId: eventArgs.questionId
-        });
+            question: Data.questionDetails
+        }); 
     }
 
     render() {
