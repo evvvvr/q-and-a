@@ -1,10 +1,11 @@
+import AppActions from './AppActions.js';
+import AskQuestionForm from './MainContent/AskQuestionForm';
+import QuestionDetails from './MainContent/QuestionDetails/QuestionDetails';
+import Questions from './MainContent/Questions';
 import React from 'react';
+import request from 'superagent';
 import ScreenType from './screen-type';
 import TopMenu from './TopMenu/TopMenu';
-import Questions, { QuestionsType } from './MainContent/Questions';
-import QuestionDetails from './MainContent/QuestionDetails/QuestionDetails';
-import AskQuestionForm from './MainContent/AskQuestionForm';
-import Data from './mock/data.js';
 
 export default class QuestionsAndAnswersApp extends React.Component {
     constructor(props) {
@@ -12,101 +13,109 @@ export default class QuestionsAndAnswersApp extends React.Component {
 
         this.ScreenTypeToViewRendererMap = new Map();
 
-        this.ScreenTypeToViewRendererMap.set(
-            ScreenType.Questions,
-            () => (
-                    <Questions
-                        header="All Questions"
-                        questions={this.state.questions}
-                        onQuestionSelected={this.handleQuestionSelected.bind(this)}
-                    />
-                )
-        );
+        this.ScreenTypeToViewRendererMap
+            .set(
+                ScreenType.Questions,
+                () => (
+                        <Questions
+                            header="All Questions"
+                            questions={this.state.questions}
+                            onQuestionSelected={this.handleQuestionSelected.bind(this)}
+                        />
+                    )
+            );
 
-        this.ScreenTypeToViewRendererMap.set(
-            ScreenType.Answered,
-            () => (
-                    <Questions
-                        header="Answered Questions"
-                        questions={this.state.questions}
-                        onQuestionSelected={this.handleQuestionSelected.bind(this)}
-                    />
-                )
-        );
+        this.ScreenTypeToViewRendererMap
+            .set(
+                ScreenType.Answered,
+                () => (
+                        <Questions
+                            header="Answered Questions"
+                            questions={this.state.questions}
+                            onQuestionSelected={this.handleQuestionSelected.bind(this)}
+                        />
+                    )
+            );
 
-        this.ScreenTypeToViewRendererMap.set(
-            ScreenType.Unanswered,
-            () => (
-                    <Questions
-                        header="Unanswered Questions"
-                        questions={this.state.questions}
-                        onQuestionSelected={this.handleQuestionSelected.bind(this)}
-                    />
-                )
-        );
+        this.ScreenTypeToViewRendererMap
+            .set(
+                ScreenType.Unanswered,
+                () => (
+                        <Questions
+                            header="Unanswered Questions"
+                            questions={this.state.questions}
+                            onQuestionSelected={this.handleQuestionSelected.bind(this)}
+                        />
+                    )
+            );
 
-        this.ScreenTypeToViewRendererMap.set(
-            ScreenType.AskQuestion,
-            () => <AskQuestionForm />
-        );
+        this.ScreenTypeToViewRendererMap
+            .set(
+                ScreenType.AskQuestion,
+                () => <AskQuestionForm />
+            );
 
-        this.ScreenTypeToViewRendererMap.set(
-            ScreenType.Question,
-            () => <QuestionDetails {...this.state.question} />
-        );
+        this.ScreenTypeToViewRendererMap
+            .set(
+                ScreenType.Question,
+                () => <QuestionDetails {...this.state.question} />
+            );
+
+        this.state = {
+            screenType: ScreenType.Questions,
+            questions: []
+        };
+
+        console.info('Initial app state is %O', this.state);
     }
 
-    componentWillMount() {
+    componentDidMount() {
         // TODO: fix this hack to load initial screen – we're sending a signal
         // that application is loading
         this.handleMenuItemSelected({
-            menuItemValue: this.props.initialScreen
+            menuItemValue: ScreenType.Questions
         });
     }
 
-    handleMenuItemSelected(eventArgs) {
-        let newAppState = {};
-
-        switch (eventArgs.menuItemValue) {
-            case ScreenType.Questions:
-                newAppState = {
-                    screenType: ScreenType.Questions,
-                    questions: Data.allQuestions
-                };
-
-                break;
-
-            case ScreenType.Answered:
-                newAppState = {
-                    screenType: ScreenType.Answered,
-                    questions: Data.answeredQuestions
-                };
-
-                break;
-
-            case ScreenType.Unanswered:
-                newAppState = {
-                    screenType: ScreenType.Unanswered,
-                    questions: Data.unansweredQuestions
-                };
-
-                break;
-
-            default:
-                newAppState = { screenType: eventArgs.menuItemValue };
-                break;
-        }
+    onChange(newAppState) {
+        console.info('App state has been changed to %O', newAppState);
 
         this.setState(newAppState);
     }
 
-    handleQuestionSelected(eventArgs) {
-        console.log(`Question #${eventArgs.questionId} selected`);
+    handleMenuItemSelected(eventArgs) {
+        const boundOnChange = this.onChange.bind(this);
 
-        this.setState({
-            screenType: ScreenType.Question,
-            question: Data.questionDetails
-        }); 
+        switch (eventArgs.menuItemValue) {
+            case ScreenType.Questions:
+                AppActions.showAllQuestions(boundOnChange);
+                break;
+
+            case ScreenType.Answered:
+                AppActions.showAnsweredQuestions(boundOnChange);
+                break;
+
+            case ScreenType.Unanswered:
+                AppActions.showUnansweredQuestions(boundOnChange);
+                break;
+
+            case ScreenType.AskQuestion:
+                AppActions.showAskQuestionForm(boundOnChange);
+                break;
+
+            default:
+                console.error(
+                    `Unknown screen type selected: ${eventArgs.menuItemValue}`
+                );
+                break;
+        }
+    }
+
+    handleQuestionSelected(eventArgs) {
+        AppActions.showQuestionDetails(
+            eventArgs.questionId,
+            this.onChange.bind(this)
+        ); 
     }
 
     render() {

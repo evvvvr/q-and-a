@@ -1,5 +1,5 @@
 import React from 'react';
-import formatDateTime from '../../util/date-time-formatters';
+import { formatDateTime } from '../../util/date-time-util';
 
 export default class QuestionListItem extends React.Component {
     handleClick() {

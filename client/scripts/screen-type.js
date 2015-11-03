@@ -1,9 +1,9 @@
 const ScreenType = {
-    Questions: Symbol(),
-    Answered: Symbol(),
-    Unanswered: Symbol(),
-    AskQuestion: Symbol(),
-    Question: Symbol()
+    Questions: Symbol('Questions'),
+    Answered: Symbol('Answered'),
+    Unanswered: Symbol('Unanswered'),
+    AskQuestion: Symbol('AskQuestion'),
+    Question: Symbol('Question')
 };
 
 export default ScreenType;

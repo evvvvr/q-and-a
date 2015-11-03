@@ -24,6 +24,7 @@
     "react": "^0.14.0",
     "react-dom": "^0.14.0",
     "sqlite3": "^3.0.10",
+    "superagent": "^1.4.0",
     "underscore": "^1.8.3"
   }
 }

@@ -3,9 +3,8 @@ import 'purecss';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import QuestionsAndAnswersApp from './QuestionsAndAnswersApp';
-import ScreenType from './screen-type';
 
 ReactDOM.render(
-    <QuestionsAndAnswersApp initialScreen={ScreenType.Questions} />,
+    <QuestionsAndAnswersApp />,
     document.getElementById('q-and-a-app')
 );
