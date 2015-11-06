@@ -66,6 +66,15 @@ const AppActions = {
             .post(API.getAllQuestionsURL())
             .send(eventArgs)
             .end((err, res) => callback());
+    },
+
+    submitAnswer(eventArgs, callback) {
+        console.info('Submitting answer %O', eventArgs);
+
+        request
+            .post(API.getQuestionAnswersURL(eventArgs.questionId))
+            .send(eventArgs.answer)
+            .end((err, res) => callback());        
     }
 };
 

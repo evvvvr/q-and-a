@@ -17,6 +17,10 @@ const API = {
 
     getQuestionURL(id) {
         return this.hostURL + '/questions/' + id;
+    },
+
+    getQuestionAnswersURL(id) {
+        return this.getQuestionURL(id) + '/answers';
     }
 };
 

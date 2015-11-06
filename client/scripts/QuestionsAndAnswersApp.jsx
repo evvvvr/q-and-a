@@ -53,8 +53,12 @@ export default class QuestionsAndAnswersApp extends React.Component {
 
         this.ScreenTypeToViewRendererMap.set(
             ScreenType.Question,
-            () => <QuestionDetails {...this.state.question} />
-        );
+            () => (
+                    <QuestionDetails
+                        {...this.state.question}
+                        onAnswerSubmit={this.handleAnswerSubmit.bind(this)}
+                    />
+            ));
 
         this.state = {
             screenType: ScreenType.Questions,
@@ -120,6 +124,16 @@ export default class QuestionsAndAnswersApp extends React.Component {
             eventArgs,
             () => this.handleMenuItemSelected({
                     menuItemValue: ScreenType.Questions
+        }));
+    }
+
+    handleAnswerSubmit(eventArgs) {
+        // TODO: Fix hack with calling 'handleQuestionSelected'
+        // We are sending a signal to reload question
+        AppActions.submitAnswer(
+            eventArgs,
+            () => this.handleQuestionSelected({
+                questionId: eventArgs.questionId
         }));
     }
 

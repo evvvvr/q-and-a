@@ -4,6 +4,13 @@ import React from 'react';
 import { formatDateTime } from '../../util/date-time-util';
 
 export default class QuestionDetails extends React.Component {
+    onAnswerSubmit(eventArgs) {
+        this.props.onAnswerSubmit({
+            questionId: this.props.id,
+            answer: eventArgs
+        });
+    }
+
     render () {
         return (
             <div className="questionDetails">
@@ -14,7 +21,7 @@ export default class QuestionDetails extends React.Component {
                     </p>
                 </div>
                 <AnswerList answers={this.props.answers} />
-                <AnswerForm />
+                <AnswerForm onAnswerSubmit={this.onAnswerSubmit.bind(this)} />
             </div>
         );
     }
