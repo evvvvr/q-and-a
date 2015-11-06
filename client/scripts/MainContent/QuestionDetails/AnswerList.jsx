@@ -7,10 +7,9 @@ export default class AnswerList extends React.Component {
 
         if (this.props.answers.length) {
             const answerNodes = this.props.answers
-                    .sort((a, b) =>
-                        compareItemsChronologically(
-                            a.dateTimeAnswered,
-                            b.dateTimeAnswered
+                    .sort((a, b) => compareItemsChronologically(
+                        a.dateTimeAnswered,
+                        b.dateTimeAnswered
                     ))
                     .map((answer) => (
                         <li key={answer.id} className="appItem">

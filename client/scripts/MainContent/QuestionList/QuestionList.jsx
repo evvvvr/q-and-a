@@ -9,8 +9,10 @@ export default class QuestionList extends React.Component {
 
     render() {
         const questionNodes = this.props.questions
-            .sort((a, b) =>
-                compareItemsChronologically(a.dateTimeAsked, b.dateTimeAsked))
+            .sort((a, b) => compareItemsChronologically(
+                a.dateTimeAsked,
+                b.dateTimeAsked
+            ))
             .map((question) => (
                 <QuestionListItem
                     key={question.id}

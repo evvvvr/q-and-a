@@ -5,35 +5,30 @@ import ScreenType from './screen-type';
 
 const screenTypeToQuestionsURL = new Map();
 
-screenTypeToQuestionsURL
-    .set(
-        ScreenType.Questions,
-        API.getAllQuestionsURL.bind(API)
-    );
+screenTypeToQuestionsURL.set(
+    ScreenType.Questions,
+    API.getAllQuestionsURL.bind(API)
+);
 
-screenTypeToQuestionsURL
-    .set(
-        ScreenType.Answered,
-        API.getAnsweredQuestionsURL.bind(API) 
-    );
+screenTypeToQuestionsURL.set(
+    ScreenType.Answered,
+    API.getAnsweredQuestionsURL.bind(API) 
+);
 
-screenTypeToQuestionsURL
-    .set(
-        ScreenType.Unanswered,
-        API.getUnansweredQuestionsURL.bind(API) 
-    );
+screenTypeToQuestionsURL.set(
+    ScreenType.Unanswered,
+    API.getUnansweredQuestionsURL.bind(API) 
+);
 
 function showQuestions(screenType, callback) {
     const questionsURL = screenTypeToQuestionsURL.get(screenType)();
 
     request
         .get(questionsURL)
-        .end((err, res) => {
-            callback({
-                screenType: screenType,
-                questions: res.body
-            });
-        });
+        .end((err, res) => callback({
+            screenType: screenType,
+            questions: res.body
+        }));
 }
 
 const AppActions = {
@@ -50,24 +45,27 @@ const AppActions = {
     },
 
     showAskQuestionForm(callback) {
-        callback({
-            screenType: ScreenType.AskQuestion
-        });
+        callback({ screenType: ScreenType.AskQuestion });
     },
 
     showQuestionDetails(questionId, callback) {
         console.info(`Question #${questionId} selected`);
 
-        const questionURL = API.getQuestionURL(questionId);
+        request
+            .get(API.getQuestionURL(questionId))
+            .end((err, res) => callback({
+                screenType: ScreenType.Question,
+                question: res.body
+            }));
+    },
+
+    submitQuestion(eventArgs, callback) {
+        console.info('Submitting question %O', eventArgs);
 
         request
-            .get(questionURL)
-            .end((err, res) => {
-                callback({
-                    screenType: ScreenType.Question,
-                    question: res.body
-                });
-            });        
+            .post(API.getAllQuestionsURL())
+            .send(eventArgs)
+            .end((err, res) => callback());
     }
 };
 

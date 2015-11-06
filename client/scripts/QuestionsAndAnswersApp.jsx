@@ -13,50 +13,48 @@ export default class QuestionsAndAnswersApp extends React.Component {
 
         this.ScreenTypeToViewRendererMap = new Map();
 
-        this.ScreenTypeToViewRendererMap
-            .set(
-                ScreenType.Questions,
-                () => (
-                        <Questions
-                            header="All Questions"
-                            questions={this.state.questions}
-                            onQuestionSelected={this.handleQuestionSelected.bind(this)}
-                        />
-            ));
+        this.ScreenTypeToViewRendererMap.set(
+            ScreenType.Questions,
+            () => (
+                    <Questions
+                        header="All Questions"
+                        questions={this.state.questions}
+                        onQuestionSelected={this.handleQuestionSelected.bind(this)}
+                    />
+        ));
 
-        this.ScreenTypeToViewRendererMap
-            .set(
-                ScreenType.Answered,
-                () => (
-                        <Questions
-                            header="Answered Questions"
-                            questions={this.state.questions}
-                            onQuestionSelected={this.handleQuestionSelected.bind(this)}
-                        />
-            ));
+        this.ScreenTypeToViewRendererMap.set(
+            ScreenType.Answered,
+            () => (
+                    <Questions
+                        header="Answered Questions"
+                        questions={this.state.questions}
+                        onQuestionSelected={this.handleQuestionSelected.bind(this)}
+                    />
+        ));
 
-        this.ScreenTypeToViewRendererMap
-            .set(
-                ScreenType.Unanswered,
-                () => (
-                        <Questions
-                            header="Unanswered Questions"
-                            questions={this.state.questions}
-                            onQuestionSelected={this.handleQuestionSelected.bind(this)}
-                        />
-            ));
+        this.ScreenTypeToViewRendererMap.set(
+            ScreenType.Unanswered,
+            () => (
+                    <Questions
+                        header="Unanswered Questions"
+                        questions={this.state.questions}
+                        onQuestionSelected={this.handleQuestionSelected.bind(this)}
+                    />
+        ));
 
-        this.ScreenTypeToViewRendererMap
-            .set(
-                ScreenType.AskQuestion,
-                () => <AskQuestionForm />
-            );
+        this.ScreenTypeToViewRendererMap.set(
+            ScreenType.AskQuestion,
+            () => (
+                    <AskQuestionForm
+                        onQuestionSubmit={this.handleQuestionSubmit.bind(this)}
+                    />
+        ));
 
-        this.ScreenTypeToViewRendererMap
-            .set(
-                ScreenType.Question,
-                () => <QuestionDetails {...this.state.question} />
-            );
+        this.ScreenTypeToViewRendererMap.set(
+            ScreenType.Question,
+            () => <QuestionDetails {...this.state.question} />
+        );
 
         this.state = {
             screenType: ScreenType.Questions,
@@ -68,7 +66,7 @@ export default class QuestionsAndAnswersApp extends React.Component {
 
     componentDidMount() {
         // TODO: fix this hack to load initial screen – we're sending a signal
-        // that application is loading
+        // that application has been loaded
         this.handleMenuItemSelected({
             menuItemValue: ScreenType.Questions
         });
@@ -112,7 +110,17 @@ export default class QuestionsAndAnswersApp extends React.Component {
         AppActions.showQuestionDetails(
             eventArgs.questionId,
             this.onChange.bind(this)
-        ); 
+        );
+    }
+
+    handleQuestionSubmit(eventArgs) {
+        // TODO: Fix hack with calling 'handleMenuItemSelected'
+        // We are sending a signal to load all questions
+        AppActions.submitQuestion(
+            eventArgs,
+            () => this.handleMenuItemSelected({
+                    menuItemValue: ScreenType.Questions
+        }));
     }
 
     render() {
