@@ -1,30 +1,43 @@
 import React from 'react';
-import { formatDateTime } from '../../util/date-time-util';
+import { compareItemsChronologically, formatDateTime } from '../../util/date-time-util';
 
 export default class AnswerList extends React.Component {
     render() {
-        const answerNodes = this.props.answers.map((answer) => (
-                <li key={answer.id} className="appItem">
-                    {answer.text}
-                    <p className="appItemMeta">
-                        {formatDateTime(answer.dateTimeAnswered)} by {answer.user}
-                    </p>
-                </li>
-            )
-        );
+        let content;
 
-        const answersNumeral = this.props.answers.length > 1
-            ? 'Answers' : 'Answer';
+        if (this.props.answers.length) {
+            const answerNodes = this.props.answers
+                    .sort((a, b) =>
+                        compareItemsChronologically(
+                            a.dateTimeAnswered,
+                            b.dateTimeAnswered
+                    ))
+                    .map((answer) => (
+                        <li key={answer.id} className="appItem">
+                            {answer.text}
+                            <p className="appItemMeta">
+                                {formatDateTime(answer.dateTimeAnswered)} by {answer.user}
+                            </p>
+                        </li>
+                    ));
 
-        return (
-            <div>
-                <h4>
-                    {this.props.answers.length} {answersNumeral}
-                </h4>
-                <ul className="appItemList">
-                    {answerNodes}
-                </ul>
-            </div>
-        );
+            const answersNumeral = this.props.answers.length > 1
+                ? 'Answers' : 'Answer';
+
+            content = (
+                <div>
+                    <h4>
+                        {this.props.answers.length} {answersNumeral}
+                    </h4>
+                    <ul className="appItemList">
+                        {answerNodes}
+                    </ul>
+                </div>
+            );
+        } else {
+            content = (<div></div>);
+        }
+
+        return content;
     }
 }

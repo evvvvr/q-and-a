@@ -35,7 +35,8 @@ var GET_QUESTION_SQL = 'Select Questions.Id as id, Users.Login as user, '
 	+ 'Inner Join Users On Users.Id = Questions.UserAsked '
 	+ 'Where Questions.Id = $questionid';
 
-var GET_ANSWERS_FOR_QUESTION = 'Select Users.Login as user, Answers.Text as text, '
+var GET_ANSWERS_FOR_QUESTION = 'Select Users.Login as user, '
+	+' Answers.Id as id, Answers.Text as text, '
 	+ ' Answers.DateTimeAnswered as dateTimeAnswered From Answers '
 	+ 'Inner Join Users On Users.Id = Answers.UserAnswered '
 	+ 'Where Answers.QuestionId = $questionIdForAnswers '

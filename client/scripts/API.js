@@ -13,6 +13,10 @@ const API = {
 
     getUnansweredQuestionsURL() {
         return this.hostURL + '/questions?isAnswered=no';
+    },
+
+    getQuestionURL(id) {
+        return this.hostURL + '/questions/' + id;
     }
 };
 

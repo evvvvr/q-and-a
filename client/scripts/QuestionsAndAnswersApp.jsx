@@ -22,8 +22,7 @@ export default class QuestionsAndAnswersApp extends React.Component {
                             questions={this.state.questions}
                             onQuestionSelected={this.handleQuestionSelected.bind(this)}
                         />
-                    )
-            );
+            ));
 
         this.ScreenTypeToViewRendererMap
             .set(
@@ -34,8 +33,7 @@ export default class QuestionsAndAnswersApp extends React.Component {
                             questions={this.state.questions}
                             onQuestionSelected={this.handleQuestionSelected.bind(this)}
                         />
-                    )
-            );
+            ));
 
         this.ScreenTypeToViewRendererMap
             .set(
@@ -46,8 +44,7 @@ export default class QuestionsAndAnswersApp extends React.Component {
                             questions={this.state.questions}
                             onQuestionSelected={this.handleQuestionSelected.bind(this)}
                         />
-                    )
-            );
+            ));
 
         this.ScreenTypeToViewRendererMap
             .set(
