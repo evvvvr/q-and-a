@@ -1,6 +1,6 @@
-import React from 'react';
-import AnswerList from './AnswerList';
 import AnswerForm from './AnswerForm';
+import AnswerList from './AnswerList';
+import React from 'react';
 import { formatDateTime } from '../../util/date-time-util';
 
 export default class QuestionDetails extends React.Component {

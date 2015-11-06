@@ -1,7 +1,7 @@
 import React from 'react';
 import ScreenType from '../screen-type';
-import TopMenuItem from './TopMenuItem';
 import TopMenuButton from './TopMenuButton';
+import TopMenuItem from './TopMenuItem';
 
 export default class TopMenu extends React.Component {
     handleMenuItemSelected(eventArgs) {

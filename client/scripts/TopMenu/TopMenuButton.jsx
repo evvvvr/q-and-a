@@ -2,9 +2,10 @@ import React from 'react';
 
 export default class TopMenuButton extends React.Component {
     handleClick() {
-        this.props.onMenuItemSelected({
-            menuItemValue: this.props.value
-        });     
+        this.props
+            .onMenuItemSelected({
+                menuItemValue: this.props.value
+            });
     }
     
     render() {
