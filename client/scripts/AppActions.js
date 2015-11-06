@@ -1,3 +1,4 @@
+import API from './API';
 import Data from './mock/data.js';
 import request from 'superagent';
 import ScreenType from './screen-type';
@@ -8,19 +9,19 @@ const screenTypeToQuestionsURL = new Map();
 screenTypeToQuestionsURL
     .set(
         ScreenType.Questions,
-        'http://localhost:8080/api/questions'
+        API.getAllQuestionsURL.bind(API)
     );
 
 screenTypeToQuestionsURL
     .set(
         ScreenType.Answered,
-        'http://localhost:8080/api/questions?isAnswered=yes'
+        API.getAnsweredQuestionsURL.bind(API) 
     );
 
 screenTypeToQuestionsURL
     .set(
         ScreenType.Unanswered,
-        'http://localhost:8080/api/questions?isAnswered=no'
+        API.getUnansweredQuestionsURL.bind(API) 
     );
 
 function compareQuestionsChronologically(a, b) {
@@ -31,7 +32,7 @@ function compareQuestionsChronologically(a, b) {
 };
 
 function showQuestions(screenType, callback) {
-    const questionsURL = screenTypeToQuestionsURL.get(screenType);
+    const questionsURL = screenTypeToQuestionsURL.get(screenType)();
 
     request
         .get(questionsURL)
