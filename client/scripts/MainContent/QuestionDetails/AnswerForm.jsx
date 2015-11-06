@@ -1,10 +1,6 @@
 import React from 'react';
 
 export default class AnswerForm extends React.Component {
-    shouldComponentUpdate(nextProps, nextState) {
-
-    }
-
     handleSubmit(event) {
         event.preventDefault();
 
