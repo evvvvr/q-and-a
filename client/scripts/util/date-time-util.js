@@ -10,11 +10,11 @@ export function compareItemsChronologically(a, b) {
     var secondItemDateTime = moment(b);
 
     if (firstItemDateTime.isBefore(secondItemDateTime)) {
-        return -1;
+        return 1;
     }
 
     if (firstItemDateTime.isAfter(secondItemDateTime)) {
-        return 1;
+        return -1;
     }
 
     return 0;
