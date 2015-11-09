@@ -3,10 +3,9 @@ import { formatDateTime } from '../../util/date-time-util';
 
 export default class QuestionListItem extends React.Component {
     handleClick() {
-        this.props
-            .onQuestionSelected({
+        this.props.onQuestionSelected({
                 questionId: this.props.questionId
-            });
+        });
     }
 
     render() {

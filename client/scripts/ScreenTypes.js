@@ -1,4 +1,4 @@
-const ScreenType = {
+const ScreenTypes = {
     Questions: Symbol('Questions'),
     Answered: Symbol('Answered'),
     Unanswered: Symbol('Unanswered'),
@@ -6,4 +6,4 @@ const ScreenType = {
     Question: Symbol('Question')
 };
 
-export default ScreenType;
+export default ScreenTypes;

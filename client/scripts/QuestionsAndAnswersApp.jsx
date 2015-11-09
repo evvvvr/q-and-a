@@ -1,10 +1,11 @@
-import AppActions from './AppActions.js';
+import * as actions from './actions';
 import AskQuestionForm from './MainContent/AskQuestionForm';
 import QuestionDetails from './MainContent/QuestionDetails/QuestionDetails';
 import Questions from './MainContent/Questions';
 import React from 'react';
-import request from 'superagent';
-import ScreenType from './screen-type';
+import reducer from './reducer';
+import ScreenTypes from './ScreenTypes';
+import Store from './Store';
 import TopMenu from './TopMenu/TopMenu';
 
 export default class QuestionsAndAnswersApp extends React.Component {
@@ -14,7 +15,7 @@ export default class QuestionsAndAnswersApp extends React.Component {
         this.ScreenTypeToViewRendererMap = new Map();
 
         this.ScreenTypeToViewRendererMap.set(
-            ScreenType.Questions,
+            ScreenTypes.Questions,
             () => (
                     <Questions
                         header="All Questions"
@@ -24,7 +25,7 @@ export default class QuestionsAndAnswersApp extends React.Component {
         ));
 
         this.ScreenTypeToViewRendererMap.set(
-            ScreenType.Answered,
+            ScreenTypes.Answered,
             () => (
                     <Questions
                         header="Answered Questions"
@@ -34,7 +35,7 @@ export default class QuestionsAndAnswersApp extends React.Component {
         ));
 
         this.ScreenTypeToViewRendererMap.set(
-            ScreenType.Unanswered,
+            ScreenTypes.Unanswered,
             () => (
                     <Questions
                         header="Unanswered Questions"
@@ -44,7 +45,7 @@ export default class QuestionsAndAnswersApp extends React.Component {
         ));
 
         this.ScreenTypeToViewRendererMap.set(
-            ScreenType.AskQuestion,
+            ScreenTypes.AskQuestion,
             () => (
                     <AskQuestionForm
                         onQuestionSubmit={this.handleQuestionSubmit.bind(this)}
@@ -52,7 +53,7 @@ export default class QuestionsAndAnswersApp extends React.Component {
         ));
 
         this.ScreenTypeToViewRendererMap.set(
-            ScreenType.Question,
+            ScreenTypes.Question,
             () => (
                     <QuestionDetails
                         {...this.state.question}
@@ -60,81 +61,65 @@ export default class QuestionsAndAnswersApp extends React.Component {
                     />
             ));
 
-        this.state = {
-            screenType: ScreenType.Questions,
-            questions: []
+        const initialState = {
+            screenType: ScreenTypes.Questions,
+            questions: [],
+            question: {}
         };
 
-        console.info('Initial app state is %O', this.state);
+        this.state = initialState;
+        Store.init(initialState, reducer);
     }
 
     componentDidMount() {
-        // TODO: fix this hack to load initial screen – we're sending a signal
-        // that application has been loaded
-        this.handleMenuItemSelected({
-            menuItemValue: ScreenType.Questions
-        });
+        Store.subscribe(this.onChange.bind(this));
+        Store.dispatch(actions.showAllQuestions());
     }
 
     onChange(newAppState) {
-        console.info('App state has been changed to %O', newAppState);
-
         this.setState(newAppState);
     }
 
     handleMenuItemSelected(eventArgs) {
-        const boundOnChange = this.onChange.bind(this);
-
         switch (eventArgs.menuItemValue) {
-            case ScreenType.Questions:
-                AppActions.showAllQuestions(boundOnChange);
+            case ScreenTypes.Questions:
+                Store.dispatch(actions.showAllQuestions());
                 break;
 
-            case ScreenType.Answered:
-                AppActions.showAnsweredQuestions(boundOnChange);
+            case ScreenTypes.Answered:
+                Store.dispatch(actions.showAnsweredQuestions());
                 break;
 
-            case ScreenType.Unanswered:
-                AppActions.showUnansweredQuestions(boundOnChange);
+            case ScreenTypes.Unanswered:
+                Store.dispatch(actions.showUnansweredQuestions());
                 break;
 
-            case ScreenType.AskQuestion:
-                AppActions.showAskQuestionForm(boundOnChange);
+            case ScreenTypes.AskQuestion:
+                Store.dispatch(actions.showAskForm());
                 break;
 
             default:
-                console.error(
-                    `Unknown screen type selected: ${eventArgs.menuItemValue}`
-                );
-                break;
+                throw `Unknown screen type selected: ${eventArgs.menuItemValue}`;
         }
     }
 
     handleQuestionSelected(eventArgs) {
-        AppActions.showQuestionDetails(
-            eventArgs.questionId,
-            this.onChange.bind(this)
-        );
+        Store.dispatch(actions.selectQuestion(eventArgs.questionId));
     }
 
     handleQuestionSubmit(eventArgs) {
-        // TODO: Fix hack with calling 'handleMenuItemSelected'
-        // We are sending a signal to load all questions
-        AppActions.submitQuestion(
-            eventArgs,
-            () => this.handleMenuItemSelected({
-                    menuItemValue: ScreenType.Questions
-        }));
+        Store.dispatch(actions.submitQuestion(
+            eventArgs.user,
+            eventArgs.text
+        ));
     }
 
     handleAnswerSubmit(eventArgs) {
-        // TODO: Fix hack with calling 'handleQuestionSelected'
-        // We are sending a signal to reload question
-        AppActions.submitAnswer(
-            eventArgs,
-            () => this.handleQuestionSelected({
-                questionId: eventArgs.questionId
-        }));
+        Store.dispatch(actions.submitAnswer(
+            eventArgs.questionId,
+            eventArgs.user,
+            eventArgs.text
+        ));
     }
 
     render() {

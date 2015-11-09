@@ -7,7 +7,8 @@ export default class QuestionDetails extends React.Component {
     onAnswerSubmit(eventArgs) {
         this.props.onAnswerSubmit({
             questionId: this.props.id,
-            answer: eventArgs
+            user: eventArgs.user,
+            text: eventArgs.text
         });
     }
 
