@@ -8,6 +8,10 @@ const Store = {
         console.info('Initial app state is %O', this.appState);
     },
 
+    getState() {
+        return this.appState;
+    },
+
     subscribe(onStateChangedCallback) {
         if (stateChangedCallbacks.has(onStateChangedCallback)) {
             throw 'You have already added this state changed callback';

@@ -1,4 +1,4 @@
-import ActionTypes from '../ActionTypes';
+import ActionTypes from '../actions/ActionTypes';
 import ScreenTypes from '../ScreenTypes';
 
 export default function screenType(state, action) {

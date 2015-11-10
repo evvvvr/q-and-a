@@ -1,4 +1,4 @@
-import ActionTypes from '../ActionTypes';
+import ActionTypes from '../actions/ActionTypes';
 import Data from '../mock/Data';
 import moment from 'moment';
 

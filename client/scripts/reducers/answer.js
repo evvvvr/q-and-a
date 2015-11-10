@@ -1,4 +1,4 @@
-import ActionTypes from '../ActionTypes';
+import ActionTypes from '../actions/ActionTypes';
 
 export default function answer(state, action) {
     switch (action.type) {

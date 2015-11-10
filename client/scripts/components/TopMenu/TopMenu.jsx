@@ -1,5 +1,5 @@
 import React from 'react';
-import ScreenTypes from '../ScreenTypes';
+import ScreenTypes from '../../ScreenTypes';
 import TopMenuButton from './TopMenuButton';
 import TopMenuItem from './TopMenuItem';
 

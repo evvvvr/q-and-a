@@ -1,12 +1,11 @@
-import * as actions from './actions';
-import AskQuestionForm from './MainContent/AskQuestionForm';
-import QuestionDetails from './MainContent/QuestionDetails/QuestionDetails';
-import Questions from './MainContent/Questions';
+import * as actions from '../actions/actions';
+import AskQuestionForm from '../components/AskQuestionForm';
+import QuestionDetails from '../components/QuestionDetails/QuestionDetails';
+import Questions from '../components/Questions';
 import React from 'react';
-import reducer from './reducers/reducer';
-import ScreenTypes from './ScreenTypes';
-import Store from './Store';
-import TopMenu from './TopMenu/TopMenu';
+import ScreenTypes from '../ScreenTypes';
+import Store from '../Store';
+import TopMenu from '../components/TopMenu/TopMenu';
 
 export default class QuestionsAndAnswersApp extends React.Component {
     constructor(props) {
@@ -65,18 +64,7 @@ export default class QuestionsAndAnswersApp extends React.Component {
                     />
             ));
 
-        const initialState = {
-            screenType: ScreenTypes.Questions,
-            questions: [],
-            question: {},
-            answer: {
-                user: '',
-                text: ''
-            }
-        };
-
-        this.state = initialState;
-        Store.init(initialState, reducer);
+        this.state = Store.getState();
     }
 
     componentDidMount() {
