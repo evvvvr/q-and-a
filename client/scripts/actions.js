@@ -27,23 +27,37 @@ export function showAskForm() {
 export function selectQuestion(questionId) {
     return {
         type: ActionTypes.SelectQuestion,
-        questionId: questionId
+        questionId
     };
 }
 
-export function submitQuestion(user, text) {
+export function changeAnswerText(text) {
     return {
-        type: ActionTypes.SubmitQuestion,
-        user: user,
-        text: text
-    };
+        type: ActionTypes.ChangeAnswerText,
+        text
+    };    
+}
+
+export function changeAnswerUser(user) {
+    return {
+        type: ActionTypes.ChangeAnswerUser,
+        user
+    };    
 }
 
 export function submitAnswer(questionId, user, text) {
     return {
         type: ActionTypes.SubmitAnswer,
         questionId: questionId, 
-        user: user,
-        text: text
+        user,
+        text
+    };
+}
+
+export function submitQuestion(user, text) {
+    return {
+        type: ActionTypes.SubmitQuestion,
+        user,
+        text
     };
 }

@@ -4,8 +4,10 @@ const ActionTypes = {
     ShowUnansweredQuestions: Symbol('ShowAnsweredQuestions'),
     ShowAskForm: Symbol('ShowAskForm'),
     SelectQuestion: Symbol('SelectQuestion'),
-    SubmitQuestion: Symbol('SubmitQuestion'),
-    SubmitAnswer: Symbol('SubmitAnswer')
+    ChangeAnswerText: Symbol('ChangeAnswerText'),
+    ChangeAnswerUser: Symbol('ChangeAnswerUser'),
+    SubmitAnswer: Symbol('SubmitAnswer'),
+    SubmitQuestion: Symbol('SubmitQuestion')
 };
 
 export default ActionTypes;

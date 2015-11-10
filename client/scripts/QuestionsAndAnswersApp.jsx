@@ -57,6 +57,10 @@ export default class QuestionsAndAnswersApp extends React.Component {
             () => (
                     <QuestionDetails
                         {...this.state.question}
+                        answerUser={this.state.answer.user}
+                        answerText={this.state.answer.text}
+                        onAnswerUserChange={this.handleAnswerUserChange.bind(this)}
+                        onAnswerTextChange={this.handleAnswerTextChange.bind(this)}
                         onAnswerSubmit={this.handleAnswerSubmit.bind(this)}
                     />
             ));
@@ -64,7 +68,11 @@ export default class QuestionsAndAnswersApp extends React.Component {
         const initialState = {
             screenType: ScreenTypes.Questions,
             questions: [],
-            question: {}
+            question: {},
+            answer: {
+                user: '',
+                text: ''
+            }
         };
 
         this.state = initialState;
@@ -105,6 +113,14 @@ export default class QuestionsAndAnswersApp extends React.Component {
 
     handleQuestionSelected(eventArgs) {
         Store.dispatch(actions.selectQuestion(eventArgs.questionId));
+    }
+
+    handleAnswerTextChange(eventArgs) {
+        Store.dispatch(actions.changeAnswerText(eventArgs.text));   
+    }
+
+    handleAnswerUserChange(eventArgs) {
+        Store.dispatch(actions.changeAnswerUser(eventArgs.user));   
     }
 
     handleQuestionSubmit(eventArgs) {

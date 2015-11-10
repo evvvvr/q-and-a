@@ -1,4 +1,4 @@
-import AnswerForm from './AnswerForm';
+import AnswerForm from './AnswerForm/AnswerForm';
 import AnswerList from './AnswerList';
 import React from 'react';
 import { formatDateTime } from '../../util/date-time-util';
@@ -22,7 +22,12 @@ export default class QuestionDetails extends React.Component {
                     </p>
                 </div>
                 <AnswerList answers={this.props.answers} />
-                <AnswerForm onAnswerSubmit={this.onAnswerSubmit.bind(this)} />
+                <AnswerForm
+                    answerUser={this.props.answerUser}
+                    answerText={this.props.answerText}
+                    onAnswerUserChange={this.props.onAnswerUserChange}
+                    onAnswerTextChange={this.props.onAnswerTextChange}
+                    onAnswerSubmit={this.onAnswerSubmit.bind(this)} />
             </div>
         );
     }

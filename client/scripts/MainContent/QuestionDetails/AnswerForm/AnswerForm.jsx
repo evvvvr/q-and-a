@@ -1,3 +1,5 @@
+import AnswerTextInput from './AnswerTextInput';
+import AnswerUserInput from './AnswerUserInput';
 import React from 'react';
 
 export default class AnswerForm extends React.Component {
@@ -5,8 +7,8 @@ export default class AnswerForm extends React.Component {
         event.preventDefault();
 
         this.props.onAnswerSubmit({
-            user: this.refs.userName.value,
-            text: this.refs.text.value  
+            user: this.refs.user.getValue(),
+            text: this.refs.text.getValue() 
         });
     }
 
@@ -18,16 +20,15 @@ export default class AnswerForm extends React.Component {
             >
                 <fieldset>
                     <legend>Your Answer</legend>
-                    <input
-                        className="pure-input-2-3"
-                        type="text"
-                        placeholder="Your name"
-                        ref="userName"
+                    <AnswerUserInput
+                        ref="user"
+                        value={this.props.answerUser}
+                        onChange={this.props.onAnswerUserChange}
                     />
-                    <textarea
-                        className="pure-input-2-3 textarea-text"
-                        placeholder="Your Answer"
+                    <AnswerTextInput
                         ref="text"
+                        value={this.props.answerText}
+                        onChange={this.props.onAnswerTextChange}
                     />
                     <input
                         className="pure-button pure-button-primary"
