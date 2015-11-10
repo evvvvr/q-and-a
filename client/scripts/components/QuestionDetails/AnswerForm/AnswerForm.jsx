@@ -7,7 +7,7 @@ export default class AnswerForm extends React.Component {
         event.preventDefault();
 
         this.props.onAnswerSubmit({
-            user: this.refs.user.getValue(),
+            user: this.refs.user.getValue().trim(),
             text: this.refs.text.getValue() 
         });
     }
