@@ -1,5 +1,11 @@
 const stateChangedCallbacks = new Set();
 
+function isFunction(value) {
+    let getType = {};
+
+    return value && getType.toString.call(value) === '[object Function]';
+}
+
 const Store = {
     init(initState, reducer) {
         this.appState = initState;
@@ -21,11 +27,15 @@ const Store = {
     },
 
     dispatch(action) {
-        this.appState = this.reducer(this.appState, action);
+        if (isFunction(action)) {
+            action(this.dispatch.bind(this));
+        } else {
+            this.appState = this.reducer(this.appState, action);
 
-        console.info('App state has been changed to %O', this.appState);
+            console.info('App state has been changed to %O', this.appState);
 
-        stateChangedCallbacks.forEach(c => c(this.appState));
+            stateChangedCallbacks.forEach(c => c(this.appState));
+        }
     }
 };
 

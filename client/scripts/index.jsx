@@ -12,7 +12,18 @@ API.init('http://localhost:8080/api');
 
 const initialState = {
     screenType: ScreenTypes.Questions,
-    questions: [],
+    allQuestions: {
+        isFetching: false,
+        items: []
+    },
+    answeredQuestions: {
+        isFetching: false,
+        items: []
+    },
+    unansweredQuestions: {
+        isFetching: false,
+        items: []
+    },
     question: {},
     answer: {
         user: '',

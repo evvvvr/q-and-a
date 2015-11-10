@@ -6,6 +6,9 @@ import React from 'react';
 import ScreenTypes from '../ScreenTypes';
 import Store from '../Store';
 import TopMenu from '../components/TopMenu/TopMenu';
+import { showAllQuestions, fetchAllQuestions } from '../actions/all-questions-actions';
+import { showAnsweredQuestions, fetchAnsweredQuestions } from '../actions/answered-questions-actions'; 
+import { showUnansweredQuestions, fetchUnansweredQuestions } from '../actions/unanswered-questions-actions'; 
 
 export default class QuestionsAndAnswersApp extends React.Component {
     constructor(props) {
@@ -18,7 +21,7 @@ export default class QuestionsAndAnswersApp extends React.Component {
             () => (
                     <Questions
                         header="All Questions"
-                        questions={this.state.questions}
+                        questions={this.state.allQuestions.items}
                         onQuestionSelected={this.handleQuestionSelected.bind(this)}
                     />
         ));
@@ -28,7 +31,7 @@ export default class QuestionsAndAnswersApp extends React.Component {
             () => (
                     <Questions
                         header="Answered Questions"
-                        questions={this.state.questions}
+                        questions={this.state.answeredQuestions.items}
                         onQuestionSelected={this.handleQuestionSelected.bind(this)}
                     />
         ));
@@ -38,7 +41,7 @@ export default class QuestionsAndAnswersApp extends React.Component {
             () => (
                     <Questions
                         header="Unanswered Questions"
-                        questions={this.state.questions}
+                        questions={this.state.unansweredQuestions.items}
                         onQuestionSelected={this.handleQuestionSelected.bind(this)}
                     />
         ));
@@ -69,7 +72,9 @@ export default class QuestionsAndAnswersApp extends React.Component {
 
     componentDidMount() {
         Store.subscribe(this.onChange.bind(this));
-        Store.dispatch(actions.showAllQuestions());
+
+        Store.dispatch(showAllQuestions());
+        Store.dispatch(fetchAllQuestions());
     }
 
     onChange(newAppState) {
@@ -79,15 +84,18 @@ export default class QuestionsAndAnswersApp extends React.Component {
     handleMenuItemSelected(eventArgs) {
         switch (eventArgs.menuItemValue) {
             case ScreenTypes.Questions:
-                Store.dispatch(actions.showAllQuestions());
+                Store.dispatch(showAllQuestions());
+                Store.dispatch(fetchAllQuestions());
                 break;
 
             case ScreenTypes.Answered:
-                Store.dispatch(actions.showAnsweredQuestions());
+                Store.dispatch(showAnsweredQuestions());
+                Store.dispatch(fetchAnsweredQuestions());
                 break;
 
             case ScreenTypes.Unanswered:
-                Store.dispatch(actions.showUnansweredQuestions());
+                Store.dispatch(showUnansweredQuestions());
+                Store.dispatch(fetchUnansweredQuestions());
                 break;
 
             case ScreenTypes.AskQuestion:

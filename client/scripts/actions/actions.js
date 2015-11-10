@@ -1,23 +1,5 @@
 import ActionTypes from './ActionTypes';
 
-export function showAllQuestions() {
-    return {
-        type: ActionTypes.ShowAllQuestions
-    };
-}
-
-export function showAnsweredQuestions() {
-    return {
-        type: ActionTypes.ShowAnsweredQuestions
-    };
-}
-
-export function showUnansweredQuestions() {
-    return {
-        type: ActionTypes.ShowUnansweredQuestions
-    };
-}
-
 export function showAskForm() {
     return {
         type: ActionTypes.ShowAskForm
