@@ -1,16 +1,15 @@
 import ActionTypes from '../actions/ActionTypes';
 import Data from '../mock/Data';
+import Immutable from 'immutable';
 import moment from 'moment';
 
 function submitAnswer(question, action) {
     console.info(`Submitting answer ${action.text} as ${action.user}
         for question #${action.questionId}`);
 
-    const newQuestion = question;
-    const newAnswers = question.answers;
     const maxAnswerId = Math.max.apply(
         null,
-        newAnswers.map(answer => answer.id)
+        question.answers.map(answer => answer.id)
     );
 
     const newAnswer = {
@@ -20,8 +19,12 @@ function submitAnswer(question, action) {
         dateTimeAnswered: moment.utc().format('YYYY-MM-DD hh:mm:ss')
     };
 
-    newAnswers.push(newAnswer);
-    newQuestion.answers = newAnswers;
+    const newQuestion = {
+        ...question
+    };
+
+    let newAnswers = Immutable.List(question.answers);
+    newQuestion.answers = newAnswers.push(newAnswer);
 
     return newQuestion; 
 };

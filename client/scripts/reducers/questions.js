@@ -1,14 +1,14 @@
 import ActionTypes from '../actions/ActionTypes';
 import Data from '../mock/Data';
+import Immutable from 'immutable';
 import moment from 'moment';
 
 function submitQuestion (questions, action) {
     console.info(`Submitting question ${action.text} as ${action.user}`);
 
-    const newQuestions = questions;
     const maxQuestionId = Math.max.apply(
         null,
-        newQuestions.map(question => question.id)
+        questions.map(question => question.id)
     );
 
     const newQuestion = {
@@ -19,7 +19,8 @@ function submitQuestion (questions, action) {
         answers: []
     };
 
-    newQuestions.push(newQuestion);
+    let newQuestions = Immutable.List(Data.allQuestions);
+    newQuestions = newQuestions.push(newQuestion);
 
     return newQuestions;
 };
