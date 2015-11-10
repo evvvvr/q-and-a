@@ -3,7 +3,7 @@ import AskQuestionForm from './MainContent/AskQuestionForm';
 import QuestionDetails from './MainContent/QuestionDetails/QuestionDetails';
 import Questions from './MainContent/Questions';
 import React from 'react';
-import reducer from './reducer';
+import reducer from './reducers/reducer';
 import ScreenTypes from './ScreenTypes';
 import Store from './Store';
 import TopMenu from './TopMenu/TopMenu';
