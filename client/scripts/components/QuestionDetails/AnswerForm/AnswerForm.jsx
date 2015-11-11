@@ -3,12 +3,26 @@ import AnswerUserInput from './AnswerUserInput';
 import React from 'react';
 
 export default class AnswerForm extends React.Component {
+    handleAnswerUserChange(event) {
+        this.props.onAnswerChange({
+            user: event.user.trim(),
+            text: this.refs.text.getValue()
+        });
+    }
+
+    handleAnswerTextChange(event) {
+        this.props.onAnswerChange({
+            user: this.refs.user.getValue().trim(),
+            text: event.text
+        });
+    }
+
     handleSubmit(event) {
         event.preventDefault();
 
         this.props.onAnswerSubmit({
             user: this.refs.user.getValue().trim(),
-            text: this.refs.text.getValue() 
+            text: this.refs.text.getValue()
         });
     }
 
@@ -22,13 +36,13 @@ export default class AnswerForm extends React.Component {
                     <legend>Your Answer</legend>
                     <AnswerUserInput
                         ref="user"
-                        value={this.props.answerUser}
-                        onChange={this.props.onAnswerUserChange}
+                        value={this.props.user}
+                        onChange={this.handleAnswerUserChange.bind(this)}
                     />
                     <AnswerTextInput
                         ref="text"
-                        value={this.props.answerText}
-                        onChange={this.props.onAnswerTextChange}
+                        value={this.props.text}
+                        onChange={this.handleAnswerTextChange.bind(this)}
                     />
                     <input
                         className="pure-button pure-button-primary"

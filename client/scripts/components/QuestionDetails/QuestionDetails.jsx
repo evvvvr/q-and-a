@@ -23,10 +23,8 @@ export default class QuestionDetails extends React.Component {
                 </div>
                 <AnswerList answers={this.props.answers} />
                 <AnswerForm
-                    answerUser={this.props.answerUser}
-                    answerText={this.props.answerText}
-                    onAnswerUserChange={this.props.onAnswerUserChange}
-                    onAnswerTextChange={this.props.onAnswerTextChange}
+                    {...this.props.answer}
+                    onAnswerChange={this.props.onAnswerChange}
                     onAnswerSubmit={this.onAnswerSubmit.bind(this)} />
             </div>
         );

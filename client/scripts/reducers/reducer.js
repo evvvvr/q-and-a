@@ -2,6 +2,7 @@ import allQuestions from './allQuestions';
 import answer from './answer';
 import answeredQuestions from './answeredQuestions';
 import question from './question';
+import questionToSubmit from './questionToSubmit';
 import screenType from './screenType';
 import unansweredQuestions from './unansweredQuestions';
 
@@ -12,6 +13,7 @@ export default function reducer(state, action) {
         answeredQuestions: answeredQuestions(state.answeredQuestions, action),
         unansweredQuestions: unansweredQuestions(state.unansweredQuestions, action),
         question: question(state.question, action),
+        questionToSubmit: questionToSubmit(state.questionToSubmit, action),
         answer: answer(state.answer, action)
     };
 };

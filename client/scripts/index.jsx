@@ -24,10 +24,21 @@ const initialState = {
         isFetching: false,
         items: []
     },
-    question: {},
+    question: {
+        isFetching: false,
+        data: {}
+    },
+    questionToSubmit: {
+        isSubmitting: false,
+        data: {}
+    },
     answer: {
-        user: '',
-        text: ''
+        isSubmitting: false,
+        data: {
+            questionId: null,
+            user: '',
+            text: ''
+        }
     }
 };
 

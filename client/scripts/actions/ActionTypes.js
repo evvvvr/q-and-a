@@ -10,10 +10,13 @@ const ActionTypes = {
     RecieveUnansweredQuestions: Symbol('RecieveUnansweredQuestions'),
     ShowAskForm: Symbol('ShowAskForm'),
     SelectQuestion: Symbol('SelectQuestion'),
-    ChangeAnswerText: Symbol('ChangeAnswerText'),
-    ChangeAnswerUser: Symbol('ChangeAnswerUser'),
-    SubmitAnswer: Symbol('SubmitAnswer'),
-    SubmitQuestion: Symbol('SubmitQuestion')
+    RequestQuestion: Symbol('RequestQuestion'),
+    RecieveQuestion: Symbol('RecieveQuestion'),
+    SubmittingQuestion: Symbol('SubmittingQuestion'),
+    QuestionSubmitted: Symbol('QuestionSubmitted'),
+    AnswerChanged: Symbol('AnswerChanged'),
+    SubmittingAnswer: Symbol('SubmittingAnswer'),
+    AnswerSubmitted: Symbol('AnswerSubmitted')
 };
 
 export default ActionTypes;

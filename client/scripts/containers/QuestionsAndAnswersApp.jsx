@@ -1,4 +1,3 @@
-import * as actions from '../actions/actions';
 import AskQuestionForm from '../components/AskQuestionForm';
 import QuestionDetails from '../components/QuestionDetails/QuestionDetails';
 import Questions from '../components/Questions';
@@ -6,9 +5,12 @@ import React from 'react';
 import ScreenTypes from '../ScreenTypes';
 import Store from '../Store';
 import TopMenu from '../components/TopMenu/TopMenu';
+import { answerChanged, submitAnswer } from '../actions/answer-actions';
+import { selectQuestion, fetchQuestion, submitQuestion } from '../actions/question-actions';
 import { showAllQuestions, fetchAllQuestions } from '../actions/all-questions-actions';
 import { showAnsweredQuestions, fetchAnsweredQuestions } from '../actions/answered-questions-actions'; 
-import { showUnansweredQuestions, fetchUnansweredQuestions } from '../actions/unanswered-questions-actions'; 
+import { showAskForm } from '../actions/actions';
+import { showUnansweredQuestions, fetchUnansweredQuestions } from '../actions/unanswered-questions-actions';
 
 export default class QuestionsAndAnswersApp extends React.Component {
     constructor(props) {
@@ -58,11 +60,9 @@ export default class QuestionsAndAnswersApp extends React.Component {
             ScreenTypes.Question,
             () => (
                     <QuestionDetails
-                        {...this.state.question}
-                        answerUser={this.state.answer.user}
-                        answerText={this.state.answer.text}
-                        onAnswerUserChange={this.handleAnswerUserChange.bind(this)}
-                        onAnswerTextChange={this.handleAnswerTextChange.bind(this)}
+                        {...this.state.question.data}
+                        answer={this.state.answer.data}
+                        onAnswerChange={this.handleAnswerChange.bind(this)}
                         onAnswerSubmit={this.handleAnswerSubmit.bind(this)}
                     />
             ));
@@ -99,7 +99,7 @@ export default class QuestionsAndAnswersApp extends React.Component {
                 break;
 
             case ScreenTypes.AskQuestion:
-                Store.dispatch(actions.showAskForm());
+                Store.dispatch(showAskForm());
                 break;
 
             default:
@@ -108,29 +108,23 @@ export default class QuestionsAndAnswersApp extends React.Component {
     }
 
     handleQuestionSelected(eventArgs) {
-        Store.dispatch(actions.selectQuestion(eventArgs.questionId));
-    }
-
-    handleAnswerTextChange(eventArgs) {
-        Store.dispatch(actions.changeAnswerText(eventArgs.text));   
-    }
-
-    handleAnswerUserChange(eventArgs) {
-        Store.dispatch(actions.changeAnswerUser(eventArgs.user));   
+        Store.dispatch(selectQuestion(eventArgs.questionId));
+        Store.dispatch(fetchQuestion(eventArgs.questionId));
     }
 
     handleQuestionSubmit(eventArgs) {
-        Store.dispatch(actions.submitQuestion(
-            eventArgs.user,
-            eventArgs.text
-        ));
+        Store.dispatch(submitQuestion(eventArgs.user, eventArgs.text));
+    }
+
+    handleAnswerChange(eventArgs) {
+        Store.dispatch(answerChanged(eventArgs.user, eventArgs.text));   
     }
 
     handleAnswerSubmit(eventArgs) {
-        Store.dispatch(actions.submitAnswer(
-            eventArgs.questionId,
-            eventArgs.user,
-            eventArgs.text
+        Store.dispatch(
+            submitAnswer(eventArgs.questionId,
+                eventArgs.user,
+                eventArgs.text
         ));
     }
 
