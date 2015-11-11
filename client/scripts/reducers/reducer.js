@@ -2,7 +2,6 @@ import allQuestions from './allQuestions';
 import answer from './answer';
 import answeredQuestions from './answeredQuestions';
 import question from './question';
-import questions from './questions';
 import screenType from './screenType';
 import unansweredQuestions from './unansweredQuestions';
 
