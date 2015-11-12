@@ -1,33 +1,46 @@
 import request from 'superagent';
 
-const API = {
-    init({ hostURL, timeout }) {
-        this.hostURL = hostURL;
-        this.timeout = timeout;
+let hostURLValue, timeoutValue, allQuestionsURL;
 
-        this.allQuestionsURL = this.hostURL + '/questions'
+function buildQuestionURL (questionId) {
+    return allQuestionsURL + '/' + questionId;
+}
+
+const API = {
+
+    init({ hostURL, timeout }) {
+        hostURLValue = hostURL;
+        timeoutValue = timeout;
+        allQuestionsURL = hostURLValue + '/questions'
     },
 
     fetchAllQuestions(callback) {
         request
-            .get(this.allQuestionsURL)
-            .timeout(this.timeout)
+            .get(allQuestionsURL)
+            .timeout(timeoutValue)
             .end(callback);
     },
 
     fetchAnsweredQuestions(callback) {
         request
-            .get(this.allQuestionsURL)
+            .get(allQuestionsURL)
             .query({ isAnswered: 'yes' })
-            .timeout(this.timeout)
+            .timeout(timeoutValue)
             .end(callback);
     },
 
     fetchUnansweredQuestions(callback) {
         request
-            .get(this.allQuestionsURL)
+            .get(allQuestionsURL)
             .query({ isAnswered: 'no' })
-            .timeout(this.timeout)
+            .timeout(timeoutValue)
+            .end(callback);
+    },
+
+    fetchQuestion(questionId, callback) {
+        request
+            .get(buildQuestionURL(questionId))
+            .timeout(timeoutValue)
             .end(callback);
     }
 };

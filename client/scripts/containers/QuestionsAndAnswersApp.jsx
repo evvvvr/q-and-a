@@ -60,6 +60,7 @@ export default class QuestionsAndAnswersApp extends React.Component {
             ScreenTypes.Question,
             () => (
                     <QuestionDetails
+                        isLoading={this.state.question.isFetching}
                         {...this.state.question.data}
                         answer={this.state.answer.data}
                         onAnswerChange={this.handleAnswerChange.bind(this)}

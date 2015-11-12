@@ -1,5 +1,5 @@
+import API from '../API';
 import ActionTypes from './ActionTypes';
-import Data from '../mock/Data';
 import { showAllQuestions, fetchAllQuestions } from './all-questions-actions';
 
 export function selectQuestion(questionId) {
@@ -24,12 +24,18 @@ export function recieveQuestion(question) {
 }
 
 export function fetchQuestion(questionId) {
-    return function (dispatch) {
-        console.info(`Retrieving question #${questionId}`);
+    return function (dispatch, getState) {
+        if (!getState().question.isFetching) {
+            console.info(`Retrieving question #${questionId}`);
 
-        dispatch(requestQuestion(questionId));
+            dispatch(requestQuestion(questionId));
 
-        dispatch(recieveQuestion(Data.questionDetails));
+            API.fetchQuestion(questionId, (err, res) => {
+                if (res.ok) {
+                    dispatch(recieveQuestion(res.body));                    
+                }
+            })
+        }
     };
 }
 

@@ -13,20 +13,28 @@ export default class QuestionDetails extends React.Component {
     }
 
     render () {
-        return (
-            <div className="questionDetails">
-                <div className="questionDetails-question">
-                    {this.props.text}
-                    <p className="appItemMeta">
-                        {formatDateTime(this.props.dateTimeAsked)} by {this.props.user}
-                    </p>
+        let content;
+
+        if (this.props.isLoading) {
+            content = <div className="questionDetails"></div>;
+        } else {
+            content =  (
+                <div className="questionDetails">
+                    <div className="questionDetails-question">
+                        {this.props.text}
+                        <p className="appItemMeta">
+                            {formatDateTime(this.props.dateTimeAsked)} by {this.props.user}
+                        </p>
+                    </div>
+                    <AnswerList answers={this.props.answers} />
+                    <AnswerForm
+                        {...this.props.answer}
+                        onAnswerChange={this.props.onAnswerChange}
+                        onAnswerSubmit={this.onAnswerSubmit.bind(this)} />
                 </div>
-                <AnswerList answers={this.props.answers} />
-                <AnswerForm
-                    {...this.props.answer}
-                    onAnswerChange={this.props.onAnswerChange}
-                    onAnswerSubmit={this.onAnswerSubmit.bind(this)} />
-            </div>
-        );
+            ); 
+        }
+
+        return content;
     }
 }

@@ -1,4 +1,5 @@
 const stateChangedCallbacks = new Set();
+let appState, reducer;
 
 function isFunction(value) {
     let getType = {};
@@ -7,15 +8,15 @@ function isFunction(value) {
 }
 
 const Store = {
-    init(initState, reducer) {
-        this.appState = initState;
-        this.reducer = reducer;
+    init(initState, reducerParam) {
+        appState = initState;
+        reducer = reducerParam;
 
-        console.info('Initial app state is %O', this.appState);
+        console.info('Initial app state is %O', appState);
     },
 
     getState() {
-        return this.appState;
+        return appState;
     },
 
     subscribe(onStateChangedCallback) {
@@ -30,11 +31,11 @@ const Store = {
         if (isFunction(action)) {
             action(this.dispatch.bind(this), this.getState.bind(this));
         } else {
-            this.appState = this.reducer(this.appState, action);
+            appState = reducer(appState, action);
 
-            console.info('App state has been changed to %O', this.appState);
+            console.info('App state has been changed to %O', appState);
 
-            stateChangedCallbacks.forEach(c => c(this.appState));
+            stateChangedCallbacks.forEach(c => c(appState));
         }
     }
 };
