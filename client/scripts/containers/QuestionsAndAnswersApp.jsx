@@ -122,8 +122,6 @@ export default class QuestionsAndAnswersApp extends React.Component {
     }
 
     handleAnswerSubmit(eventArgs) {
-        console.log('submit answer %O', eventArgs.answer);
-
         Store.dispatch(
             submitAnswer(
                 eventArgs.questionId,
