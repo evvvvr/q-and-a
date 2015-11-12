@@ -31,7 +31,7 @@ export function fetchUnansweredQuestions() {
                 if (res.ok) {
                     dispatch(recieveUnansweredQuestions(res.body));
                 }
-            })
+            });
         }
     };
 }

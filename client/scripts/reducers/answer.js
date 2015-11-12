@@ -8,8 +8,8 @@ export default function answer(state, action) {
                 state,
                 {
                     isSubmitting: false,
+                    questionId: action.questionId,
                     data: {
-                        questionId: null,
                         user: '',
                         text: ''
                     }
@@ -21,10 +21,7 @@ export default function answer(state, action) {
                 {},
                 state,
                 {
-                    data: {
-                        user: action.user,
-                        text: action.text
-                    }
+                    data: action.answer
                 }
             );
 
@@ -34,11 +31,8 @@ export default function answer(state, action) {
                 state,
                 {
                     isSubmitting: true,
-                    data: {
-                        questionId: action.questionId,
-                        user: action.user,
-                        text: action.text
-                    }
+                    questionId: action.questionId,
+                    data: action.answer
                 }
             );
 
@@ -48,8 +42,8 @@ export default function answer(state, action) {
                 state,
                 {
                     isSubmitting: false,
+                    questionId: null,
                     data: {
-                        questionId: null,
                         user: '',
                         text: ''
                     }

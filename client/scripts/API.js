@@ -7,7 +7,6 @@ function buildQuestionURL (questionId) {
 }
 
 const API = {
-
     init({ hostURL, timeout }) {
         hostURLValue = hostURL;
         timeoutValue = timeout;
@@ -40,6 +39,24 @@ const API = {
     fetchQuestion(questionId, callback) {
         request
             .get(buildQuestionURL(questionId))
+            .timeout(timeoutValue)
+            .end(callback);
+    },
+
+    submitQuestion(question, callback) {
+        request
+            .post(allQuestionsURL)
+            .send(question)
+            .timeout(timeoutValue)
+            .end(callback);
+    },
+
+    submitAnswer(questionId, answer, callback) {
+        const answersURL = buildQuestionURL(questionId) + '/answers';
+
+        request
+            .post(answersURL)
+            .send(answer)
             .timeout(timeoutValue)
             .end(callback);
     }

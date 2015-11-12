@@ -31,7 +31,7 @@ export function fetchAllQuestions() {
                 if (res.ok) {
                     dispatch(recieveAllQuestions(res.body));                    
                 }
-            })
+            });
         }
     };
 }

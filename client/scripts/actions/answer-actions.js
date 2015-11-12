@@ -1,40 +1,44 @@
+import API from '../API';
 import ActionTypes from './ActionTypes';
 import { selectQuestion, fetchQuestion } from './question-actions';
 
-export function answerChanged(user, text) {
+export function answerChanged(answer) {
     return {
         type: ActionTypes.AnswerChanged,
-        user,
-        text
+        answer
     };
 }
 
-export function submittingAnswer(questionId, user, text) {
+export function submittingAnswer(questionId, answer) {
     return {
         type: ActionTypes.SubmittingAnswer,
         questionId,
-        user,
-        text
+        answer
     };
 }
 
-export function answerSubmitted() {
+export function answerSubmitted(linkToAnswer) {
     return {
         type: ActionTypes.AnswerSubmitted,
+        linkToAnswer
     };
 }
 
-export function submitAnswer(questionId, user, text) {
-    return function (dispatch) {
-        console.info(`Submitting answer ${text} as ${user}
-            for question #${questionId}`);
+export function submitAnswer(questionId, answer) {
+   return function (dispatch, getState) {
+        if (!getState().answer.isSubmitting) {
+            console.info(`Submitting answer ${answer.text}
+                as ${answer.user} for question #${questionId}`);
 
-        dispatch(submittingAnswer(questionId, user, text));
+            dispatch(submittingAnswer(questionId, answer));
 
-        dispatch(answerSubmitted()); 
-
-        dispatch(selectQuestion(questionId));
-
-        dispatch(fetchQuestion(questionId));
+            API.submitAnswer(questionId, answer, (err, res) => {
+                if (res.ok) {
+                    dispatch(answerSubmitted(res.header['Location']));
+                    dispatch(selectQuestion(questionId));
+                    dispatch(fetchQuestion(questionId));                    
+                }
+            });
+        }
     };
 }

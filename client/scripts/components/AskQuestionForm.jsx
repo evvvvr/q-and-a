@@ -5,8 +5,10 @@ export default class AskQuestionForm extends React.Component {
         event.preventDefault();
 
         this.props.onQuestionSubmit({
-            user: this.refs.userName.value.trim(),
-            text: this.refs.text.value
+            question: {
+                user: this.refs.userName.value.trim(),
+                text: this.refs.text.value                
+            }
         });
     }
 

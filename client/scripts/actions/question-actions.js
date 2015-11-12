@@ -34,16 +34,15 @@ export function fetchQuestion(questionId) {
                 if (res.ok) {
                     dispatch(recieveQuestion(res.body));                    
                 }
-            })
+            });
         }
     };
 }
 
-export function submittingQuestion(user, text) {
+export function submittingQuestion(question) {
     return {
         type: ActionTypes.SubmittingQuestion,
-        user,
-        text
+        question
     };
 }
 
@@ -54,16 +53,21 @@ export function questionSubmitted(linkToQuestion) {
     };
 }
 
-export function submitQuestion(user, text) {
-    return function (dispatch) {
-        console.info(`Submitting question ${text} as ${user}`);
+export function submitQuestion(question) {
+    return function (dispatch, getState) {
+        if (!getState().questionToSubmit.isSubmitting) {
+            console.info(`Submitting question ${question.text}
+                as ${question.user}`);
 
-        dispatch(submittingQuestion(user, text));
-
-        dispatch(questionSubmitted('link to submitted question')); 
-
-        dispatch(showAllQuestions());
-
-        dispatch(fetchAllQuestions());
+            dispatch(submittingQuestion(question));
+ 
+            API.submitQuestion(question, (err, res) => {
+                if (res.ok) {
+                    dispatch(questionSubmitted(res.header['Location']));
+                    dispatch(showAllQuestions());
+                    dispatch(fetchAllQuestions());                    
+                }
+            });
+        }
     };
 }

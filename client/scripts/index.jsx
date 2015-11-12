@@ -37,8 +37,8 @@ const initialState = {
     },
     answer: {
         isSubmitting: false,
+        questionId: null,
         data: {
-            questionId: null,
             user: '',
             text: ''
         }

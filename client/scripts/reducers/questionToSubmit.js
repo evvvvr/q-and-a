@@ -8,10 +8,7 @@ export default function questionToSubmit(state, action) {
                 state,
                 {
                     isSubmitting: true,
-                    data: {
-                        user: action.user,
-                        text: action.text
-                    }
+                    data: action.question
                 }
             );
 

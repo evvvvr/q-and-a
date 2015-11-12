@@ -5,15 +5,19 @@ import React from 'react';
 export default class AnswerForm extends React.Component {
     handleAnswerUserChange(event) {
         this.props.onAnswerChange({
-            user: event.user.trim(),
-            text: this.refs.text.getValue()
+            answer: {
+                user: event.user.trim(),
+                text: this.refs.text.getValue()
+            }
         });
     }
 
     handleAnswerTextChange(event) {
         this.props.onAnswerChange({
-            user: this.refs.user.getValue().trim(),
-            text: event.text
+            answer: {
+                user: this.refs.user.getValue().trim(),
+                text: event.text
+            }
         });
     }
 
@@ -21,8 +25,10 @@ export default class AnswerForm extends React.Component {
         event.preventDefault();
 
         this.props.onAnswerSubmit({
-            user: this.refs.user.getValue().trim(),
-            text: this.refs.text.getValue()
+            answer: {
+                user: this.refs.user.getValue().trim(),
+                text: this.refs.text.getValue()
+            }
         });
     }
 
