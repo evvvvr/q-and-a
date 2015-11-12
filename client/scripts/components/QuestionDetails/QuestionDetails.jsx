@@ -15,7 +15,7 @@ export default class QuestionDetails extends React.Component {
     render () {
         let content;
 
-        if (this.props.isLoading) {
+        if (this.props.isLoading || !this.props.text) {
             content = <div className="questionDetails"></div>;
         } else {
             content =  (
