@@ -1,5 +1,5 @@
 import ActionTypes from './ActionTypes';
-import Data from '../mock/Data';
+import API from '../API';
 
 export function showAnsweredQuestions() {
     return {
@@ -21,11 +21,17 @@ export function recieveAnsweredQuestions(questions) {
 }
 
 export function fetchAnsweredQuestions() {
-    return function (dispatch) {
-        console.info('Retrieving answered questions');
+    return function (dispatch, getState) {
+        if (!getState().answeredQuestions.isFetching) {
+            console.info('Retrieving answered questions');
 
-        dispatch(requestAnsweredQuestions());
+            dispatch(requestAnsweredQuestions());
 
-        dispatch(recieveAnsweredQuestions(Data.answeredQuestions));
+            API.fetchAnsweredQuestions((err, res) => {
+                if (res.ok) {
+                    dispatch(recieveAnsweredQuestions(res.body));
+                }
+            })
+        }        
     };
 }

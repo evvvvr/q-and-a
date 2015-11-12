@@ -1,5 +1,5 @@
 import ActionTypes from './ActionTypes';
-import Data from '../mock/Data';
+import API from '../API';
 
 export function showAllQuestions() {
     return {
@@ -21,11 +21,17 @@ export function recieveAllQuestions(questions) {
 }
 
 export function fetchAllQuestions() {
-    return function (dispatch) {
-        console.info('Retrieving all questions');
+    return function (dispatch, getState) {
+        if (!getState().allQuestions.isFetching) {
+            console.info('Retrieving all questions');
 
-        dispatch(requestAllQuestions());
+            dispatch(requestAllQuestions());
 
-        dispatch(recieveAllQuestions(Data.allQuestions));
+            API.fetchAllQuestions((err, res) => {
+                if (res.ok) {
+                    dispatch(recieveAllQuestions(res.body));                    
+                }
+            })
+        }
     };
 }

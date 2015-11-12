@@ -1,26 +1,34 @@
+import request from 'superagent';
+
 const API = {
-    init(hostURL) {
+    init({ hostURL, timeout }) {
         this.hostURL = hostURL;
+        this.timeout = timeout;
+
+        this.allQuestionsURL = this.hostURL + '/questions'
     },
 
-    getAllQuestionsURL() {
-        return this.hostURL + '/questions';
+    fetchAllQuestions(callback) {
+        request
+            .get(this.allQuestionsURL)
+            .timeout(this.timeout)
+            .end(callback);
     },
 
-    getAnsweredQuestionsURL() {
-        return this.hostURL + '/questions?isAnswered=yes';
+    fetchAnsweredQuestions(callback) {
+        request
+            .get(this.allQuestionsURL)
+            .query({ isAnswered: 'yes' })
+            .timeout(this.timeout)
+            .end(callback);
     },
 
-    getUnansweredQuestionsURL() {
-        return this.hostURL + '/questions?isAnswered=no';
-    },
-
-    getQuestionURL(id) {
-        return this.hostURL + '/questions/' + id;
-    },
-
-    getQuestionAnswersURL(id) {
-        return this.getQuestionURL(id) + '/answers';
+    fetchUnansweredQuestions(callback) {
+        request
+            .get(this.allQuestionsURL)
+            .query({ isAnswered: 'no' })
+            .timeout(this.timeout)
+            .end(callback);
     }
 };
 

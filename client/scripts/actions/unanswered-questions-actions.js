@@ -1,5 +1,5 @@
 import ActionTypes from './ActionTypes';
-import Data from '../mock/Data';
+import API from '../API';
 
 export function showUnansweredQuestions() {
     return {
@@ -21,11 +21,17 @@ export function recieveUnansweredQuestions(questions) {
 }
 
 export function fetchUnansweredQuestions() {
-    return function (dispatch) {
-        console.info('Retrieving unanswered questions');
+    return function (dispatch, getState) {
+        if (!getState().unansweredQuestions.isFetching) {
+            console.info('Retrieving unanswered questions');
 
-        dispatch(requestUnansweredQuestions());
+            dispatch(requestUnansweredQuestions());
 
-        dispatch(recieveUnansweredQuestions(Data.unansweredQuestions));
+            API.fetchUnansweredQuestions((err, res) => {
+                if (res.ok) {
+                    dispatch(recieveUnansweredQuestions(res.body));
+                }
+            })
+        }
     };
 }

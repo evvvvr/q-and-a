@@ -28,7 +28,7 @@ const Store = {
 
     dispatch(action) {
         if (isFunction(action)) {
-            action(this.dispatch.bind(this));
+            action(this.dispatch.bind(this), this.getState.bind(this));
         } else {
             this.appState = this.reducer(this.appState, action);
 

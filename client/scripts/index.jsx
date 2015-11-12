@@ -8,7 +8,10 @@ import reducer from './reducers/reducer';
 import ScreenTypes from './ScreenTypes';
 import Store from './Store';
 
-API.init('http://localhost:8080/api');
+API.init({
+    hostURL: 'http://localhost:8080/api',
+    timeout: 5000
+});
 
 const initialState = {
     screenType: ScreenTypes.Questions,
