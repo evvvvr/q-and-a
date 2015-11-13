@@ -52,6 +52,7 @@ export default class QuestionsAndAnswersApp extends React.Component {
             ScreenTypes.AskQuestion,
             () => (
                     <AskQuestionForm
+                        errors={this.state.questionToSubmit.errors}
                         onQuestionSubmit={this.handleQuestionSubmit.bind(this)}
                     />
         ));
@@ -62,6 +63,7 @@ export default class QuestionsAndAnswersApp extends React.Component {
                     <QuestionDetails
                         isLoading={this.state.question.isFetching}
                         {...this.state.question.data}
+                        answerErrors={this.state.answer.errors}
                         answer={this.state.answer.data}
                         onAnswerChange={this.handleAnswerChange.bind(this)}
                         onAnswerSubmit={this.handleAnswerSubmit.bind(this)}

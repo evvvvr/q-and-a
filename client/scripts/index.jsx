@@ -33,10 +33,12 @@ const initialState = {
     },
     questionToSubmit: {
         isSubmitting: false,
+        errors: [],
         data: {}
     },
     answer: {
         isSubmitting: false,
+        errors: [],
         questionId: null,
         data: {
             user: '',

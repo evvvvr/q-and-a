@@ -1,6 +1,7 @@
 import AnswerTextInput from './AnswerTextInput';
 import AnswerUserInput from './AnswerUserInput';
 import React from 'react';
+import { ErrorTypes } from '../../../validation/errors';
 
 export default class AnswerForm extends React.Component {
     handleAnswerUserChange(event) {
@@ -33,6 +34,24 @@ export default class AnswerForm extends React.Component {
     }
 
     render() {
+        let textError, userError;
+
+        if (this.props.errors) {
+            this.props.errors.forEach(error => {
+                switch (error.type) {
+                    case ErrorTypes.UserIsEmpty:
+                    case ErrorTypes.UserIsTooLong:
+                        userError = error.message;
+                        break;
+
+                    case ErrorTypes.TextIsEmpty:
+                    case ErrorTypes.TextIsTooLong:
+                        textError = error.message;
+                        break;
+                }
+            });
+        }
+
         return (
             <form
                 className="pure-form pure-form-stacked"
@@ -43,11 +62,13 @@ export default class AnswerForm extends React.Component {
                     <AnswerUserInput
                         ref="user"
                         value={this.props.user}
+                        error={userError}
                         onChange={this.handleAnswerUserChange.bind(this)}
                     />
                     <AnswerTextInput
                         ref="text"
                         value={this.props.text}
+                        error={textError}
                         onChange={this.handleAnswerTextChange.bind(this)}
                     />
                     <input

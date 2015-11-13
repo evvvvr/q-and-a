@@ -12,12 +12,10 @@ export default class QuestionDetails extends React.Component {
     }
 
     render () {
-        let content;
-
         if (this.props.isLoading || !this.props.text) {
-            content = <div className="questionDetails"></div>;
+            return <div className="questionDetails"></div>;
         } else {
-            content =  (
+            return (
                 <div className="questionDetails">
                     <div className="questionDetails-question">
                         {this.props.text}
@@ -28,12 +26,11 @@ export default class QuestionDetails extends React.Component {
                     <AnswerList answers={this.props.answers} />
                     <AnswerForm
                         {...this.props.answer}
+                        errors={this.props.answerErrors}
                         onAnswerChange={this.props.onAnswerChange}
                         onAnswerSubmit={this.onAnswerSubmit.bind(this)} />
                 </div>
             ); 
         }
-
-        return content;
     }
 }

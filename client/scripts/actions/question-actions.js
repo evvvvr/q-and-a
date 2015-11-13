@@ -1,6 +1,7 @@
-import API from '../API';
 import ActionTypes from './ActionTypes';
+import API from '../API';
 import { showAllQuestions, fetchAllQuestions } from './all-questions-actions';
+import { validateQuestion } from '../validation/validators';
 
 export function selectQuestion(questionId) {
     return {
@@ -39,6 +40,14 @@ export function fetchQuestion(questionId) {
     };
 }
 
+export function questionValidationFailed(question, validationErrors) {
+    return {
+        type: ActionTypes.QuestionValidationFailed,
+        question,
+        validationErrors
+    };
+}
+
 export function submittingQuestion(question) {
     return {
         type: ActionTypes.SubmittingQuestion,
@@ -59,15 +68,25 @@ export function submitQuestion(question) {
             console.info(`Submitting question ${question.text}
                 as ${question.user}`);
 
-            dispatch(submittingQuestion(question));
- 
-            API.submitQuestion(question, (err, res) => {
-                if (res.ok) {
-                    dispatch(questionSubmitted(res.header['Location']));
-                    dispatch(showAllQuestions());
-                    dispatch(fetchAllQuestions());                    
-                }
-            });
+            const validationErrors = validateQuestion(question); 
+
+            if (validationErrors.length > 0) {
+                dispatch(
+                    questionValidationFailed(
+                        question,
+                        validationErrors
+                ));
+            } else {
+                dispatch(submittingQuestion(question));
+     
+                API.submitQuestion(question, (err, res) => {
+                    if (res.ok) {
+                        dispatch(questionSubmitted(res.header['Location']));
+                        dispatch(showAllQuestions());
+                        dispatch(fetchAllQuestions());                    
+                    }
+                });
+            }
         }
     };
 }

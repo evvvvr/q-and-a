@@ -12,9 +12,11 @@ const ActionTypes = {
     SelectQuestion: Symbol('SelectQuestion'),
     RequestQuestion: Symbol('RequestQuestion'),
     RecieveQuestion: Symbol('RecieveQuestion'),
+    QuestionValidationFailed: Symbol('QuestionValidationFailed'),
     SubmittingQuestion: Symbol('SubmittingQuestion'),
     QuestionSubmitted: Symbol('QuestionSubmitted'),
     AnswerChanged: Symbol('AnswerChanged'),
+    AnswerValidationFailed: Symbol('AnswerValidationFailed'),
     SubmittingAnswer: Symbol('SubmittingAnswer'),
     AnswerSubmitted: Symbol('AnswerSubmitted')
 };

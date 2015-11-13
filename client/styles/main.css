@@ -55,4 +55,13 @@ legend {
 
 .questionDetails-question {
     padding: 0 0 0.5em;
-} 
+}
+
+.invalidElement {
+     border: 0.15em solid red !important;
+}
+
+.errorMessage {
+    padding-top: 0.25em;
+    color: rgb(255, 0, 0);
+}

@@ -8,6 +8,7 @@ export default function answer(state, action) {
                 state,
                 {
                     isSubmitting: false,
+                    errors: [],
                     questionId: action.questionId,
                     data: {
                         user: '',
@@ -21,6 +22,17 @@ export default function answer(state, action) {
                 {},
                 state,
                 {
+                    errors: [],
+                    data: action.answer
+                }
+            );
+
+        case ActionTypes.AnswerValidationFailed:
+            return Object.assign(
+                {},
+                state,
+                {
+                    errors: action.validationErrors,
                     data: action.answer
                 }
             );
@@ -31,6 +43,7 @@ export default function answer(state, action) {
                 state,
                 {
                     isSubmitting: true,
+                    errors: [],
                     questionId: action.questionId,
                     data: action.answer
                 }
@@ -42,6 +55,7 @@ export default function answer(state, action) {
                 state,
                 {
                     isSubmitting: false,
+                    errors: [],
                     questionId: null,
                     data: {
                         user: '',
