@@ -1,37 +1,39 @@
 import { Errors } from './errors';
 
-export function validateAnswer(answer) {
+export function validateUserName(userName) {
     const errors = [];
 
-    if (!answer.user) {
+    if (!userName) {
         errors.push(Errors.userIsEmpty());
-    } else if (answer.user.length > 255) {
+    } else if (userName.length > 255) {
         errors.push(Errors.userIsTooLong(255));
     }
 
-    if (!answer.text) {
+    return errors;
+}
+
+export function validateText(text) {
+    const errors = [];
+
+    if (!text) {
         errors.push(Errors.textIsEmpty());
-    } else if (answer.text.length > 3000) {
+    } else if (text.length > 3000) {
         errors.push(Errors.userIsTooLong(3000));
     }
 
-    return errors;
+    return errors;    
+}
+
+export function validateAnswer(answer) {
+    return {
+        user: validateUserName(answer.user),
+        text: validateText(answer.text)
+    };
 };
 
 export function validateQuestion(question) {
-    const errors = [];
-
-    if (!question.user) {
-        errors.push(Errors.userIsEmpty());
-    } else if (question.user.length > 255) {
-        errors.push(Errors.userIsTooLong(255));
-    }
-
-    if (!question.text) {
-        errors.push(Errors.textIsEmpty());
-    } else if (question.text.length > 3000) {
-        errors.push(Errors.userIsTooLong(3000));
-    }
-
-    return errors;
+    return {
+        user: validateUserName(question.user),
+        text: validateText(question.text)
+    };
 };

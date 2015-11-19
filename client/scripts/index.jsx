@@ -33,7 +33,7 @@ const initialState = {
     },
     questionToSubmit: {
         isSubmitting: false,
-        errors: [],
+        errors: {},
         data: {}
     },
     answer: {

@@ -13,6 +13,12 @@ const defaultProps = {
 };
 
 class TextAreaInput extends React.Component {
+    handleBlur(event) {
+        this.props.onBlur({
+            value: event.target.value
+        });
+    }
+
     handleChange(event) {
         this.props.onChange({
             value: event.target.value
@@ -42,6 +48,7 @@ class TextAreaInput extends React.Component {
                     className={className}
                     placeholder={this.props.placeholder}
                     value={this.props.value}
+                    onBlur={this.handleBlur.bind(this)}
                     onChange={this.handleChange.bind(this)}
                 />
             </div>

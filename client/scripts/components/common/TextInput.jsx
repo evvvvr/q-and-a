@@ -4,15 +4,23 @@ import React, { PropTypes } from 'react';
 const propTypes = {
     value: PropTypes.string,
     placeholder: PropTypes.string,
+    onBlur: PropTypes.func,
     onChange: PropTypes.func,
     error: PropTypes.string
 };
 
 const defaultProps = {
+    onBlur: () => {},
     onChange: () => {}
 };
 
 class TextInput extends React.Component {
+    handleBlur(event) {
+        this.props.onBlur({
+            value: event.target.value
+        });
+    }
+
     handleChange(event) {
         this.props.onChange({
             value: event.target.value
@@ -44,6 +52,7 @@ class TextInput extends React.Component {
                     placeholder={this.props.placeholder}
                     value={this.props.value}
                     onChange={this.handleChange.bind(this)}
+                    onBlur={this.handleBlur.bind(this)}
                 />
             </div>
         );

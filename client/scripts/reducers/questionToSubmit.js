@@ -7,18 +7,46 @@ export default function questionToSubmit(state, action) {
                 {},
                 state,
                 {
-                    errors: [],
                     data: action.question
                 }
             );
+
+        case ActionTypes.QuestionUserNameValidationEnded:
+            return Object.assign(
+                {},
+                state,
+                {
+                    errors: Object.assign(
+                        {},
+                        state.errors,
+                        {
+                            user: action.errors,
+                        }
+                    ) 
+                }
+            );
+
+        case ActionTypes.QuestionTextValidationEnded:
+            return Object.assign(
+                {},
+                state,
+                {
+                    errors: Object.assign(
+                        {},
+                        state.errors,
+                        {
+                            text: action.errors,
+                        }
+                    ) 
+                }
+            );       
 
         case ActionTypes.QuestionValidationFailed:
             return Object.assign(
                 {},
                 state,
                 {
-                    errors: action.validationErrors,
-                    data: action.question
+                    errors: action.errors,
                 }
             );
 
@@ -27,7 +55,7 @@ export default function questionToSubmit(state, action) {
                 {},
                 state,
                 {
-                    errors: [],
+                    errors: {},
                     data: {}
                 }
             );
@@ -38,7 +66,7 @@ export default function questionToSubmit(state, action) {
                 state,
                 {
                     isSubmitting: true,
-                    errors: [],
+                    errors: {},
                     data: action.question
                 }
             );
@@ -49,7 +77,7 @@ export default function questionToSubmit(state, action) {
                 state,
                 {
                     isSubmitting: false,
-                    errors: [],
+                    errors: {},
                     data: {}
                 }
             );

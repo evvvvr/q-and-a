@@ -6,7 +6,7 @@ import ScreenTypes from '../ScreenTypes';
 import Store from '../Store';
 import TopMenu from '../components/TopMenu/TopMenu';
 import { answerChanged, submitAnswer } from '../actions/answer-actions';
-import { showAskForm, questionChanged, submitQuestion } from '../actions/question-to-submit-actions';
+import { showAskForm, questionChanged, submitQuestion, validateQuestionUserName, validateQuestionText } from '../actions/question-to-submit-actions';
 import { selectQuestion, fetchQuestion } from '../actions/question-actions';
 import { showAllQuestions, fetchAllQuestions } from '../actions/all-questions-actions';
 import { showAnsweredQuestions, fetchAnsweredQuestions } from '../actions/answered-questions-actions'; 
@@ -54,6 +54,8 @@ export default class QuestionsAndAnswersApp extends React.Component {
                     <AskQuestionForm
                         errors={this.state.questionToSubmit.errors}
                         {...this.state.questionToSubmit.data}
+                        onUserNameBlur={this.handleQuestionUserNameBlur.bind(this)}
+                        onTextBlur={this.handleQuestionTextBlur.bind(this)}
                         onQuestionChange={this.handleQuestionChange.bind(this)}
                         onQuestionSubmit={this.handleQuestionSubmit.bind(this)}
                     />
@@ -127,6 +129,14 @@ export default class QuestionsAndAnswersApp extends React.Component {
                 eventArgs.questionId,
                 eventArgs.answer
         ));
+    }
+
+    handleQuestionUserNameBlur(eventArgs) {
+        Store.dispatch(validateQuestionUserName(eventArgs.user));
+    }
+
+    handleQuestionTextBlur(eventArgs) {
+        Store.dispatch(validateQuestionText(eventArgs.text));
     }
 
     handleQuestionChange(eventArgs) {

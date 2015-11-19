@@ -5,6 +5,18 @@ import TextInput from './common/TextInput';
 import { ErrorTypes } from '../validation/errors';
 
 export default class AskQuestionForm extends React.Component {
+    handleUserNameBlur(eventArgs) {
+        this.props.onUserNameBlur({
+            user: eventArgs.value.trim()
+        });
+    }
+
+    handleTextBlur(eventArgs) {
+        this.props.onTextBlur({
+            text: eventArgs.value.trim()
+        });
+    }
+
     handleUserNameChange(eventArgs) {
         this.props.onQuestionChange({
             question: {
@@ -38,19 +50,23 @@ export default class AskQuestionForm extends React.Component {
         let textError, userNameError;
 
         if (this.props.errors) {
-            this.props.errors.forEach(error => {
-                switch (error.type) {
-                    case ErrorTypes.UserIsEmpty:
-                    case ErrorTypes.UserIsTooLong:
-                        userNameError = error.message;
-                        break;
+            if (this.props.errors.user) {
+                userNameError = this.props.errors.user
+                    .map(e => e.message)
+                    .reduce(
+                        (prev, current) => prev + ' ' + current,
+                        ''
+                    );                                
+            }
 
-                    case ErrorTypes.TextIsEmpty:
-                    case ErrorTypes.TextIsTooLong:
-                        textError = error.message;
-                        break;
-                }
-            });
+            if (this.props.errors.text) {
+                textError = this.props.errors.text
+                    .map(e => e.message)
+                    .reduce(
+                        (prev, current) => prev + ' ' + current,
+                        ''
+                    );                                
+            }
         }
 
         return (
@@ -62,6 +78,7 @@ export default class AskQuestionForm extends React.Component {
                         placeholder="Your Name"
                         value={this.props.user}
                         error={userNameError}
+                        onBlur={this.handleUserNameBlur.bind(this)}
                         onChange={this.handleUserNameChange.bind(this)}
                     />
                     <TextAreaInput
@@ -69,6 +86,7 @@ export default class AskQuestionForm extends React.Component {
                         placeholder="Your Answer"
                         value={this.props.text}
                         error={textError}
+                        onBlur={this.handleTextBlur.bind(this)}
                         onChange={this.handleTextChange.bind(this)}
                     />
                     <input
