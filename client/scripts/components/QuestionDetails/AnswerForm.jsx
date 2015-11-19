@@ -1,23 +1,23 @@
-import AnswerTextInput from './AnswerTextInput';
-import AnswerUserInput from './AnswerUserInput';
 import React from 'react';
-import { ErrorTypes } from '../../../validation/errors';
+import TextAreaInput from '../common/TextAreaInput';
+import TextInput from '../common/TextInput';
+import { ErrorTypes } from '../../validation/errors';
 
 export default class AnswerForm extends React.Component {
-    handleAnswerUserChange(event) {
+    handleUserNameChange(eventArgs) {
         this.props.onAnswerChange({
             answer: {
-                user: event.user.trim(),
+                user: eventArgs.value.trim(),
                 text: this.refs.text.getValue()
             }
         });
     }
 
-    handleAnswerTextChange(event) {
+    handleTextChange(eventArgs) {
         this.props.onAnswerChange({
             answer: {
-                user: this.refs.user.getValue().trim(),
-                text: event.text
+                user: this.refs.userName.getValue().trim(),
+                text: eventArgs.value.trim()
             }
         });
     }
@@ -27,21 +27,21 @@ export default class AnswerForm extends React.Component {
 
         this.props.onAnswerSubmit({
             answer: {
-                user: this.refs.user.getValue().trim(),
-                text: this.refs.text.getValue()
+                user: this.refs.userName.getValue().trim(),
+                text: this.refs.text.getValue().trim()
             }
         });
     }
 
     render() {
-        let textError, userError;
+        let textError, userNameError;
 
         if (this.props.errors) {
             this.props.errors.forEach(error => {
                 switch (error.type) {
                     case ErrorTypes.UserIsEmpty:
                     case ErrorTypes.UserIsTooLong:
-                        userError = error.message;
+                        userNameError = error.message;
                         break;
 
                     case ErrorTypes.TextIsEmpty:
@@ -59,17 +59,19 @@ export default class AnswerForm extends React.Component {
             >
                 <fieldset>
                     <legend>Your Answer</legend>
-                    <AnswerUserInput
-                        ref="user"
+                    <TextInput
+                        ref="userName"
+                        placeholder="Your Name"
                         value={this.props.user}
-                        error={userError}
-                        onChange={this.handleAnswerUserChange.bind(this)}
+                        error={userNameError}
+                        onChange={this.handleUserNameChange.bind(this)}
                     />
-                    <AnswerTextInput
+                    <TextAreaInput
                         ref="text"
+                        placeholder="Your Answer"
                         value={this.props.text}
                         error={textError}
-                        onChange={this.handleAnswerTextChange.bind(this)}
+                        onChange={this.handleTextChange.bind(this)}
                     />
                     <input
                         className="pure-button pure-button-primary"

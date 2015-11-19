@@ -1,4 +1,4 @@
-import AnswerForm from './AnswerForm/AnswerForm';
+import AnswerForm from './AnswerForm';
 import AnswerList from './AnswerList';
 import React from 'react';
 import { formatDateTime } from '../../util/date-time-util';

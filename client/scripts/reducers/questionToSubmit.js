@@ -2,6 +2,16 @@ import ActionTypes from '../actions/ActionTypes';
 
 export default function questionToSubmit(state, action) {
     switch (action.type) {
+        case ActionTypes.QuestionChanged:
+            return Object.assign(
+                {},
+                state,
+                {
+                    errors: [],
+                    data: action.question
+                }
+            );
+
         case ActionTypes.QuestionValidationFailed:
             return Object.assign(
                 {},

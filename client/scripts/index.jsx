@@ -40,10 +40,7 @@ const initialState = {
         isSubmitting: false,
         errors: [],
         questionId: null,
-        data: {
-            user: '',
-            text: ''
-        }
+        data: {}
     }
 };
 

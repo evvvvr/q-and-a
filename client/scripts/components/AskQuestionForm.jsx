@@ -1,72 +1,75 @@
 import classNames from 'classnames';
 import React from 'react';
+import TextAreaInput from './common/TextAreaInput';
+import TextInput from './common/TextInput';
 import { ErrorTypes } from '../validation/errors';
 
 export default class AskQuestionForm extends React.Component {
+    handleUserNameChange(eventArgs) {
+        this.props.onQuestionChange({
+            question: {
+                user: eventArgs.value.trim(),
+                text: this.refs.text.getValue()
+            }
+        });
+    }
+
+    handleTextChange(eventArgs) {
+        this.props.onQuestionChange({
+            question: {
+                user: this.refs.userName.getValue().trim(),
+                text: eventArgs.value.trim()
+            }
+        });
+    }
+
     handleSubmit(event) {
         event.preventDefault();
 
         this.props.onQuestionSubmit({
             question: {
-                user: this.refs.userName.value.trim(),
-                text: this.refs.text.value                
+                user: this.refs.userName.getValue().trim(),
+                text: this.refs.text.getValue().trim()                
             }
         });
     }
 
     render() {
-        let isUserValid = true;
-        let isTextValid = true;
-        let userValidationMessage, textValidationMessage;
+        let textError, userNameError;
 
         if (this.props.errors) {
             this.props.errors.forEach(error => {
                 switch (error.type) {
                     case ErrorTypes.UserIsEmpty:
                     case ErrorTypes.UserIsTooLong:
-                        isUserValid = false;
-                        userValidationMessage = (
-                            <div className="errorMessage">{error.message}</div>
-                        );
+                        userNameError = error.message;
                         break;
 
                     case ErrorTypes.TextIsEmpty:
                     case ErrorTypes.TextIsTooLong:
-                        isTextValid = false;
-                        textValidationMessage = (
-                            <div className="errorMessage">{error.message}</div>
-                        );
+                        textError = error.message;
                         break;
                 }
             });
         }
 
-        const userInputClassName = classNames({
-            'pure-input-2-3': true,
-            'invalidElement': !isUserValid
-        });
-
-        const textInputClassName = classNames({
-            'pure-input-2-3 textarea-text': true,
-            'invalidElement': !isTextValid
-        });
-
         return (
             <form className="pure-form pure-form-stacked" onSubmit={this.handleSubmit.bind(this)}>
                 <fieldset>
                     <legend>Ask Your Question</legend>
-                    {userValidationMessage}
-                    <input
-                        className={userInputClassName}
-                        type="text"
-                        placeholder="Your name"
+                    <TextInput
                         ref="userName"
+                        placeholder="Your Name"
+                        value={this.props.user}
+                        error={userNameError}
+                        onChange={this.handleUserNameChange.bind(this)}
                     />
-                    {textValidationMessage}
-                    <textarea
-                        className={textInputClassName}
-                        placeholder="Your Question"
+                    <TextAreaInput
                         ref="text"
+                        placeholder="Your Answer"
+                        value={this.props.text}
+                        error={textError}
+                        onChange={this.handleTextChange.bind(this)}
                     />
                     <input
                         className="pure-button pure-button-primary"

@@ -6,10 +6,10 @@ import ScreenTypes from '../ScreenTypes';
 import Store from '../Store';
 import TopMenu from '../components/TopMenu/TopMenu';
 import { answerChanged, submitAnswer } from '../actions/answer-actions';
-import { selectQuestion, fetchQuestion, submitQuestion } from '../actions/question-actions';
+import { showAskForm, questionChanged, submitQuestion } from '../actions/question-to-submit-actions';
+import { selectQuestion, fetchQuestion } from '../actions/question-actions';
 import { showAllQuestions, fetchAllQuestions } from '../actions/all-questions-actions';
 import { showAnsweredQuestions, fetchAnsweredQuestions } from '../actions/answered-questions-actions'; 
-import { showAskForm } from '../actions/actions';
 import { showUnansweredQuestions, fetchUnansweredQuestions } from '../actions/unanswered-questions-actions';
 
 export default class QuestionsAndAnswersApp extends React.Component {
@@ -53,6 +53,8 @@ export default class QuestionsAndAnswersApp extends React.Component {
             () => (
                     <AskQuestionForm
                         errors={this.state.questionToSubmit.errors}
+                        {...this.state.questionToSubmit.data}
+                        onQuestionChange={this.handleQuestionChange.bind(this)}
                         onQuestionSubmit={this.handleQuestionSubmit.bind(this)}
                     />
         ));
@@ -115,12 +117,8 @@ export default class QuestionsAndAnswersApp extends React.Component {
         Store.dispatch(fetchQuestion(eventArgs.questionId));
     }
 
-    handleQuestionSubmit(eventArgs) {
-        Store.dispatch(submitQuestion(eventArgs.question));
-    }
-
     handleAnswerChange(eventArgs) {
-        Store.dispatch(answerChanged(eventArgs.answer));   
+        Store.dispatch(answerChanged(eventArgs.answer));  
     }
 
     handleAnswerSubmit(eventArgs) {
@@ -129,6 +127,14 @@ export default class QuestionsAndAnswersApp extends React.Component {
                 eventArgs.questionId,
                 eventArgs.answer
         ));
+    }
+
+    handleQuestionChange(eventArgs) {
+        Store.dispatch(questionChanged(eventArgs.question));
+    }
+
+    handleQuestionSubmit(eventArgs) {
+        Store.dispatch(submitQuestion(eventArgs.question));
     }
 
     render() {

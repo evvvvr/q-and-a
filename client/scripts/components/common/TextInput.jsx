@@ -1,20 +1,31 @@
 import classNames from 'classnames';
-import React from 'react';
+import React, { PropTypes } from 'react';
 
-export default class AnswerTextInput extends React.Component {
+const propTypes = {
+    value: PropTypes.string,
+    placeholder: PropTypes.string,
+    onChange: PropTypes.func,
+    error: PropTypes.string
+};
+
+const defaultProps = {
+    onChange: () => {}
+};
+
+class TextInput extends React.Component {
     handleChange(event) {
         this.props.onChange({
-            text: event.target.value
+            value: event.target.value
         });
     }
 
     getValue() {
-        return this.props.value;
+        return this.props.value ? this.props.value : '';
     }
 
     render() {
         const className = classNames({
-            'pure-input-2-3 textarea-text': true,
+            'pure-input-2-3': true,
             'invalidElement': this.props.error
         });
 
@@ -27,9 +38,10 @@ export default class AnswerTextInput extends React.Component {
         return (
             <div>
                 {errorMessage}
-                <textarea
+                <input
                     className={className}
-                    placeholder="Your Answer"
+                    type="text"
+                    placeholder={this.props.placeholder}
                     value={this.props.value}
                     onChange={this.handleChange.bind(this)}
                 />
@@ -37,3 +49,8 @@ export default class AnswerTextInput extends React.Component {
         );
     }
 }
+
+TextInput.propTypes = propTypes;
+TextInput.defaultProps = defaultProps;
+
+export default TextInput;
