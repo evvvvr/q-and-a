@@ -1,7 +1,19 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 import { formatDateTime } from '../../util/date-time-util';
 
-export default class QuestionListItem extends React.Component {
+const propTypes = {
+    questionId: PropTypes.number,
+    user: PropTypes.string.isRequired,
+    text: PropTypes.string.isRequired,
+    dateTimeAsked: PropTypes.string.isRequired,
+    onQuestionSelected: PropTypes.func
+};
+
+const defaultProps = {
+    onQuestionSelected: () => {}
+};
+
+class QuestionListItem extends React.Component {
     handleClick() {
         this.props.onQuestionSelected({
                 questionId: this.props.questionId
@@ -24,3 +36,8 @@ export default class QuestionListItem extends React.Component {
         );
     }
 }
+
+QuestionListItem.propTypes = propTypes;
+QuestionListItem.defaultProps = defaultProps;
+
+export default QuestionListItem;

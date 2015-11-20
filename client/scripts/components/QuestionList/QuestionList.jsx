@@ -1,8 +1,13 @@
 import QuestionListItem from './QuestionListItem';
-import React from 'react';
+import React, { PropTypes } from 'react';
 import { compareItemsChronologically } from '../../util/date-time-util';
 
-export default class QuestionList extends React.Component {
+const propTypes = {
+    questions: PropTypes.arrayOf(React.PropTypes.object).isRequired,
+    onQuestionSelected: PropTypes.func
+};
+
+class QuestionList extends React.Component {
     render() {
         const questionNodes = this.props.questions
             .sort((a, b) => compareItemsChronologically(
@@ -13,9 +18,9 @@ export default class QuestionList extends React.Component {
                 <QuestionListItem
                     key={question.id}
                     questionId={question.id}
+                    user={question.user}
                     text={question.text}
                     dateTimeAsked={question.dateTimeAsked}
-                    user={question.user}
                     onQuestionSelected={this.props.onQuestionSelected}
                 />
             ));
@@ -23,3 +28,7 @@ export default class QuestionList extends React.Component {
         return <ul className="appItemList">{questionNodes}</ul>;
     }  
 }
+
+QuestionList.propTypes = propTypes;
+
+export default QuestionList;

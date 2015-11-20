@@ -1,15 +1,14 @@
 import AskQuestionForm from '../components/AskQuestionForm';
 import QuestionDetails from '../components/QuestionDetails/QuestionDetails';
-import Questions from '../components/Questions';
+import Questions from './Questions';
 import React from 'react';
 import ScreenTypes from '../ScreenTypes';
 import Store from '../Store';
 import TopMenu from '../components/TopMenu/TopMenu';
 import { answerChanged, submitAnswer, validateAnswerUserName, validateAnswerText } from '../actions/answer-actions';
-import { showAskForm, questionChanged, submitQuestion, validateQuestionUserName, validateQuestionText } from '../actions/question-to-submit-actions';
-import { selectQuestion, fetchQuestion } from '../actions/question-actions';
 import { showAllQuestions, fetchAllQuestions } from '../actions/all-questions-actions';
 import { showAnsweredQuestions, fetchAnsweredQuestions } from '../actions/answered-questions-actions'; 
+import { showAskForm, questionChanged, submitQuestion, validateQuestionUserName, validateQuestionText } from '../actions/question-to-submit-actions';
 import { showUnansweredQuestions, fetchUnansweredQuestions } from '../actions/unanswered-questions-actions';
 
 export default class QuestionsAndAnswersApp extends React.Component {
@@ -24,7 +23,6 @@ export default class QuestionsAndAnswersApp extends React.Component {
                     <Questions
                         header="All Questions"
                         questions={this.state.allQuestions.items}
-                        onQuestionSelected={this.handleQuestionSelected.bind(this)}
                     />
         ));
 
@@ -34,7 +32,6 @@ export default class QuestionsAndAnswersApp extends React.Component {
                     <Questions
                         header="Answered Questions"
                         questions={this.state.answeredQuestions.items}
-                        onQuestionSelected={this.handleQuestionSelected.bind(this)}
                     />
         ));
 
@@ -44,7 +41,6 @@ export default class QuestionsAndAnswersApp extends React.Component {
                     <Questions
                         header="Unanswered Questions"
                         questions={this.state.unansweredQuestions.items}
-                        onQuestionSelected={this.handleQuestionSelected.bind(this)}
                     />
         ));
 
@@ -114,11 +110,6 @@ export default class QuestionsAndAnswersApp extends React.Component {
             default:
                 throw `Unknown screen type selected: ${eventArgs.menuItemValue}`;
         }
-    }
-
-    handleQuestionSelected(eventArgs) {
-        Store.dispatch(selectQuestion(eventArgs.questionId));
-        Store.dispatch(fetchQuestion(eventArgs.questionId));
     }
 
     handleAnswerChange(eventArgs) {
