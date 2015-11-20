@@ -18,6 +18,8 @@ const ActionTypes = {
     QuestionValidationFailed: Symbol('QuestionValidationFailed'),
     SubmittingQuestion: Symbol('SubmittingQuestion'),
     QuestionSubmitted: Symbol('QuestionSubmitted'),
+    AnswerUserNameValidationEnded: Symbol('AnswerUserNameValidationEnded'),
+    AnswerTextValidationEnded: Symbol('AnswerTextValidationEnded'),
     AnswerChanged: Symbol('AnswerChanged'),
     AnswerValidationFailed: Symbol('AnswerValidationFailed'),
     SubmittingAnswer: Symbol('SubmittingAnswer'),

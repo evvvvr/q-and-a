@@ -27,6 +27,8 @@ export default class QuestionDetails extends React.Component {
                     <AnswerForm
                         {...this.props.answer}
                         errors={this.props.answerErrors}
+                        onUserNameBlur={this.props.onUserNameBlur}
+                        onTextBlur={this.props.onTextBlur}
                         onAnswerChange={this.props.onAnswerChange}
                         onAnswerSubmit={this.onAnswerSubmit.bind(this)} />
                 </div>

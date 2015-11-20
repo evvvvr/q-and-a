@@ -8,12 +8,9 @@ export default function answer(state, action) {
                 state,
                 {
                     isSubmitting: false,
-                    errors: [],
-                    questionId: action.questionId,
-                    data: {
-                        user: '',
-                        text: ''
-                    }
+                    errors: {},
+                    answerId: action.answerId,
+                    data: {}
                 }
             );
 
@@ -22,8 +19,37 @@ export default function answer(state, action) {
                 {},
                 state,
                 {
-                    errors: [],
                     data: action.answer
+                }
+            );
+
+        case ActionTypes.AnswerUserNameValidationEnded:
+            return Object.assign(
+                {},
+                state,
+                {
+                    errors: Object.assign(
+                        {},
+                        state.errors,
+                        {
+                            user: action.errors,
+                        }
+                    ) 
+                }
+            );
+
+        case ActionTypes.AnswerTextValidationEnded:
+            return Object.assign(
+                {},
+                state,
+                {
+                    errors: Object.assign(
+                        {},
+                        state.errors,
+                        {
+                            text: action.errors,
+                        }
+                    ) 
                 }
             );
 
@@ -32,8 +58,7 @@ export default function answer(state, action) {
                 {},
                 state,
                 {
-                    errors: action.validationErrors,
-                    data: action.answer
+                    errors: action.validationErrors
                 }
             );
 
@@ -43,8 +68,8 @@ export default function answer(state, action) {
                 state,
                 {
                     isSubmitting: true,
-                    errors: [],
-                    questionId: action.questionId,
+                    errors: {},
+                    answerId: action.answerId,
                     data: action.answer
                 }
             );
@@ -55,12 +80,9 @@ export default function answer(state, action) {
                 state,
                 {
                     isSubmitting: false,
-                    errors: [],
-                    questionId: null,
-                    data: {
-                        user: '',
-                        text: ''
-                    }
+                    errors: {},
+                    answerId: null,
+                    data: {}
                 }
             );
 

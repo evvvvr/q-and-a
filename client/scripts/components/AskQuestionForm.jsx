@@ -11,18 +11,18 @@ export default class AskQuestionForm extends React.Component {
         });
     }
 
-    handleTextBlur(eventArgs) {
-        this.props.onTextBlur({
-            text: eventArgs.value.trim()
-        });
-    }
-
     handleUserNameChange(eventArgs) {
         this.props.onQuestionChange({
             question: {
                 user: eventArgs.value.trim(),
                 text: this.refs.text.getValue()
             }
+        });
+    }
+
+    handleTextBlur(eventArgs) {
+        this.props.onTextBlur({
+            text: eventArgs.value.trim()
         });
     }
 

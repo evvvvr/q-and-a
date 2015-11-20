@@ -2,6 +2,16 @@ import ActionTypes from '../actions/ActionTypes';
 
 export default function questionToSubmit(state, action) {
     switch (action.type) {
+        case ActionTypes.ShowAskForm:
+            return Object.assign(
+                {},
+                state,
+                {
+                    errors: {},
+                    data: {}
+                }
+            );
+
         case ActionTypes.QuestionChanged:
             return Object.assign(
                 {},
@@ -39,7 +49,7 @@ export default function questionToSubmit(state, action) {
                         }
                     ) 
                 }
-            );       
+            );
 
         case ActionTypes.QuestionValidationFailed:
             return Object.assign(
@@ -47,16 +57,6 @@ export default function questionToSubmit(state, action) {
                 state,
                 {
                     errors: action.errors,
-                }
-            );
-
-        case ActionTypes.ShowAskForm:
-            return Object.assign(
-                {},
-                state,
-                {
-                    errors: {},
-                    data: {}
                 }
             );
 
