@@ -1,11 +1,11 @@
 import { Errors } from './errors';
 
-export function validateUserName(userName) {
+export function validateUsername(username) {
     const errors = [];
 
-    if (!userName) {
+    if (!username) {
         errors.push(Errors.userIsEmpty());
-    } else if (userName.length > 255) {
+    } else if (username.length > 255) {
         errors.push(Errors.userIsTooLong(255));
     }
 
@@ -26,14 +26,14 @@ export function validateText(text) {
 
 export function validateAnswer(answer) {
     return {
-        user: validateUserName(answer.user),
+        user: validateUsername(answer.user),
         text: validateText(answer.text)
     };
 };
 
 export function validateQuestion(question) {
     return {
-        user: validateUserName(question.user),
+        user: validateUsername(question.user),
         text: validateText(question.text)
     };
 };

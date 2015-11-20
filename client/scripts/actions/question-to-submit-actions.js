@@ -1,37 +1,20 @@
 import ActionTypes from './ActionTypes';
 import API from '../API';
 import { showAllQuestions, fetchAllQuestions } from './all-questions-actions';
-import { validateUserName, validateText, validateQuestion } from '../validation/validators';
+import { validateUsername, validateText, validateQuestion } from '../validation/validators';
 
-export function showAskForm() {
-    return {
-        type: ActionTypes.ShowAskForm
-    };
+export function changeQuestionUsername(userName) {
+    return (dispatch) =>
+        dispatch(questionUsernameChanged(userName, validateUsername(userName)));
 }
 
-export function questionChanged(question) {
-    return {
-        type: ActionTypes.QuestionChanged,
-        question
-    }
-}
-
-export function validateQuestionUserName(userName) {
-    return (dispatch) => {
-        dispatch(
-            questionUserNameValidationEnded(userName, validateUserName(userName)));
-    };
-}
-
-export function validateQuestionText(text) {
-    return (dispatch) => {
-        dispatch(
-            questionTextValidationEnded(text, validateText(text)));
-    };   
+export function changeQuestionText(text) {
+    return (dispatch) =>
+        dispatch(questionTextChanged(text, validateText(text)));
 }
 
 export function submitQuestion(question) {
-    return function (dispatch, getState) {
+    return (dispatch, getState) => {
         if (!getState().questionToSubmit.isSubmitting) {
             console.info(`Submitting question ${question.text}
                 as ${question.user}`);
@@ -48,8 +31,10 @@ export function submitQuestion(question) {
             } else {
                 dispatch(submittingQuestion(question));
      
+                console.log('submitting question');
                 API.submitQuestion(question, (err, res) => {
                     if (res.ok) {
+                        console.log('submitting question ok');
                         dispatch(questionSubmitted(res.header['Location']));
                         dispatch(showAllQuestions());
                         dispatch(fetchAllQuestions());                    
@@ -60,17 +45,17 @@ export function submitQuestion(question) {
     };
 }
 
-function questionUserNameValidationEnded(userName, errors) {
+function questionUsernameChanged(user, errors) {
     return {
-        type: ActionTypes.QuestionUserNameValidationEnded,
-        userName,
+        type: ActionTypes.QuestionUsernameChanged,
+        user,
         errors
     };
 }
 
-function questionTextValidationEnded(text, errors) {
+function questionTextChanged(text, errors) {
     return {
-        type: ActionTypes.QuestionTextValidationEnded,
+        type: ActionTypes.QuestionTextChanged,
         text,
         errors
     };

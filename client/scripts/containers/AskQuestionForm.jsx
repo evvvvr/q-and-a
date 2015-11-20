@@ -1,57 +1,38 @@
 import classNames from 'classnames';
 import React from 'react';
-import TextAreaInput from './common/TextAreaInput';
-import TextInput from './common/TextInput';
+import Store from '../Store';
+import TextAreaInput from '../components/common/TextAreaInput';
+import TextInput from '../components/common/TextInput';
 import { ErrorTypes } from '../validation/errors';
+import { changeQuestionUsername, changeQuestionText, submitQuestion } from '../actions/question-to-submit-actions';
 
-export default class AskQuestionForm extends React.Component {
-    handleUserNameBlur(eventArgs) {
-        this.props.onUserNameBlur({
-            user: eventArgs.value.trim()
-        });
-    }
-
-    handleUserNameChange(eventArgs) {
-        this.props.onQuestionChange({
-            question: {
-                user: eventArgs.value.trim(),
-                text: this.refs.text.getValue()
-            }
-        });
-    }
-
-    handleTextBlur(eventArgs) {
-        this.props.onTextBlur({
-            text: eventArgs.value.trim()
-        });
+class AskQuestionForm extends React.Component {
+    handleUsernameChange(eventArgs) {
+        Store.dispatch(changeQuestionUsername(eventArgs.value.trim()));
     }
 
     handleTextChange(eventArgs) {
-        this.props.onQuestionChange({
-            question: {
-                user: this.refs.userName.getValue().trim(),
-                text: eventArgs.value.trim()
-            }
-        });
+        Store.dispatch(changeQuestionText(eventArgs.value.trim()));
     }
 
     handleSubmit(event) {
         event.preventDefault();
 
-        this.props.onQuestionSubmit({
-            question: {
-                user: this.refs.userName.getValue().trim(),
-                text: this.refs.text.getValue().trim()                
-            }
-        });
+        Store.dispatch(submitQuestion({
+            user: this.refs.userName.getValue().trim(),
+            text: this.refs.text.getValue().trim()                
+        }));
     }
 
     render() {
+        const containerState = Store.getState().questionToSubmit;
+        const errors = containerState.errors;
+
         let textError, userNameError;
 
-        if (this.props.errors) {
-            if (this.props.errors.user) {
-                userNameError = this.props.errors.user
+        if (errors) {
+            if (errors.user) {
+                userNameError = errors.user
                     .map(e => e.message)
                     .reduce(
                         (prev, current) => prev + ' ' + current,
@@ -59,8 +40,8 @@ export default class AskQuestionForm extends React.Component {
                     );                                
             }
 
-            if (this.props.errors.text) {
-                textError = this.props.errors.text
+            if (errors.text) {
+                textError = errors.text
                     .map(e => e.message)
                     .reduce(
                         (prev, current) => prev + ' ' + current,
@@ -76,17 +57,15 @@ export default class AskQuestionForm extends React.Component {
                     <TextInput
                         ref="userName"
                         placeholder="Your Name"
-                        value={this.props.user}
+                        value={containerState.data.user}
                         error={userNameError}
-                        onBlur={this.handleUserNameBlur.bind(this)}
-                        onChange={this.handleUserNameChange.bind(this)}
+                        onChange={this.handleUsernameChange.bind(this)}
                     />
                     <TextAreaInput
                         ref="text"
                         placeholder="Your Answer"
-                        value={this.props.text}
+                        value={containerState.data.text}
                         error={textError}
-                        onBlur={this.handleTextBlur.bind(this)}
                         onChange={this.handleTextChange.bind(this)}
                     />
                     <input
@@ -99,3 +78,5 @@ export default class AskQuestionForm extends React.Component {
         );
     }
 }
+
+export default AskQuestionForm;

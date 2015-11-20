@@ -1,7 +1,7 @@
 import ActionTypes from './ActionTypes';
 import API from '../API';
 import { selectanswer, fetchanswer } from './answer-actions';
-import { validateUserName, validateText, validateAnswer } from '../validation/validators';
+import { validateUsername, validateText, validateAnswer } from '../validation/validators';
 
 export function answerChanged(answer) {
     return {
@@ -13,7 +13,7 @@ export function answerChanged(answer) {
 export function validateAnswerUserName(userName) {
     return (dispatch) => {
         dispatch(
-            answerUserNameValidationEnded(userName, validateUserName(userName)));
+            answerUserNameValidationEnded(userName, validateUsername(userName)));
     };
 }
 

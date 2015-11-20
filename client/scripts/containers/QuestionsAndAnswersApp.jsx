@@ -1,4 +1,4 @@
-import AskQuestionForm from '../components/AskQuestionForm';
+import AskQuestionForm from './AskQuestionForm';
 import QuestionDetails from '../components/QuestionDetails/QuestionDetails';
 import Questions from './Questions';
 import React from 'react';
@@ -8,7 +8,7 @@ import TopMenu from '../components/TopMenu/TopMenu';
 import { answerChanged, submitAnswer, validateAnswerUserName, validateAnswerText } from '../actions/answer-actions';
 import { showAllQuestions, fetchAllQuestions } from '../actions/all-questions-actions';
 import { showAnsweredQuestions, fetchAnsweredQuestions } from '../actions/answered-questions-actions'; 
-import { showAskForm, questionChanged, submitQuestion, validateQuestionUserName, validateQuestionText } from '../actions/question-to-submit-actions';
+import { showAskForm } from '../actions/app-actions';
 import { showUnansweredQuestions, fetchUnansweredQuestions } from '../actions/unanswered-questions-actions';
 
 export default class QuestionsAndAnswersApp extends React.Component {
@@ -46,16 +46,8 @@ export default class QuestionsAndAnswersApp extends React.Component {
 
         this.ScreenTypeToViewRendererMap.set(
             ScreenTypes.AskQuestion,
-            () => (
-                    <AskQuestionForm
-                        errors={this.state.questionToSubmit.errors}
-                        {...this.state.questionToSubmit.data}
-                        onUserNameBlur={this.handleQuestionUserNameBlur.bind(this)}
-                        onTextBlur={this.handleQuestionTextBlur.bind(this)}
-                        onQuestionChange={this.handleQuestionChange.bind(this)}
-                        onQuestionSubmit={this.handleQuestionSubmit.bind(this)}
-                    />
-        ));
+            () => <AskQuestionForm />
+        );
 
         this.ScreenTypeToViewRendererMap.set(
             ScreenTypes.Question,
@@ -124,28 +116,12 @@ export default class QuestionsAndAnswersApp extends React.Component {
         ));
     }
 
-    handleQuestionUserNameBlur(eventArgs) {
-        Store.dispatch(validateQuestionUserName(eventArgs.user));
-    }
-
-    handleQuestionTextBlur(eventArgs) {
-        Store.dispatch(validateQuestionText(eventArgs.text));
-    }
-
     handleAnswerUserNameBlur(eventArgs) {
         Store.dispatch(validateAnswerUserName(eventArgs.user));
     }
 
     handleAnswerTextBlur(eventArgs) {
         Store.dispatch(validateAnswerText(eventArgs.text));
-    }
-
-    handleQuestionChange(eventArgs) {
-        Store.dispatch(questionChanged(eventArgs.question));
-    }
-
-    handleQuestionSubmit(eventArgs) {
-        Store.dispatch(submitQuestion(eventArgs.question));
     }
 
     render() {

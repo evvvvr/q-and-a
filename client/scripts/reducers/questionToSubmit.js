@@ -12,16 +12,7 @@ export default function questionToSubmit(state, action) {
                 }
             );
 
-        case ActionTypes.QuestionChanged:
-            return Object.assign(
-                {},
-                state,
-                {
-                    data: action.question
-                }
-            );
-
-        case ActionTypes.QuestionUserNameValidationEnded:
+        case ActionTypes.QuestionUsernameChanged:
             return Object.assign(
                 {},
                 state,
@@ -32,11 +23,18 @@ export default function questionToSubmit(state, action) {
                         {
                             user: action.errors,
                         }
-                    ) 
+                    ),
+                    data: Object.assign(
+                        {},
+                        state.data,
+                        {
+                            user: action.user,
+                        }
+                    )
                 }
             );
 
-        case ActionTypes.QuestionTextValidationEnded:
+        case ActionTypes.QuestionTextChanged:
             return Object.assign(
                 {},
                 state,
@@ -47,7 +45,14 @@ export default function questionToSubmit(state, action) {
                         {
                             text: action.errors,
                         }
-                    ) 
+                    ),
+                    data: Object.assign(
+                        {},
+                        state.data,
+                        {
+                            text: action.text,
+                        }
+                    )
                 }
             );
 
