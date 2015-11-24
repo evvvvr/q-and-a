@@ -14,16 +14,18 @@ class QuestionList extends React.Component {
                 a.dateTimeAsked,
                 b.dateTimeAsked
             ))
-            .map((question) => (
-                <QuestionListItem
-                    key={question.id}
-                    questionId={question.id}
-                    user={question.user}
-                    text={question.text}
-                    dateTimeAsked={question.dateTimeAsked}
-                    onQuestionSelected={this.props.onQuestionSelected}
-                />
-            ));
+            .map((question) => {
+                const { id, ...questionProps } = question;
+
+                return ( 
+                    <QuestionListItem
+                        key={id}
+                        questionId={id}
+                        {...questionProps}
+                        onQuestionSelected={this.props.onQuestionSelected}
+                    />
+                );
+            });
 
         return <ul className="appItemList">{questionNodes}</ul>;
     }  

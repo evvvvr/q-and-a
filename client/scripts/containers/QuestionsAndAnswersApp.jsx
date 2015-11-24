@@ -1,17 +1,16 @@
 import AskQuestionForm from './AskQuestionForm';
-import QuestionDetails from '../components/QuestionDetails/QuestionDetails';
+import QuestionDetails from '../containers/QuestionDetails/QuestionDetails';
 import Questions from './Questions';
 import React from 'react';
 import ScreenTypes from '../ScreenTypes';
 import Store from '../Store';
 import TopMenu from '../components/TopMenu/TopMenu';
-import { answerChanged, submitAnswer, validateAnswerUserName, validateAnswerText } from '../actions/answer-actions';
 import { showAllQuestions, fetchAllQuestions } from '../actions/all-questions-actions';
 import { showAnsweredQuestions, fetchAnsweredQuestions } from '../actions/answered-questions-actions'; 
-import { showAskForm } from '../actions/app-actions';
+import { showQuestionForm } from '../actions/question-to-submit-actions';
 import { showUnansweredQuestions, fetchUnansweredQuestions } from '../actions/unanswered-questions-actions';
 
-export default class QuestionsAndAnswersApp extends React.Component {
+class QuestionsAndAnswersApp extends React.Component {
     constructor(props) {
         super(props);
 
@@ -52,16 +51,7 @@ export default class QuestionsAndAnswersApp extends React.Component {
         this.ScreenTypeToViewRendererMap.set(
             ScreenTypes.Question,
             () => (
-                    <QuestionDetails
-                        isLoading={this.state.question.isFetching}
-                        {...this.state.question.data}
-                        answerErrors={this.state.answer.errors}
-                        answer={this.state.answer.data}
-                        onUserNameBlur={this.handleAnswerUserNameBlur.bind(this)}
-                        onTextBlur={this.handleAnswerTextBlur.bind(this)}
-                        onAnswerChange={this.handleAnswerChange.bind(this)}
-                        onAnswerSubmit={this.handleAnswerSubmit.bind(this)}
-                    />
+                    <QuestionDetails questionId={this.state.question.data.id} />
             ));
 
         this.state = Store.getState();
@@ -96,32 +86,12 @@ export default class QuestionsAndAnswersApp extends React.Component {
                 break;
 
             case ScreenTypes.AskQuestion:
-                Store.dispatch(showAskForm());
+                Store.dispatch(showQuestionForm());
                 break;
 
             default:
                 throw `Unknown screen type selected: ${eventArgs.menuItemValue}`;
         }
-    }
-
-    handleAnswerChange(eventArgs) {
-        Store.dispatch(answerChanged(eventArgs.answer));  
-    }
-
-    handleAnswerSubmit(eventArgs) {
-        Store.dispatch(
-            submitAnswer(
-                eventArgs.questionId,
-                eventArgs.answer
-        ));
-    }
-
-    handleAnswerUserNameBlur(eventArgs) {
-        Store.dispatch(validateAnswerUserName(eventArgs.user));
-    }
-
-    handleAnswerTextBlur(eventArgs) {
-        Store.dispatch(validateAnswerText(eventArgs.text));
     }
 
     render() {
@@ -142,4 +112,6 @@ export default class QuestionsAndAnswersApp extends React.Component {
             </div>
         );
     }
-};
+}
+
+export default QuestionsAndAnswersApp;

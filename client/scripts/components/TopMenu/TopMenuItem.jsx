@@ -1,7 +1,16 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 import classNames from 'classnames'; 
 
-export default class TopMenuItem extends React.Component {
+const propTypes = {
+    text: PropTypes.string.isRequired,
+    onMenuItemSelected: PropTypes.func
+};
+
+const defaultProps = {
+    onMenuItemSelected: () => {}
+};
+
+class TopMenuItem extends React.Component {
     handleClick() {
         this.props.onMenuItemSelected({
             menuItemValue: this.props.value
@@ -27,3 +36,8 @@ export default class TopMenuItem extends React.Component {
         );
     }
 }
+
+TopMenuItem.propTypes = propTypes;
+TopMenuItem.defaultProps = defaultProps;
+
+export default TopMenuItem;

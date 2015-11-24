@@ -9,21 +9,11 @@ export default function answer(state, action) {
                 {
                     isSubmitting: false,
                     errors: {},
-                    answerId: action.answerId,
                     data: {}
                 }
             );
 
-        case ActionTypes.AnswerChanged:
-            return Object.assign(
-                {},
-                state,
-                {
-                    data: action.answer
-                }
-            );
-
-        case ActionTypes.AnswerUserNameValidationEnded:
+        case ActionTypes.AnswerUsernameChanged:
             return Object.assign(
                 {},
                 state,
@@ -34,11 +24,18 @@ export default function answer(state, action) {
                         {
                             user: action.errors,
                         }
-                    ) 
+                    ),
+                    data: Object.assign(
+                        {},
+                        state.data,
+                        {
+                            user: action.user,
+                        }
+                    )
                 }
             );
 
-        case ActionTypes.AnswerTextValidationEnded:
+        case ActionTypes.AnswerTextChanged:
             return Object.assign(
                 {},
                 state,
@@ -49,7 +46,14 @@ export default function answer(state, action) {
                         {
                             text: action.errors,
                         }
-                    ) 
+                    ),
+                    data: Object.assign(
+                        {},
+                        state.data,
+                        {
+                            text: action.text,
+                        }
+                    )
                 }
             );
 
@@ -69,7 +73,6 @@ export default function answer(state, action) {
                 {
                     isSubmitting: true,
                     errors: {},
-                    answerId: action.answerId,
                     data: action.answer
                 }
             );
@@ -81,7 +84,6 @@ export default function answer(state, action) {
                 {
                     isSubmitting: false,
                     errors: {},
-                    answerId: null,
                     data: {}
                 }
             );

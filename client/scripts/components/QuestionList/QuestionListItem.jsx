@@ -2,7 +2,7 @@ import React, { PropTypes } from 'react';
 import { formatDateTime } from '../../util/date-time-util';
 
 const propTypes = {
-    questionId: PropTypes.number,
+    questionId: PropTypes.number.isRequired,
     user: PropTypes.string.isRequired,
     text: PropTypes.string.isRequired,
     dateTimeAsked: PropTypes.string.isRequired,

@@ -2,7 +2,7 @@ import moment from 'moment';
 
 export function formatDateTime(dateTime) {
  return moment.utc(dateTime).local()
-    .format('dddd, MMMM Do YYYY, h:mm:ss a');   
+    .format('dddd, MMMM Do YYYY, HH:mm:ss');   
 }
 
 export function compareItemsChronologically(a, b) {

@@ -3,6 +3,12 @@ import API from '../API';
 import { showAllQuestions, fetchAllQuestions } from './all-questions-actions';
 import { validateUsername, validateText, validateQuestion } from '../validation/validators';
 
+export function showQuestionForm() {
+    return {
+        type: ActionTypes.ShowAskForm
+    };
+}
+
 export function changeQuestionUsername(userName) {
     return (dispatch) =>
         dispatch(questionUsernameChanged(userName, validateUsername(userName)));
@@ -31,10 +37,8 @@ export function submitQuestion(question) {
             } else {
                 dispatch(submittingQuestion(question));
      
-                console.log('submitting question');
                 API.submitQuestion(question, (err, res) => {
                     if (res.ok) {
-                        console.log('submitting question ok');
                         dispatch(questionSubmitted(res.header['Location']));
                         dispatch(showAllQuestions());
                         dispatch(fetchAllQuestions());                    

@@ -2,6 +2,17 @@ import ActionTypes from '../actions/ActionTypes';
 
 export default function question(state, action) {
     switch (action.type) {
+        case ActionTypes.SelectQuestion:
+            return Object.assign(
+                {},
+                state,
+                {
+                    data: {
+                        id: action.questionId
+                    }
+                }
+            );
+
         case ActionTypes.RequestQuestion:
             return Object.assign(
                 {},

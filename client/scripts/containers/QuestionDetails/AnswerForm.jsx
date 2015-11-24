@@ -1,56 +1,44 @@
-import React from 'react';
-import TextAreaInput from '../common/TextAreaInput';
-import TextInput from '../common/TextInput';
+import React, { PropTypes } from 'react';
+import Store from '../../Store';
+import TextAreaInput from '../../components/common/TextAreaInput';
+import TextInput from '../../components/common/TextInput';
+import { changeAnswerUsername, changeAnswerText, submitAnswer } from '../../actions/answer-actions';
 import { ErrorTypes } from '../../validation/errors';
 
-export default class AnswerForm extends React.Component {
-    handleUserNameBlur(eventArgs) {
-        this.props.onUserNameBlur({
-            user: eventArgs.value.trim()
-        });
-    }
+const propTypes = {
+    questionId: PropTypes.number.isRequired
+};
 
+class AnswerForm extends React.Component {
     handleUserNameChange(eventArgs) {
-        this.props.onAnswerChange({
-            answer: {
-                user: eventArgs.value.trim(),
-                text: this.refs.text.getValue()
-            }
-        });
-    }
-
-    handleTextBlur(eventArgs) {
-        this.props.onTextBlur({
-            text: eventArgs.value.trim()
-        });
+        Store.dispatch(changeAnswerUsername(eventArgs.value.trim()));
     }
 
     handleTextChange(eventArgs) {
-        this.props.onAnswerChange({
-            answer: {
-                user: this.refs.userName.getValue().trim(),
-                text: eventArgs.value.trim()
-            }
-        });
+        Store.dispatch(changeAnswerText(eventArgs.value.trim()));
     }
 
     handleSubmit(event) {
         event.preventDefault();
 
-        this.props.onAnswerSubmit({
-            answer: {
+        Store.dispatch(submitAnswer(
+            this.props.questionId,
+            {
                 user: this.refs.userName.getValue().trim(),
                 text: this.refs.text.getValue().trim()
             }
-        });
+        ));
     }
 
     render() {
+        const containerState = Store.getState().answer;
+        const errors = containerState.errors;
+
         let textError, userNameError;
 
-        if (this.props.errors) {
-            if (this.props.errors.user) {
-                userNameError = this.props.errors.user
+        if (errors) {
+            if (errors.user) {
+                userNameError = errors.user
                     .map(e => e.message)
                     .reduce(
                         (prev, current) => prev + ' ' + current,
@@ -58,8 +46,8 @@ export default class AnswerForm extends React.Component {
                     );                                
             }
 
-            if (this.props.errors.text) {
-                textError = this.props.errors.text
+            if (errors.text) {
+                textError = errors.text
                     .map(e => e.message)
                     .reduce(
                         (prev, current) => prev + ' ' + current,
@@ -78,17 +66,15 @@ export default class AnswerForm extends React.Component {
                     <TextInput
                         ref="userName"
                         placeholder="Your Name"
-                        value={this.props.user}
+                        value={containerState.data.user}
                         error={userNameError}
-                        onBlur={this.handleUserNameBlur.bind(this)}
                         onChange={this.handleUserNameChange.bind(this)}
                     />
                     <TextAreaInput
                         ref="text"
                         placeholder="Your Answer"
-                        value={this.props.text}
+                        value={containerState.data.text}
                         error={textError}
-                        onBlur={this.handleTextBlur.bind(this)}
                         onChange={this.handleTextChange.bind(this)}
                     />
                     <input
@@ -101,3 +87,7 @@ export default class AnswerForm extends React.Component {
         );
     }
 }
+
+AnswerForm.propTypes = propTypes;
+
+export default AnswerForm;

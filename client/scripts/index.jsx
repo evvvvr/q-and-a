@@ -38,7 +38,6 @@ const initialState = {
     },
     answer: {
         isSubmitting: false,
-        questionId: null,
         errors: {},
         data: {}
     }

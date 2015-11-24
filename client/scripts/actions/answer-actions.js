@@ -1,34 +1,23 @@
 import ActionTypes from './ActionTypes';
 import API from '../API';
-import { selectanswer, fetchanswer } from './answer-actions';
+import { selectQuestion, fetchQuestion } from './question-actions';
 import { validateUsername, validateText, validateAnswer } from '../validation/validators';
 
-export function answerChanged(answer) {
-    return {
-        type: ActionTypes.AnswerChanged,
-        answer
-    };
+export function changeAnswerUsername(userName) {
+    return (dispatch) =>
+        dispatch(answerUsernameChanged(userName, validateUsername(userName)));
 }
 
-export function validateAnswerUserName(userName) {
-    return (dispatch) => {
-        dispatch(
-            answerUserNameValidationEnded(userName, validateUsername(userName)));
-    };
+export function changeAnswerText(text) {
+    return (dispatch) =>
+        dispatch(answerTextChanged(text, validateText(text)));
 }
 
-export function validateAnswerText(text) {
-    return (dispatch) => {
-        dispatch(
-            answerTextValidationEnded(text, validateText(text)));
-    };   
-}
-
-export function submitAnswer(answerId, answer) {
+export function submitAnswer(questionId, answer) {
    return function (dispatch, getState) {
         if (!getState().answer.isSubmitting) {
             console.info(`Submitting answer ${answer.text}
-                as ${answer.user} for answer #${answerId}`);
+                as ${answer.user} for question #${questionId}`);
 
             const validationErrors = validateAnswer(answer);
 
@@ -37,13 +26,13 @@ export function submitAnswer(answerId, answer) {
                 dispatch(
                     answerValidationFailed(answer, validationErrors));
             } else {
-                dispatch(submittingAnswer(answerId, answer));
+                dispatch(submittingAnswer(questionId, answer));
 
-                API.submitAnswer(answerId, answer, (err, res) => {
+                API.submitAnswer(questionId, answer, (err, res) => {
                     if (res.ok) {
                         dispatch(answerSubmitted(res.header['Location']));
-                        dispatch(selectanswer(answerId));
-                        dispatch(fetchanswer(answerId));                    
+                        dispatch(selectQuestion(questionId));
+                        dispatch(fetchQuestion(questionId));               
                     }
                 });
             }
@@ -51,17 +40,17 @@ export function submitAnswer(answerId, answer) {
     };
 }
 
-function answerUserNameValidationEnded(userName, errors) {
+function answerUsernameChanged(user, errors) {
     return {
-        type: ActionTypes.AnswerUserNameValidationEnded,
-        userName,
+        type: ActionTypes.AnswerUsernameChanged,
+        user,
         errors
     };
 }
 
-function answerTextValidationEnded(text, errors) {
+function answerTextChanged(text, errors) {
     return {
-        type: ActionTypes.AnswerTextValidationEnded,
+        type: ActionTypes.AnswerTextChanged,
         text,
         errors
     };

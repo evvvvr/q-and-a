@@ -3,7 +3,7 @@ import ScreenTypes from '../../ScreenTypes';
 import TopMenuButton from './TopMenuButton';
 import TopMenuItem from './TopMenuItem';
 
-export default class TopMenu extends React.Component {
+class TopMenu extends React.Component {
     render() {
         return (
             <div
@@ -39,3 +39,5 @@ export default class TopMenu extends React.Component {
         );
     }
 }
+
+export default TopMenu;

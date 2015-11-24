@@ -1,6 +1,15 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 
-export default class TopMenuButton extends React.Component {
+const propTypes = {
+    text: PropTypes.string.isRequired,
+    onMenuItemSelected: PropTypes.func
+};
+
+const defaultProps = {
+    onMenuItemSelected: () => {}
+};
+
+class TopMenuButton extends React.Component {
     handleClick() {
         this.props
             .onMenuItemSelected({
@@ -20,3 +29,8 @@ export default class TopMenuButton extends React.Component {
         );
     }
 }
+
+TopMenuButton.propTypes = propTypes;
+TopMenuButton.defaultProps = defaultProps;
+
+export default TopMenuButton;
