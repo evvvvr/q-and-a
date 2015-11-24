@@ -1,7 +1,17 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 import ScreenTypes from '../../ScreenTypes';
 import TopMenuButton from './TopMenuButton';
 import TopMenuItem from './TopMenuItem';
+
+const propTypes = {
+    selectedMenuItem: PropTypes.oneOf([
+        ScreenTypes.Questions,
+        ScreenTypes.Answered,
+        ScreenTypes.Unanswered,
+        ScreenTypes.AskQuestion
+    ]),
+    onMenuItemSelected: PropTypes.func,
+};
 
 class TopMenu extends React.Component {
     render() {
@@ -39,5 +49,7 @@ class TopMenu extends React.Component {
         );
     }
 }
+
+TopMenu.propTypes = propTypes;
 
 export default TopMenu;

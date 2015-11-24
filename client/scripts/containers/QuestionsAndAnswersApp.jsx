@@ -95,7 +95,7 @@ class QuestionsAndAnswersApp extends React.Component {
     }
 
     render() {
-        const MainViewToRender = this.ScreenTypeToViewRendererMap
+        const mainViewToRender = this.ScreenTypeToViewRendererMap
             .get(this.state.screenType)();
 
         return (
@@ -106,7 +106,7 @@ class QuestionsAndAnswersApp extends React.Component {
                 />
                 <div className="pure-g">
                     <div className="content pure-u-1 pure-u-md-3-4">
-                        <section id="mainContent">{MainViewToRender}</section>
+                        <section id="mainContent">{mainViewToRender}</section>
                     </div>
                 </div>
             </div>
