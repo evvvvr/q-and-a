@@ -1,39 +1,48 @@
 import React, { PropTypes } from 'react';
-import Store from '../../Store';
-import TextAreaInput from '../../components/common/TextAreaInput';
-import TextInput from '../../components/common/TextInput';
-import { changeAnswerUsername, changeAnswerText, submitAnswer } from '../../actions/answer-actions';
-import { ErrorTypes } from '../../validation/errors';
+import TextAreaInput from '../common/TextAreaInput';
+import TextInput from '../common/TextInput';
 
 const propTypes = {
-    questionId: PropTypes.number.isRequired
+    username: PropTypes.string,
+    text: PropTypes.string,
+    errors: PropTypes.object,
+    onUsernameChange: PropTypes.func,
+    onTextChange: PropTypes.func,
+    onSubmit: PropTypes.func
+};
+
+const defaultProps = {
+    onUsernameChange: () => { },
+    onTextChange: () => {},
+    onSubmit: () => {}  
 };
 
 class AnswerForm extends React.Component {
-    handleUserNameChange(eventArgs) {
-        Store.dispatch(changeAnswerUsername(eventArgs.value.trim()));
+    handleUserNameChange(event) {
+        this.props.onUsernameChange({
+            username: event.value.trim()
+        });
     }
 
-    handleTextChange(eventArgs) {
-        Store.dispatch(changeAnswerText(eventArgs.value.trim()));
+    handleTextChange(event) {
+        this.props.onTextChange({
+            text: event.value.trim()
+        });
     }
 
     handleSubmit(event) {
         event.preventDefault();
 
-        Store.dispatch(submitAnswer(
-            this.props.questionId,
-            {
-                user: this.refs.userName.getValue().trim(),
+        this.props.onSubmit({
+            answer: {
+                user: this.refs.username.getValue().trim(),
                 text: this.refs.text.getValue().trim()
             }
-        ));
+        });
     }
 
     render() {
-        const containerState = Store.getState().answer;
-        const errors = containerState.errors;
-
+        const errors = this.props.errors;
         let textError, userNameError;
 
         if (errors) {
@@ -64,16 +73,16 @@ class AnswerForm extends React.Component {
                 <fieldset>
                     <legend>Your Answer</legend>
                     <TextInput
-                        ref="userName"
+                        ref="username"
                         placeholder="Your Name"
-                        value={containerState.data.user}
+                        value={this.props.username}
                         error={userNameError}
                         onChange={this.handleUserNameChange.bind(this)}
                     />
                     <TextAreaInput
                         ref="text"
                         placeholder="Your Answer"
-                        value={containerState.data.text}
+                        value={this.props.text}
                         error={textError}
                         onChange={this.handleTextChange.bind(this)}
                     />
@@ -86,8 +95,9 @@ class AnswerForm extends React.Component {
             </form>
         );
     }
-}
+};
 
 AnswerForm.propTypes = propTypes;
+AnswerForm.defaultProps = defaultProps;
 
 export default AnswerForm;

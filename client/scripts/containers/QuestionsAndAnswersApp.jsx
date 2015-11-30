@@ -1,4 +1,4 @@
-import AskQuestionForm from './AskQuestionForm';
+import AskQuestionFormContainer from './AskQuestionFormContainer';
 import QuestionDetails from '../containers/QuestionDetails/QuestionDetails';
 import Questions from './Questions';
 import React from 'react';
@@ -45,7 +45,7 @@ class QuestionsAndAnswersApp extends React.Component {
 
         this.ScreenTypeToViewRendererMap.set(
             ScreenTypes.AskQuestion,
-            () => <AskQuestionForm />
+            () => ( <AskQuestionFormContainer /> )
         );
 
         this.ScreenTypeToViewRendererMap.set(
@@ -112,6 +112,6 @@ class QuestionsAndAnswersApp extends React.Component {
             </div>
         );
     }
-}
+};
 
 export default QuestionsAndAnswersApp;

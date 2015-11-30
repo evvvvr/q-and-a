@@ -1,4 +1,4 @@
-import AnswerForm from './AnswerForm';
+import AnswerFormContainer from './AnswerFormContainer';
 import AnswerList from '../../components/QuestionDetails/AnswerList/AnswerList';
 import Question from '../../components/QuestionDetails/Question';
 import React from 'react';
@@ -15,11 +15,11 @@ class QuestionDetails extends React.Component {
                 <div className="questionDetails">
                     <Question {...containerState.data} />
                     <AnswerList answers={containerState.data.answers} />
-                    <AnswerForm questionId={containerState.data.id} />
+                    <AnswerFormContainer questionId={containerState.data.id} />
                 </div>
             ); 
         }
     }
-}
+};
 
 export default QuestionDetails;

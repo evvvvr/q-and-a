@@ -1,43 +1,60 @@
 import classNames from 'classnames';
-import React from 'react';
-import Store from '../Store';
-import TextAreaInput from '../components/common/TextAreaInput';
-import TextInput from '../components/common/TextInput';
+import React, { PropTypes } from 'react';
+import TextAreaInput from './common/TextAreaInput';
+import TextInput from './common/TextInput';
 import { ErrorTypes } from '../validation/errors';
-import { changeQuestionUsername, changeQuestionText, submitQuestion } from '../actions/question-to-submit-actions';
+
+const propTypes = {
+    username: PropTypes.string,
+    text: PropTypes.string,
+    errors: PropTypes.object,
+    onUsernameChange: PropTypes.func,
+    onTextChange: PropTypes.func,
+    onSubmit: PropTypes.func
+};
+
+const defaultProps = {
+    onUsernameChange: () => { },
+    onTextChange: () => {},
+    onSubmit: () => {}  
+};
 
 class AskQuestionForm extends React.Component {
-    handleUsernameChange(eventArgs) {
-        Store.dispatch(changeQuestionUsername(eventArgs.value.trim()));
+    handleUsernameChange(event) {
+        this.props.onUsernameChange({
+            username: event.value.trim()
+        });
     }
 
-    handleTextChange(eventArgs) {
-        Store.dispatch(changeQuestionText(eventArgs.value.trim()));
+    handleTextChange(event) {
+        this.props.onTextChange({
+            text: event.value.trim()
+        });
     }
 
     handleSubmit(event) {
         event.preventDefault();
 
-        Store.dispatch(submitQuestion({
-            user: this.refs.userName.getValue().trim(),
-            text: this.refs.text.getValue().trim()                
-        }));
+        this.props.onSubmit({
+            question: {
+                user: this.refs.username.getValue().trim(),
+                text: this.refs.text.getValue().trim()
+            }
+        });
     }
 
     render() {
-        const containerState = Store.getState().questionToSubmit;
-        const errors = containerState.errors;
-
-        let textError, userNameError;
+        const errors = this.props.errors;
+        let textError, usernameError;
 
         if (errors) {
             if (errors.user) {
-                userNameError = errors.user
+                usernameError = errors.user
                     .map(e => e.message)
                     .reduce(
                         (prev, current) => prev + ' ' + current,
                         ''
-                    );                                
+                    );
             }
 
             if (errors.text) {
@@ -46,7 +63,7 @@ class AskQuestionForm extends React.Component {
                     .reduce(
                         (prev, current) => prev + ' ' + current,
                         ''
-                    );                                
+                    );
             }
         }
 
@@ -55,16 +72,16 @@ class AskQuestionForm extends React.Component {
                 <fieldset>
                     <legend>Ask Your Question</legend>
                     <TextInput
-                        ref="userName"
+                        ref="username"
                         placeholder="Your Name"
-                        value={containerState.data.user}
-                        error={userNameError}
+                        value={this.props.username}
+                        error={usernameError}
                         onChange={this.handleUsernameChange.bind(this)}
                     />
                     <TextAreaInput
                         ref="text"
                         placeholder="Your Answer"
-                        value={containerState.data.text}
+                        value={this.props.text}
                         error={textError}
                         onChange={this.handleTextChange.bind(this)}
                     />
@@ -77,6 +94,9 @@ class AskQuestionForm extends React.Component {
             </form>
         );
     }
-}
+};
+
+AskQuestionForm.propTypes = propTypes;
+AskQuestionForm.defaultProps = defaultProps;
 
 export default AskQuestionForm;
