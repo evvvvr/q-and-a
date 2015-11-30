@@ -28,7 +28,7 @@ class TopMenuButton extends React.Component {
             </a>
         );
     }
-}
+};
 
 TopMenuButton.propTypes = propTypes;
 TopMenuButton.defaultProps = defaultProps;

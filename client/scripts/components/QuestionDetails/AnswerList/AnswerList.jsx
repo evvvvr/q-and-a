@@ -41,7 +41,7 @@ class AnswerList extends React.Component {
 
         return content;
     }
-}
+};
 
 AnswerList.propTypes = propTypes;
 

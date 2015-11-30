@@ -29,7 +29,7 @@ class QuestionList extends React.Component {
 
         return <ul className="appItemList">{questionNodes}</ul>;
     }  
-}
+};
 
 QuestionList.propTypes = propTypes;
 

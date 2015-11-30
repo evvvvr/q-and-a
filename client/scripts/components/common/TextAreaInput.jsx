@@ -47,7 +47,7 @@ class TextAreaInput extends React.Component {
             </div>
         );
     }
-}
+};
 
 TextAreaInput.propTypes = propTypes;
 TextAreaInput.defaultProps = defaultProps;

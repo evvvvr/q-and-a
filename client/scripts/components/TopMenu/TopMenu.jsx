@@ -48,7 +48,7 @@ class TopMenu extends React.Component {
             </div>
         );
     }
-}
+};
 
 TopMenu.propTypes = propTypes;
 

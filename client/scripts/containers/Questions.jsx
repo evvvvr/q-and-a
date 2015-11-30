@@ -25,7 +25,7 @@ class Questions extends React.Component {
             </div>
         );
     }
-}
+};
 
 Questions.propTypes = propTypes;
 

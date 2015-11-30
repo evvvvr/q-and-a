@@ -35,7 +35,7 @@ class QuestionListItem extends React.Component {
             </li>
         );
     }
-}
+};
 
 QuestionListItem.propTypes = propTypes;
 QuestionListItem.defaultProps = defaultProps;

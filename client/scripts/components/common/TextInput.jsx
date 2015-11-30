@@ -48,7 +48,7 @@ class TextInput extends React.Component {
             </div>
         );
     }
-}
+};
 
 TextInput.propTypes = propTypes;
 TextInput.defaultProps = defaultProps;

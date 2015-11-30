@@ -19,7 +19,7 @@ class AnswerListItem extends React.Component {
             </li>
         );
     }
-}
+};
 
 AnswerListItem.propTypes = propTypes;
 
