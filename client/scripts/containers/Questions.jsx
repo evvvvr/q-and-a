@@ -1,6 +1,6 @@
 import QuestionList from '../components/QuestionList/QuestionList';
 import React, { PropTypes } from 'react';
-import Store from '../Store';
+import { connect } from 'react-redux';
 import { selectQuestion, fetchQuestion } from '../actions/question-actions';
 
 const propTypes = {
@@ -10,8 +10,10 @@ const propTypes = {
 
 class Questions extends React.Component {
     handleQuestionSelected(eventArgs) {
-        Store.dispatch(selectQuestion(eventArgs.questionId));
-        Store.dispatch(fetchQuestion(eventArgs.questionId));
+        const { dispatch } = this.props;
+
+        dispatch(selectQuestion(eventArgs.questionId));
+        dispatch(fetchQuestion(eventArgs.questionId));
     }
 
     render() {
@@ -25,8 +27,8 @@ class Questions extends React.Component {
             </div>
         );
     }
-};
+}
 
 Questions.propTypes = propTypes;
 
-export default Questions;
+export default connect((state) => { return {} }) (Questions);

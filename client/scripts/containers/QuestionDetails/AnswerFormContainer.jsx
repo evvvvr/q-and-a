@@ -1,36 +1,45 @@
 import AnswerForm from '../../components/QuestionDetails/AnswerForm';
 import React, { PropTypes } from 'react';
-import Store from '../../Store';
 import { changeAnswerUsername, changeAnswerText, submitAnswer } from '../../actions/answer-actions';
+import { connect } from 'react-redux';
 
 const propTypes = {
-    questionId: PropTypes.number.isRequired
+    questionId: PropTypes.number,
+    username: PropTypes.string,
+    text: PropTypes.string,
+    errors: PropTypes.object
 };
 
 class AnswerFormContainer extends React.Component {
     handleUsernameChange(eventArgs) {
-        Store.dispatch(changeAnswerUsername(eventArgs.username));
+        const { dispatch } = this.props;
+
+        dispatch(changeAnswerUsername(eventArgs.username));
     }
 
     handleTextChange(eventArgs) {
-        Store.dispatch(changeAnswerText(eventArgs.text));
+        const { dispatch } = this.props;
+
+        dispatch(changeAnswerText(eventArgs.text));
     }
 
     handleSubmit(eventArgs) {
-        Store.dispatch(submitAnswer(
-            this.props.questionId,
+        const { dispatch, questionId } = this.props;
+
+        dispatch(submitAnswer(
+            questionId,
             eventArgs.answer
         ));
     }
 
     render() {
-        const containerState = Store.getState().answer;
+        const { username, text, errors } = this.props;
 
         return (
             <AnswerForm
-                username={containerState.data.user}
-                text={containerState.data.text}
-                errors={containerState.errors}
+                username={username}
+                text={text}
+                errors={errors}
                 onUsernameChange={this.handleUsernameChange.bind(this)}
                 onTextChange={this.handleTextChange.bind(this)}
                 onSubmit={this.handleSubmit.bind(this)}
@@ -41,4 +50,13 @@ class AnswerFormContainer extends React.Component {
 
 AnswerForm.propTypes = propTypes;
 
-export default AnswerFormContainer;
+function select(state) {
+    return {
+        questionId: state.question.data.id,
+        username: state.answer.data.user,
+        text: state.answer.data.text,
+        errors: state.answer.errors
+    };
+}
+
+export default connect(select) (AnswerFormContainer);

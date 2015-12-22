@@ -1,6 +1,11 @@
 import ActionTypes from '../actions/ActionTypes';
 
-export default function question(state, action) {
+const defaultState = {
+    isFetching: false,
+    data: {}
+};
+
+export default function question(state = defaultState, action) {
     switch (action.type) {
         case ActionTypes.SelectQuestion:
             return Object.assign(

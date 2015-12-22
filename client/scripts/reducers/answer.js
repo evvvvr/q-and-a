@@ -1,6 +1,12 @@
 import ActionTypes from '../actions/ActionTypes';
 
-export default function answer(state, action) {
+const defaultState = {
+    isSubmitting: false,
+    errors: {},
+    data: {}
+};
+
+export default function answer(state = defaultState, action) {
     switch (action.type) {
         case ActionTypes.SelectQuestion:
             return Object.assign(

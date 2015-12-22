@@ -1,92 +1,54 @@
 import AskQuestionFormContainer from './AskQuestionFormContainer';
 import QuestionDetails from '../containers/QuestionDetails/QuestionDetails';
 import Questions from './Questions';
-import React from 'react';
+import React, { PropTypes } from 'react';
 import ScreenTypes from '../ScreenTypes';
-import Store from '../Store';
+import symbol from '../propTypes/symbol';
 import TopMenu from '../components/TopMenu/TopMenu';
+import { connect } from 'react-redux';
 import { showAllQuestions, fetchAllQuestions } from '../actions/all-questions-actions';
 import { showAnsweredQuestions, fetchAnsweredQuestions } from '../actions/answered-questions-actions'; 
 import { showQuestionForm } from '../actions/question-to-submit-actions';
 import { showUnansweredQuestions, fetchUnansweredQuestions } from '../actions/unanswered-questions-actions';
 
+const propTypes = {
+    screenType: symbol.isRequired,
+    allQuestions: PropTypes.arrayOf(PropTypes.object).isRequired,
+    answeredQuestions: PropTypes.arrayOf(PropTypes.object).isRequired,
+    unansweredQuestions: PropTypes.arrayOf(PropTypes.object).isRequired,
+    question: PropTypes.object.isRequired
+};
+
 class QuestionsAndAnswersApp extends React.Component {
-    constructor(props) {
-        super(props);
-
-        this.ScreenTypeToViewRendererMap = new Map();
-
-        this.ScreenTypeToViewRendererMap.set(
-            ScreenTypes.Questions,
-            () => (
-                    <Questions
-                        header="All Questions"
-                        questions={this.state.allQuestions.items}
-                    />
-        ));
-
-        this.ScreenTypeToViewRendererMap.set(
-            ScreenTypes.Answered,
-            () => (
-                    <Questions
-                        header="Answered Questions"
-                        questions={this.state.answeredQuestions.items}
-                    />
-        ));
-
-        this.ScreenTypeToViewRendererMap.set(
-            ScreenTypes.Unanswered,
-            () => (
-                    <Questions
-                        header="Unanswered Questions"
-                        questions={this.state.unansweredQuestions.items}
-                    />
-        ));
-
-        this.ScreenTypeToViewRendererMap.set(
-            ScreenTypes.AskQuestion,
-            () => ( <AskQuestionFormContainer /> )
-        );
-
-        this.ScreenTypeToViewRendererMap.set(
-            ScreenTypes.Question,
-            () => (
-                    <QuestionDetails questionId={this.state.question.data.id} />
-            ));
-
-        this.state = Store.getState();
-    }
-
     componentDidMount() {
-        Store.subscribe(this.onChange.bind(this));
+        const { dispatch } = this.props;
 
-        Store.dispatch(showAllQuestions());
-        Store.dispatch(fetchAllQuestions());
-    }
-
-    onChange(newAppState) {
-        this.setState(newAppState);
+        dispatch(showAllQuestions());
+        dispatch(fetchAllQuestions());
     }
 
     handleMenuItemSelected(eventArgs) {
+        const { dispatch } = this.props;
+
+        //TODO: extract this switch into a function
         switch (eventArgs.menuItemValue) {
             case ScreenTypes.Questions:
-                Store.dispatch(showAllQuestions());
-                Store.dispatch(fetchAllQuestions());
+                dispatch(showAllQuestions());
+                dispatch(fetchAllQuestions());
                 break;
 
             case ScreenTypes.Answered:
-                Store.dispatch(showAnsweredQuestions());
-                Store.dispatch(fetchAnsweredQuestions());
+                dispatch(showAnsweredQuestions());
+                dispatch(fetchAnsweredQuestions());
                 break;
 
             case ScreenTypes.Unanswered:
-                Store.dispatch(showUnansweredQuestions());
-                Store.dispatch(fetchUnansweredQuestions());
+                dispatch(showUnansweredQuestions());
+                dispatch(fetchUnansweredQuestions());
                 break;
 
             case ScreenTypes.AskQuestion:
-                Store.dispatch(showQuestionForm());
+                dispatch(showQuestionForm());
                 break;
 
             default:
@@ -95,13 +57,58 @@ class QuestionsAndAnswersApp extends React.Component {
     }
 
     render() {
-        const mainViewToRender = this.ScreenTypeToViewRendererMap
-            .get(this.state.screenType)();
+        const { screenType, allQuestions, answeredQuestions, unansweredQuestions,
+            question } = this.props;
+        let mainViewToRender;
+
+        switch (screenType) {
+            case ScreenTypes.Questions:
+                mainViewToRender = (
+                    <Questions
+                        header="All Questions"
+                        questions={allQuestions}
+                    />
+                );
+                break;
+
+            case ScreenTypes.Answered:
+                mainViewToRender = (
+                    <Questions
+                        header="Answered Questions"
+                        questions={answeredQuestions}
+                    />
+                );
+                break;
+
+            case ScreenTypes.Unanswered:
+                mainViewToRender = (
+                    <Questions
+                        header="Unanswered Questions"
+                        questions={unansweredQuestions}
+                    />
+                );
+                break;
+
+            case ScreenTypes.Question: 
+                mainViewToRender = (
+                    <QuestionDetails
+                        questionId={question.data.id}
+                    />
+                );
+                break;
+
+            case ScreenTypes.AskQuestion:
+                mainViewToRender = <AskQuestionFormContainer />;
+                break;
+
+            default:
+                throw `Unknown screen type selected: ${eventArgs.menuItemValue}`;
+        }
 
         return (
             <div>
                 <TopMenu
-                    selectedMenuItem={this.state.screenType}
+                    selectedMenuItem={screenType}
                     onMenuItemSelected={this.handleMenuItemSelected.bind(this)}
                 />
                 <div className="pure-g">
@@ -112,6 +119,18 @@ class QuestionsAndAnswersApp extends React.Component {
             </div>
         );
     }
-};
+}
 
-export default QuestionsAndAnswersApp;
+QuestionsAndAnswersApp.propTypes = propTypes;
+
+function select(state) {
+    return {
+        screenType: state.screenType,
+        allQuestions: state.allQuestions.items,
+        answeredQuestions: state.answeredQuestions.items,
+        unansweredQuestions: state.unansweredQuestions.items,
+        question: state.question
+    };
+}
+
+export default connect(select) (QuestionsAndAnswersApp);

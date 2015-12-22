@@ -1,6 +1,12 @@
 import ActionTypes from '../actions/ActionTypes';
 
-export default function questionToSubmit(state, action) {
+const defaultState = {
+    isSubmitting: false,
+    errors: {},
+    data: {}
+};
+
+export default function questionToSubmit(state = defaultState, action) {
     switch (action.type) {
         case ActionTypes.ShowAskForm:
             return Object.assign(

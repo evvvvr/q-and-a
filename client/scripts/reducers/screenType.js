@@ -1,7 +1,9 @@
 import ActionTypes from '../actions/ActionTypes';
 import ScreenTypes from '../ScreenTypes';
 
-export default function screenType(state, action) {
+const defaultState = ScreenTypes.Questions;
+
+export default function screenType(state = defaultState, action) {
     switch (action.type) {
         case ActionTypes.ShowAllQuestions:
             return ScreenTypes.Questions;
@@ -17,9 +19,6 @@ export default function screenType(state, action) {
 
         case ActionTypes.ShowAskForm:
             return ScreenTypes.AskQuestion;
-
-        case ActionTypes.SubmitQuestion:
-            return ScreenTypes.Questions;
 
         default:
             return state;
