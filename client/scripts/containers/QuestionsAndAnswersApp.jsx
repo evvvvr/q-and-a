@@ -3,7 +3,6 @@ import QuestionDetails from '../containers/QuestionDetails/QuestionDetails';
 import Questions from './Questions';
 import React, { PropTypes } from 'react';
 import ScreenTypes from '../ScreenTypes';
-import symbol from '../propTypes/symbol';
 import TopMenu from '../components/TopMenu/TopMenu';
 import { connect } from 'react-redux';
 import { showAllQuestions, fetchAllQuestions } from '../actions/all-questions-actions';
