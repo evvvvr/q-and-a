@@ -12,7 +12,13 @@ import { showQuestionForm } from '../actions/question-to-submit-actions';
 import { showUnansweredQuestions, fetchUnansweredQuestions } from '../actions/unanswered-questions-actions';
 
 const propTypes = {
-    screenType: symbol.isRequired,
+    screenType: PropTypes.oneOf([
+        ScreenTypes.Questions,
+        ScreenTypes.Answered,
+        ScreenTypes.Unanswered,
+        ScreenTypes.Question,
+        ScreenTypes.AskQuestion
+    ]),
     allQuestions: PropTypes.arrayOf(PropTypes.object).isRequired,
     answeredQuestions: PropTypes.arrayOf(PropTypes.object).isRequired,
     unansweredQuestions: PropTypes.arrayOf(PropTypes.object).isRequired,
@@ -105,10 +111,12 @@ class QuestionsAndAnswersApp extends React.Component {
                 throw `Unknown screen type selected: ${eventArgs.menuItemValue}`;
         }
 
+        const selectedMenuItem = screenType !== ScreenTypes.Question ? screenType : null;
+
         return (
             <div>
                 <TopMenu
-                    selectedMenuItem={screenType}
+                    selectedMenuItem={selectedMenuItem}
                     onMenuItemSelected={this.handleMenuItemSelected.bind(this)}
                 />
                 <div className="pure-g">
