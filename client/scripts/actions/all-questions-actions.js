@@ -1,12 +1,6 @@
 import ActionTypes from './ActionTypes';
 import API from '../API';
 
-export function showAllQuestions() {
-    return {
-        type: ActionTypes.ShowAllQuestions
-    };
-}
-
 export function requestAllQuestions() {
     return {
         type: ActionTypes.RequestAllQuestions

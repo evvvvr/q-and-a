@@ -1,4 +1,5 @@
 import ActionTypes from '../actions/ActionTypes';
+import ScreenTypes from '../ScreenTypes';
 
 const defaultState = {
     isSubmitting: false,
@@ -8,7 +9,8 @@ const defaultState = {
 
 export default function questionToSubmit(state = defaultState, action) {
     switch (action.type) {
-        case ActionTypes.ShowAskForm:
+        case ActionTypes.ShowScreen:
+            //TODO: better clean 'questionToSubmit' only when 'Ask Question' screen was closed
             return Object.assign(
                 {},
                 state,

@@ -1,13 +1,9 @@
 import ActionTypes from './ActionTypes';
 import API from '../API';
-import { showAllQuestions, fetchAllQuestions } from './all-questions-actions';
+import ScreenTypes from '../ScreenTypes';
+import { fetchAllQuestions } from './all-questions-actions';
+import { showScreen } from './screen-type-actions';
 import { validateUsername, validateText, validateQuestion } from '../validation/validators';
-
-export function showQuestionForm() {
-    return {
-        type: ActionTypes.ShowAskForm
-    };
-}
 
 export function changeQuestionUsername(userName) {
     return (dispatch) =>
@@ -40,7 +36,7 @@ export function submitQuestion(question) {
                 API.submitQuestion(question, (err, res) => {
                     if (res.ok) {
                         dispatch(questionSubmitted(res.header['Location']));
-                        dispatch(showAllQuestions());
+                        dispatch(showScreen(ScreenTypes.Questions));
                         dispatch(fetchAllQuestions());                    
                     }
                 });

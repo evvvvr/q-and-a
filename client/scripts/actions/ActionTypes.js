@@ -1,16 +1,13 @@
 import keyMirror from 'keymirror';
 
 const ActionTypes = keyMirror({
-    ShowAllQuestions: null,
+    ShowScreen: null,
     RequestAllQuestions: null,
     RecieveAllQuestions: null,
-    ShowAnsweredQuestions: null,
     RequestAnsweredQuestions: null,
     RecieveAnsweredQuestions: null,
-    ShowUnansweredQuestions: null,
     RequestUnansweredQuestions: null,
     RecieveUnansweredQuestions: null,
-    ShowAskForm: null,
     SelectQuestion: null,
     RequestQuestion: null,
     RecieveQuestion: null,

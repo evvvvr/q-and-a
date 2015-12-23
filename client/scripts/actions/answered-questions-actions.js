@@ -1,12 +1,6 @@
 import ActionTypes from './ActionTypes';
 import API from '../API';
 
-export function showAnsweredQuestions() {
-    return {
-        type: ActionTypes.ShowAnsweredQuestions
-    };
-}
-
 export function requestAnsweredQuestions() {
     return {
         type: ActionTypes.RequestAnsweredQuestions

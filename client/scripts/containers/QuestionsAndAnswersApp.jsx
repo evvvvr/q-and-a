@@ -5,10 +5,10 @@ import React, { PropTypes } from 'react';
 import ScreenTypes from '../ScreenTypes';
 import TopMenu from '../components/TopMenu/TopMenu';
 import { connect } from 'react-redux';
-import { showAllQuestions, fetchAllQuestions } from '../actions/all-questions-actions';
-import { showAnsweredQuestions, fetchAnsweredQuestions } from '../actions/answered-questions-actions'; 
-import { showQuestionForm } from '../actions/question-to-submit-actions';
-import { showUnansweredQuestions, fetchUnansweredQuestions } from '../actions/unanswered-questions-actions';
+import { fetchAllQuestions } from '../actions/all-questions-actions';
+import { fetchAnsweredQuestions } from '../actions/answered-questions-actions'; 
+import { fetchUnansweredQuestions } from '../actions/unanswered-questions-actions';
+import { showScreen } from '../actions/screen-type-actions';
 
 const propTypes = {
     screenType: PropTypes.oneOf([
@@ -28,7 +28,7 @@ class QuestionsAndAnswersApp extends React.Component {
     componentDidMount() {
         const { dispatch } = this.props;
 
-        dispatch(showAllQuestions());
+        dispatch(showScreen(ScreenTypes.Questions));
         dispatch(fetchAllQuestions());
     }
 
@@ -38,22 +38,22 @@ class QuestionsAndAnswersApp extends React.Component {
         //TODO: extract this switch into a function
         switch (eventArgs.menuItemValue) {
             case ScreenTypes.Questions:
-                dispatch(showAllQuestions());
+                dispatch(showScreen(ScreenTypes.Questions));
                 dispatch(fetchAllQuestions());
                 break;
 
             case ScreenTypes.Answered:
-                dispatch(showAnsweredQuestions());
+                dispatch(showScreen(ScreenTypes.Answered));
                 dispatch(fetchAnsweredQuestions());
                 break;
 
             case ScreenTypes.Unanswered:
-                dispatch(showUnansweredQuestions());
+                dispatch(showScreen(ScreenTypes.Unanswered));
                 dispatch(fetchUnansweredQuestions());
                 break;
 
             case ScreenTypes.AskQuestion:
-                dispatch(showQuestionForm());
+                dispatch(showScreen(ScreenTypes.AskQuestion));
                 break;
 
             default:
