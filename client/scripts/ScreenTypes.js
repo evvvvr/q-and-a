@@ -1,9 +1,11 @@
-const ScreenTypes = {
-    Questions: Symbol('Questions'),
-    Answered: Symbol('Answered'),
-    Unanswered: Symbol('Unanswered'),
-    AskQuestion: Symbol('AskQuestion'),
-    Question: Symbol('Question')
-};
+import keyMirror from 'keymirror';
+
+const ScreenTypes = keyMirror({
+    Questions: null,
+    Answered: null,
+    Unanswered: null,
+    AskQuestion: null,
+    Question: null
+});
 
 export default ScreenTypes;

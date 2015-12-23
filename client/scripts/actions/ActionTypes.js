@@ -1,27 +1,29 @@
-const ActionTypes = {
-    ShowAllQuestions: Symbol('ShowAllQuestions'),
-    RequestAllQuestions: Symbol('RequestAllQuestions'),
-    RecieveAllQuestions: Symbol('RecieveAllQuestions'),
-    ShowAnsweredQuestions: Symbol('ShowAnsweredQuestions'),
-    RequestAnsweredQuestions: Symbol('RequestAnsweredQuestions'),
-    RecieveAnsweredQuestions: Symbol('RecieveAnsweredQuestions'),
-    ShowUnansweredQuestions: Symbol('ShowAnsweredQuestions'),
-    RequestUnansweredQuestions: Symbol('RequestUnansweredQuestions'),
-    RecieveUnansweredQuestions: Symbol('RecieveUnansweredQuestions'),
-    ShowAskForm: Symbol('ShowAskForm'),
-    SelectQuestion: Symbol('SelectQuestion'),
-    RequestQuestion: Symbol('RequestQuestion'),
-    RecieveQuestion: Symbol('RecieveQuestion'),
-    QuestionUsernameChanged: Symbol('QuestionUsernameChanged'),
-    QuestionTextChanged: Symbol('QuestionTextChanged'),
-    QuestionValidationFailed: Symbol('QuestionValidationFailed'),
-    SubmittingQuestion: Symbol('SubmittingQuestion'),
-    QuestionSubmitted: Symbol('QuestionSubmitted'),
-    AnswerUsernameChanged: Symbol('AnswerUsernameChanged'),
-    AnswerTextChanged: Symbol('AnswerTextChanged'),
-    AnswerValidationFailed: Symbol('AnswerValidationFailed'),
-    SubmittingAnswer: Symbol('SubmittingAnswer'),
-    AnswerSubmitted: Symbol('AnswerSubmitted')
-};
+import keyMirror from 'keymirror';
+
+const ActionTypes = keyMirror({
+    ShowAllQuestions: null,
+    RequestAllQuestions: null,
+    RecieveAllQuestions: null,
+    ShowAnsweredQuestions: null,
+    RequestAnsweredQuestions: null,
+    RecieveAnsweredQuestions: null,
+    ShowUnansweredQuestions: null,
+    RequestUnansweredQuestions: null,
+    RecieveUnansweredQuestions: null,
+    ShowAskForm: null,
+    SelectQuestion: null,
+    RequestQuestion: null,
+    RecieveQuestion: null,
+    QuestionUsernameChanged: null,
+    QuestionTextChanged: null,
+    QuestionValidationFailed: null,
+    SubmittingQuestion: null,
+    QuestionSubmitted: null,
+    AnswerUsernameChanged: null,
+    AnswerTextChanged: null,
+    AnswerValidationFailed: null,
+    SubmittingAnswer: null,
+    AnswerSubmitted: null
+});
 
 export default ActionTypes;
