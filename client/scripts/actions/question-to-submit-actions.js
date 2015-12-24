@@ -1,6 +1,6 @@
 import ActionTypes from './ActionTypes';
 import API from '../API';
-import { fetchAllQuestions } from './all-questions-actions';
+import { fetchAllQuestions } from './allQuestions';
 import { validateUsername, validateText, validateQuestion } from '../validation/validators';
 
 export function changeQuestionUsername(userName) {

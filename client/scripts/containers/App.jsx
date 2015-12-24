@@ -26,10 +26,10 @@ class App extends React.Component {
 
 App.propTypes = propTypes;
 
-function select(state) {
+function mapStateToProps(state) {
     return {
         path: state.routing.path 
     }
 }
 
-export default connect(select) (App);
+export default connect(mapStateToProps) (App);

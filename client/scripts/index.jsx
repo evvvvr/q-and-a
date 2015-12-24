@@ -13,6 +13,7 @@ import thunkMiddleware from 'redux-thunk';
 import UnansweredQuestions from './components/UnansweredQuestions';
 import { combineReducers, createStore, applyMiddleware } from 'redux';
 import { createHistory } from 'history';
+import { fetchAllQuestions } from './actions/allQuestions';
 import { Provider } from 'react-redux';
 import { Router, Route, IndexRoute } from 'react-router';
 import { syncReduxAndRouter, routeReducer } from 'redux-simple-router';

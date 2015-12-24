@@ -6,7 +6,7 @@ const defaultState = {
 };
 
 export default function allQuestions(state = defaultState, action) {
-   switch (action.type) {
+    switch (action.type) {
         case ActionTypes.RequestAllQuestions:
             return Object.assign(
                 {},
