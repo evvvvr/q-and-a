@@ -1,8 +1,6 @@
 import ActionTypes from './ActionTypes';
 import API from '../API';
-import ScreenTypes from '../ScreenTypes';
 import { fetchAllQuestions } from './all-questions-actions';
-import { showScreen } from './screen-type-actions';
 import { validateUsername, validateText, validateQuestion } from '../validation/validators';
 
 export function changeQuestionUsername(userName) {

@@ -1,20 +1,14 @@
 import React, { PropTypes } from 'react';
-import ScreenTypes from '../../ScreenTypes';
-import TopMenuButton from './TopMenuButton';
 import TopMenuItem from './TopMenuItem';
 
 const propTypes = {
-    selectedMenuItem: PropTypes.oneOf([
-        ScreenTypes.Questions,
-        ScreenTypes.Answered,
-        ScreenTypes.Unanswered,
-        ScreenTypes.AskQuestion
-    ]),
-    onMenuItemSelected: PropTypes.func,
+    currentPath: PropTypes.string.isRequired
 };
 
 class TopMenu extends React.Component {
     render() {
+        const { currentPath } = this.props;
+
         return (
             <div
                 id="topMenu"
@@ -23,28 +17,25 @@ class TopMenu extends React.Component {
                 <ul className="pure-menu-list">
                     <TopMenuItem
                         text="Questions"
-                        value={ScreenTypes.Questions}
-                        isSelected={this.props.selectedMenuItem === ScreenTypes.Questions}
-                        onMenuItemSelected={this.props.onMenuItemSelected}
+                        link="/"
+                        isSelected={currentPath === '/'}
                     />
                     <TopMenuItem
                         text="Answered"
-                        value={ScreenTypes.Answered}
-                        isSelected={this.props.selectedMenuItem === ScreenTypes.Answered}
-                        onMenuItemSelected={this.props.onMenuItemSelected}
+                        link="answered"
+                        isSelected={currentPath === 'answered'}
                     />
                     <TopMenuItem
                         text="Unanswered"
-                        value={ScreenTypes.Unanswered}
-                        isSelected={this.props.selectedMenuItem === ScreenTypes.Unanswered}
-                        onMenuItemSelected={this.props.onMenuItemSelected}
+                        link="unanswered"
+                        isSelected={currentPath === 'unanswered'}
+                    />
+                    <TopMenuItem
+                        text="Ask Question"
+                        link="ask"
+                        isSelected={currentPath === 'ask'}
                     />
                 </ul>
-                <TopMenuButton
-                    text="Ask Question"
-                    value={ScreenTypes.AskQuestion}
-                    onMenuItemSelected={this.props.onMenuItemSelected}
-                />
             </div>
         );
     }

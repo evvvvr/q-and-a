@@ -1,5 +1,4 @@
 import ActionTypes from '../actions/ActionTypes';
-import ScreenTypes from '../ScreenTypes';
 
 const defaultState = {
     isSubmitting: false,

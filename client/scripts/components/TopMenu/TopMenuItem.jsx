@@ -1,43 +1,34 @@
-import React, { PropTypes } from 'react';
 import classNames from 'classnames'; 
+import React, { PropTypes } from 'react';
+import { Link, IndexLink } from 'react-router';
 
 const propTypes = {
+    link: PropTypes.string.isRequired,
     text: PropTypes.string.isRequired,
-    onMenuItemSelected: PropTypes.func
-};
-
-const defaultProps = {
-    onMenuItemSelected: () => {}
+    isSelected: PropTypes.bool
 };
 
 class TopMenuItem extends React.Component {
-    handleClick() {
-        this.props.onMenuItemSelected({
-            menuItemValue: this.props.value
-        });     
-    }
-
     render() {
-        const ItemClass = classNames({
+        const { link, text, isSelected } = this.props;
+
+        const itemClass = classNames({
             'pure-menu-item': true,
             'pure-menu-selected': this.props.isSelected
         });
 
+        const linkElement = link === '/'
+            ? <IndexLink to="/" className="pure-menu-link">{text}</IndexLink>
+            : <Link to={link} className="pure-menu-link">{text}</Link>;
+ 
         return (
-            <li className={ItemClass}>
-                <a
-                    href="#"
-                    className="pure-menu-link"
-                    onClick={this.handleClick.bind(this)}
-                >
-                    {this.props.text}
-                </a>
+            <li className={itemClass}>
+                {linkElement}   
             </li>
         );
     }
 };
 
 TopMenuItem.propTypes = propTypes;
-TopMenuItem.defaultProps = defaultProps;
 
 export default TopMenuItem;
