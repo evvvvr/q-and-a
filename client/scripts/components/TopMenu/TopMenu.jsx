@@ -23,17 +23,17 @@ class TopMenu extends React.Component {
                     <TopMenuItem
                         text="Answered"
                         link="answered"
-                        isSelected={currentPath === 'answered'}
+                        isSelected={currentPath === '/answered'}
                     />
                     <TopMenuItem
                         text="Unanswered"
                         link="unanswered"
-                        isSelected={currentPath === 'unanswered'}
+                        isSelected={currentPath === '/unanswered'}
                     />
                     <TopMenuItem
                         text="Ask Question"
                         link="ask"
-                        isSelected={currentPath === 'ask'}
+                        isSelected={currentPath === '/ask'}
                     />
                 </ul>
             </div>
