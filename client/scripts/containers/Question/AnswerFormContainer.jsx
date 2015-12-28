@@ -1,10 +1,10 @@
-import AnswerForm from '../../components/QuestionDetails/AnswerForm';
+import AnswerForm from '../../components/Question/AnswerForm';
 import React, { PropTypes } from 'react';
-import { changeAnswerUsername, changeAnswerText, submitAnswer } from '../../actions/answer-actions';
+import { changeAnswerUsername, changeAnswerText, submitAnswer } from '../../actions/answer';
 import { connect } from 'react-redux';
 
 const propTypes = {
-    questionId: PropTypes.number,
+    questionId: PropTypes.number.isRequired,
     username: PropTypes.string,
     text: PropTypes.string,
     errors: PropTypes.object
@@ -48,7 +48,7 @@ class AnswerFormContainer extends React.Component {
     }
 };
 
-AnswerForm.propTypes = propTypes;
+AnswerFormContainer.propTypes = propTypes;
 
 function select(state) {
     return {

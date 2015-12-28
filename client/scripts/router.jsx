@@ -2,11 +2,12 @@ import AllQuestions from './containers/AllQuestions';
 import AnsweredQuestions from './containers/AnsweredQuestions';
 import App from './containers/App';
 import AskQuestion from './components/AskQuestion';
-import Question from './components/Question';
+import Question from './containers/Question/Question';
 import React from 'react';
 import UnansweredQuestions from './containers/UnansweredQuestions';
 import { fetchAllQuestions } from './actions/allQuestions';
 import { fetchAnsweredQuestions } from './actions/answeredQuestions';
+import { fetchQuestion } from './actions/question';
 import { fetchUnansweredQuestions } from './actions/unansweredQuestions';
 import { Router, Route, IndexRoute } from 'react-router';
 
@@ -20,6 +21,10 @@ const onEnterAnsweredQuestions = (store) => {
 
 const onEnterUnansweredQuestions = (store) => {
     return () => store.dispatch(fetchUnansweredQuestions());
+};
+
+const onEnterQuestion = (store) => {
+    return (nextState) => store.dispatch(fetchQuestion(nextState.params.id));
 };
 
 export default function router(history, store) {
@@ -41,7 +46,11 @@ export default function router(history, store) {
                     onEnter={onEnterUnansweredQuestions(store)}
                 />
                 <Route path="ask" component={AskQuestion} />
-                <Route path="questions/:id" component={Question} />
+                <Route
+                    path="questions/:id"
+                    component={Question}
+                    onEnter={onEnterQuestion(store)}
+                />
             </Route>
         </Router>
     );

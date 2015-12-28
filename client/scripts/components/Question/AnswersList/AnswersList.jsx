@@ -1,16 +1,18 @@
-import AnswerListItem from './AnswerListItem';
+import AnswersListItem from './AnswersListItem';
 import React, { PropTypes } from 'react';
 import { compareItemsChronologically } from '../../../util/date-time-util';
 
 const propTypes = {
-    answers: PropTypes.arrayOf(React.PropTypes.object).isRequired,
+    answers: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
 
-class AnswerList extends React.Component {
+class AnswersList extends React.Component {
     render() {
+        const { answers } = this.props;
+
         let content;
 
-        const answerNodes = this.props.answers
+        const answerNodes = answers
             .sort((a, b) => compareItemsChronologically(
                 a.dateTimeAnswered,
                 b.dateTimeAnswered
@@ -18,17 +20,17 @@ class AnswerList extends React.Component {
             .map((answer) => {
                 const { id, ...answerProps } = answer;
 
-                return <AnswerListItem key={id} answerId={id} {...answerProps} />;
+                return <AnswersListItem key={id} answerId={id} {...answerProps} />;
             });
 
         if (this.props.answers.length) {
-            const answersNumeral = this.props.answers.length > 1
+            const answersNumeral = answers.length > 1
                 ? 'Answers' : 'Answer';
 
             content = (
                 <div>
                     <h4>
-                        {this.props.answers.length} {answersNumeral}
+                        {answers.length} {answersNumeral}
                     </h4>
                     <ul className="appItemList">
                         {answerNodes}
@@ -36,13 +38,13 @@ class AnswerList extends React.Component {
                 </div>
             );
         } else {
-            content = (<div></div>);
+            content = (<div>There's no answers</div>);
         }
 
         return content;
     }
 };
 
-AnswerList.propTypes = propTypes;
+AnswersList.propTypes = propTypes;
 
-export default AnswerList;
+export default AnswersList;

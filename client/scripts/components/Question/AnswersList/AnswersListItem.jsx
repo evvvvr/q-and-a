@@ -8,19 +8,21 @@ const propTypes = {
     user: PropTypes.string.isRequired
 };
 
-class AnswerListItem extends React.Component {
+class AnswersListItem extends React.Component {
     render() {
+        const { id, text, dateTimeAnswered, user } = this.props;
+
         return (
-            <li key={this.props.answerId} className="appItem">
-                {this.props.text}
+            <li key={id} className="appItem">
+                {text}
                 <p className="appItemMeta">
-                    {formatDateTime(this.props.dateTimeAnswered)} by {this.props.user}
+                    {formatDateTime(dateTimeAnswered)} by {user}
                 </p>
             </li>
         );
     }
 };
 
-AnswerListItem.propTypes = propTypes;
+AnswersListItem.propTypes = propTypes;
 
-export default AnswerListItem;
+export default AnswersListItem;

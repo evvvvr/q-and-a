@@ -1,13 +1,6 @@
 import ActionTypes from './ActionTypes';
 import API from '../API';
 
-export function selectQuestion(questionId) {
-    return {
-        type: ActionTypes.SelectQuestion,
-        questionId
-    };
-}
-
 export function requestQuestion(questionId) {
     return {
         type: ActionTypes.RequestQuestion,

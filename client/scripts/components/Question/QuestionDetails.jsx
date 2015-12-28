@@ -2,24 +2,26 @@ import React, { PropTypes } from 'react';
 import { formatDateTime } from '../../util/date-time-util';
 
 const propTypes = {
-    username: PropTypes.string.isRequired,
+    user: PropTypes.string.isRequired,
     text: PropTypes.string.isRequired,
     dateTimeAsked: PropTypes.string.isRequired,
 };
 
-class Question extends React.Component {
+class QuestionDetails extends React.Component {
     render() {
+        const { user, text, dateTimeAsked } = this.props;
+
         return (
             <div className="questionDetails-question">
-                {this.props.text}
+                {text}
                 <p className="appItemMeta">
-                    {formatDateTime(this.props.dateTimeAsked)} by {this.props.username}
+                    {formatDateTime(dateTimeAsked)} by {user}
                 </p>
             </div>
         );
     }
 };
 
-Question.propTypes = propTypes;
+QuestionDetails.propTypes = propTypes;
 
-export default Question;
+export default QuestionDetails;

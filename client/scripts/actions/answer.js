@@ -1,6 +1,6 @@
 import ActionTypes from './ActionTypes';
 import API from '../API';
-import { selectQuestion, fetchQuestion } from './question-actions';
+import { fetchQuestion } from './question';
 import { validateUsername, validateText, validateAnswer } from '../validation/validators';
 
 export function changeAnswerUsername(userName) {
@@ -31,7 +31,6 @@ export function submitAnswer(questionId, answer) {
                 API.submitAnswer(questionId, answer, (err, res) => {
                     if (res.ok) {
                         dispatch(answerSubmitted(res.header['Location']));
-                        dispatch(selectQuestion(questionId));
                         dispatch(fetchQuestion(questionId));               
                     }
                 });
