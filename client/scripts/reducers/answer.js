@@ -84,6 +84,7 @@ export default function answer(state = defaultState, action) {
             );
 
         case ActionTypes.AnswerSubmitted:
+        case ActionTypes.CleanAnswer:
             return Object.assign(
                 {},
                 state,

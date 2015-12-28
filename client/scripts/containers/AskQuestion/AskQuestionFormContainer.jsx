@@ -1,6 +1,6 @@
 import AskQuestionForm from '../../components/AskQuestionForm';
 import React, { PropTypes } from 'react';
-import { changeQuestionUsername, changeQuestionText, submitQuestion } from '../../actions/questionToSubmit';
+import { changeQuestionUsername, changeQuestionText, submitQuestion, cleanQuestionToSubmit } from '../../actions/questionToSubmit';
 import { connect } from 'react-redux';
 
 const propTypes = {
@@ -10,6 +10,12 @@ const propTypes = {
 };
 
 class AskQuestionFormContainer extends React.Component {
+    componentWillUnmount() {
+        const { dispatch } = this.props;
+
+        dispatch(cleanQuestionToSubmit());
+    }
+
     handleUsernameChange(eventArgs) {
         const { dispatch } = this.props;
 

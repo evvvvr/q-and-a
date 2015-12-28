@@ -79,3 +79,9 @@ function questionSubmitted(linkToQuestion) {
         linkToQuestion
     };
 }
+
+export function cleanQuestionToSubmit() {
+    return {
+        type: ActionTypes.CleanQuestionToSubmit
+    }
+}

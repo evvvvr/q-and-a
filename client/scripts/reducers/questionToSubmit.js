@@ -73,6 +73,7 @@ export default function questionToSubmit(state = defaultState, action) {
             );
 
         case ActionTypes.QuestionSubmitted:
+        case ActionTypes.CleanQuestionToSubmit:
             return Object.assign(
                 {},
                 state,

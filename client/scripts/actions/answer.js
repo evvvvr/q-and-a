@@ -77,3 +77,9 @@ function answerSubmitted(linkToAnswer) {
         linkToAnswer
     };
 }
+
+export function cleanAnswer() {
+    return {
+        type: ActionTypes.CleanAnswer
+    };
+}

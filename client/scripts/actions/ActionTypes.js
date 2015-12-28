@@ -14,11 +14,13 @@ const ActionTypes = keyMirror({
     QuestionValidationFailed: null,
     SubmittingQuestion: null,
     QuestionSubmitted: null,
+    CleanQuestionToSubmit: null,
     AnswerUsernameChanged: null,
     AnswerTextChanged: null,
     AnswerValidationFailed: null,
     SubmittingAnswer: null,
-    AnswerSubmitted: null
+    AnswerSubmitted: null,
+    CleanAnswer: null
 });
 
 export default ActionTypes;

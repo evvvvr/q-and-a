@@ -1,6 +1,6 @@
 import AnswerForm from '../../components/Question/AnswerForm';
 import React, { PropTypes } from 'react';
-import { changeAnswerUsername, changeAnswerText, submitAnswer } from '../../actions/answer';
+import { changeAnswerUsername, changeAnswerText, submitAnswer, cleanAnswer } from '../../actions/answer';
 import { connect } from 'react-redux';
 
 const propTypes = {
@@ -11,6 +11,12 @@ const propTypes = {
 };
 
 class AnswerFormContainer extends React.Component {
+    componentWillUnmount() {
+        const { dispatch } = this.props;
+
+        dispatch(cleanAnswer());        
+    }
+
     handleUsernameChange(eventArgs) {
         const { dispatch } = this.props;
 
