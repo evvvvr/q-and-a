@@ -1,13 +1,12 @@
-import QuestionListItem from './QuestionListItem';
+import QuestionsListItem from './QuestionsListItem';
 import React, { PropTypes } from 'react';
 import { compareItemsChronologically } from '../../util/date-time-util';
 
 const propTypes = {
     questions: PropTypes.arrayOf(React.PropTypes.object).isRequired,
-    onQuestionSelected: PropTypes.func
 };
 
-class QuestionList extends React.Component {
+class QuestionsList extends React.Component {
     render() {
         const questionNodes = this.props.questions
             .sort((a, b) => compareItemsChronologically(
@@ -18,11 +17,10 @@ class QuestionList extends React.Component {
                 const { id, ...questionProps } = question;
 
                 return ( 
-                    <QuestionListItem
+                    <QuestionsListItem
                         key={id}
                         questionId={id}
                         {...questionProps}
-                        onQuestionSelected={this.props.onQuestionSelected}
                     />
                 );
             });
@@ -31,6 +29,6 @@ class QuestionList extends React.Component {
     }  
 };
 
-QuestionList.propTypes = propTypes;
+QuestionsList.propTypes = propTypes;
 
-export default QuestionList;
+export default QuestionsList;

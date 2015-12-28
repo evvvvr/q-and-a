@@ -7,7 +7,6 @@ const ActionTypes = keyMirror({
     RecieveAnsweredQuestions: null,
     RequestUnansweredQuestions: null,
     RecieveUnansweredQuestions: null,
-    SelectQuestion: null,
     RequestQuestion: null,
     RecieveQuestion: null,
     QuestionUsernameChanged: null,
