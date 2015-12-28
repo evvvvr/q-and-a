@@ -8,17 +8,6 @@ const defaultState = {
 
 export default function questionToSubmit(state = defaultState, action) {
     switch (action.type) {
-        case ActionTypes.ShowScreen:
-            //TODO: better clean 'questionToSubmit' only when 'Ask Question' screen was closed
-            return Object.assign(
-                {},
-                state,
-                {
-                    errors: {},
-                    data: {}
-                }
-            );
-
         case ActionTypes.QuestionUsernameChanged:
             return Object.assign(
                 {},

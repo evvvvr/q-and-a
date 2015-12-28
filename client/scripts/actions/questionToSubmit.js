@@ -1,6 +1,6 @@
 import ActionTypes from './ActionTypes';
 import API from '../API';
-import { fetchAllQuestions } from './allQuestions';
+import { pushPath } from 'redux-simple-router';
 import { validateUsername, validateText, validateQuestion } from '../validation/validators';
 
 export function changeQuestionUsername(userName) {
@@ -34,8 +34,7 @@ export function submitQuestion(question) {
                 API.submitQuestion(question, (err, res) => {
                     if (res.ok) {
                         dispatch(questionSubmitted(res.header['Location']));
-                        dispatch(showScreen(ScreenTypes.Questions));
-                        dispatch(fetchAllQuestions());                    
+                        dispatch(pushPath('/'));
                     }
                 });
             }

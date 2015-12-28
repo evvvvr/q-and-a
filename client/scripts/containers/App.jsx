@@ -1,4 +1,3 @@
-import AskQuestionFormContainer from './AskQuestionFormContainer';
 import React, { PropTypes } from 'react';
 import TopMenu from '../components/TopMenu/TopMenu';
 import { connect } from 'react-redux';

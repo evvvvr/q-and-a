@@ -1,6 +1,6 @@
-import AskQuestionForm from '../components/AskQuestionForm';
+import AskQuestionForm from '../../components/AskQuestionForm';
 import React, { PropTypes } from 'react';
-import { changeQuestionUsername, changeQuestionText, submitQuestion } from '../actions/question-to-submit-actions';
+import { changeQuestionUsername, changeQuestionText, submitQuestion } from '../../actions/questionToSubmit';
 import { connect } from 'react-redux';
 
 const propTypes = {
