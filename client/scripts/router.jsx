@@ -2,6 +2,7 @@ import AllQuestions from './containers/AllQuestions';
 import AnsweredQuestions from './containers/AnsweredQuestions';
 import App from './containers/App';
 import AskQuestion from './containers/AskQuestion/AskQuestion';
+import NotFound from './components/NotFound';
 import Question from './containers/Question/Question';
 import React from 'react';
 import UnansweredQuestions from './containers/UnansweredQuestions';
@@ -51,6 +52,7 @@ export default function router(history, store) {
                     component={Question}
                     onEnter={onEnterQuestion(store)}
                 />
+                <Route path="*" component={NotFound} />
             </Route>
         </Router>
     );
