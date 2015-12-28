@@ -7,7 +7,7 @@ import ReactDOM from 'react-dom';
 import router from './router';
 import thunkMiddleware from 'redux-thunk';
 import { combineReducers, createStore, applyMiddleware } from 'redux';
-import { createHistory } from 'history';
+import createHashHistory from 'history/lib/createHashHistory';
 import { Provider } from 'react-redux';
 import { syncReduxAndRouter, routeReducer } from 'redux-simple-router';
 
@@ -23,7 +23,7 @@ const reducer = combineReducers(Object.assign({}, appReducer, {
 const createStoreWithMiddleware = applyMiddleware(thunkMiddleware) (createStore);
 const store = createStoreWithMiddleware(reducer);
 
-const history = createHistory();
+const history = createHashHistory();
 
 syncReduxAndRouter(history, store);
 
