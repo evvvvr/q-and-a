@@ -7,23 +7,13 @@ const defaultState = {
 
 export default function question(state = defaultState, action) {
     switch (action.type) {
-        case ActionTypes.SelectQuestion:
-            return Object.assign(
-                {},
-                state,
-                {
-                    data: {
-                        id: action.questionId
-                    }
-                }
-            );
-
         case ActionTypes.RequestQuestion:
             return Object.assign(
                 {},
                 state,
                 {
-                    isFetching: true
+                    isFetching: true,
+                    error: null
                 }
             );
 
@@ -33,7 +23,8 @@ export default function question(state = defaultState, action) {
                 state,
                 {
                     isFetching: false,
-                    data: action.question
+                    data: action.question,
+                    error: action.error
                 }
             );
 

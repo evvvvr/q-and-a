@@ -8,10 +8,17 @@ export function requestQuestion(questionId) {
     };
 }
 
-export function recieveQuestion(question) {
+export function recieveQuestionSuccessfuly(question) {
     return {
         type: ActionTypes.RecieveQuestion,
         question
+    };
+}
+
+export function recieveQuestionFaulty(error) {
+    return {
+        type: ActionTypes.RecieveQuestion,
+        error
     };
 }
 
@@ -24,7 +31,11 @@ export function fetchQuestion(questionId) {
 
             API.fetchQuestion(questionId, (err, res) => {
                 if (res.ok) {
-                    dispatch(recieveQuestion(res.body));                    
+                    dispatch(recieveQuestionSuccessfuly(res.body));
+                } else if (res.error) {
+                    console.error(`Error fetching question: ${res.error}`);
+
+                    dispatch(recieveQuestionFaulty(res.error));
                 }
             });
         }

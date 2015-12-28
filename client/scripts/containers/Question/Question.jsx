@@ -7,16 +7,21 @@ import { connect } from 'react-redux';
 const propTypes = {
     isFetching: React.PropTypes.bool.isRequired,
     data: PropTypes.object,
+    error: PropTypes.object
 };
 
 class Question extends React.Component {
     render () {
-        const { isFetching, data } = this.props;
+        const { isFetching, data, error } = this.props;
 
-        // If fetching question data or just selected question details 
-        // screen w/o data and not loading it
-        if (isFetching || !data.text) {
+        if (isFetching) {
             return <div className="questionDetails"></div>;
+        } else if (error) {
+            if (error.status === 404) {
+                return <div>Sorry, question not found</div>;
+            } else {
+                return <div>Sorry, something went wrong</div>; 
+            }
         } else {
             return (
                 <div className="questionDetails">
@@ -36,7 +41,8 @@ Question.propTypes = propTypes;
 function mapStateToProps(state) {
     return {
         isFetching: state.question.isFetching,
-        data: state.question.data
+        data: state.question.data,
+        error: state.question.error
     };
 }
 
