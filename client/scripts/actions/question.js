@@ -1,26 +1,16 @@
 import ActionTypes from './ActionTypes';
 import API from '../API';
+import { createAction } from 'redux-actions';
 
-export function requestQuestion(questionId) {
-    return {
-        type: ActionTypes.RequestQuestion,
-        questionId
-    };
-}
+export const requestQuestion = createAction(
+    ActionTypes.RequestQuestion,
+    questionId => questionId
+);
 
-export function recieveQuestionSuccessfuly(question) {
-    return {
-        type: ActionTypes.RecieveQuestion,
-        question
-    };
-}
-
-export function recieveQuestionFaulty(error) {
-    return {
-        type: ActionTypes.RecieveQuestion,
-        error
-    };
-}
+export const recieveQuestion = createAction(
+    ActionTypes.RecieveQuestion,
+    questionOrError => questionOrError
+);
 
 export function fetchQuestion(questionId) {
     return function (dispatch, getState) {
@@ -31,11 +21,11 @@ export function fetchQuestion(questionId) {
 
             API.fetchQuestion(questionId, (err, res) => {
                 if (res.ok) {
-                    dispatch(recieveQuestionSuccessfuly(res.body));
+                    dispatch(recieveQuestion(res.body));
                 } else if (res.error) {
                     console.error(`Error fetching question: ${res.error}`);
 
-                    dispatch(recieveQuestionFaulty(res.error));
+                    dispatch(recieveQuestion(res.error));
                 }
             });
         }
