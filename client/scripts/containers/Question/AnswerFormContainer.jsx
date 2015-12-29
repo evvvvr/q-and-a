@@ -52,7 +52,7 @@ class AnswerFormContainer extends React.Component {
             />
         );
     }
-};
+}
 
 AnswerFormContainer.propTypes = propTypes;
 

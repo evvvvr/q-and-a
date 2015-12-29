@@ -27,7 +27,7 @@ class TopMenuItem extends React.Component {
             </li>
         );
     }
-};
+}
 
 TopMenuItem.propTypes = propTypes;
 

@@ -6,7 +6,7 @@ const defaultState = {
     items: []
 };
 
- const unansweredQuestions = handleActions({
+const unansweredQuestions = handleActions({
         [ActionTypes.RequestUnansweredQuestions]: (state, action) => (
             Object.assign(
                 {},

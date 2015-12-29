@@ -27,7 +27,7 @@ class QuestionsList extends React.Component {
 
         return <ul className="appItemList">{questionNodes}</ul>;
     }  
-};
+}
 
 QuestionsList.propTypes = propTypes;
 

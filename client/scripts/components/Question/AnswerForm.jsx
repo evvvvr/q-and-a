@@ -95,7 +95,7 @@ class AnswerForm extends React.Component {
             </form>
         );
     }
-};
+}
 
 AnswerForm.propTypes = propTypes;
 AnswerForm.defaultProps = defaultProps;

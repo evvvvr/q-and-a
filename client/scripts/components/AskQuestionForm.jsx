@@ -94,7 +94,7 @@ class AskQuestionForm extends React.Component {
             </form>
         );
     }
-};
+}
 
 AskQuestionForm.propTypes = propTypes;
 AskQuestionForm.defaultProps = defaultProps;

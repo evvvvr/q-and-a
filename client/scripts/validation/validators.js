@@ -38,7 +38,7 @@ export function validateAnswer(answer) {
     if (errors.user || errors.text) {
         return new ValidationError('Answer validation failed', answer, errors);
     }
-};
+}
 
 export function validateQuestion(question) {
     const errors = {
@@ -49,4 +49,4 @@ export function validateQuestion(question) {
     if (errors.user || errors.text) {
         return new ValidationError('Question validation failed', question, errors);
     } 
-};
+}

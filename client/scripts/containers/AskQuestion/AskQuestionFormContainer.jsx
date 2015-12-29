@@ -48,7 +48,7 @@ class AskQuestionFormContainer extends React.Component {
             />
         );
     }
-};
+}
 
 AskQuestionFormContainer.propTypes = propTypes;
 

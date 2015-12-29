@@ -21,7 +21,7 @@ class AnswersListItem extends React.Component {
             </li>
         );
     }
-};
+}
 
 AnswersListItem.propTypes = propTypes;
 

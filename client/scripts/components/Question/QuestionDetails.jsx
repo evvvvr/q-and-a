@@ -20,7 +20,7 @@ class QuestionDetails extends React.Component {
             </div>
         );
     }
-};
+}
 
 QuestionDetails.propTypes = propTypes;
 
