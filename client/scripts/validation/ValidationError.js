@@ -20,20 +20,28 @@ class ValidationError extends ExtendableError {
 
 export default ValidationError;
 
-export function unpackErrorsFromList(validationError) {
-    return validationError.errors;   
+function unpackErrorsFromlist(validationError) {
+    return validationError.errors;
 }
 
-export function unpackErrorsFromMap(validationError) {
-    let errors = {};
+export function unpackErrors(validationError) {
+    if (validationError.errors) {
+        if (Array.isArray(validationError.errors)) {
+            return unpackErrorsFromlist(validationError);
+        } else {
+            let errors = {};
 
-    for (let k of Object.keys(validationError.errors)) {
-        const nestedError = validationError.errors[k];
+            for (let k of Object.keys(validationError.errors)) {
+                const nestedError = validationError.errors[k];
 
-        if (nestedError) {
-            errors[k] = unpackErrorsFromList(nestedError);
+                if (nestedError) {
+                    errors[k] = unpackErrorsFromlist(nestedError);
+                }
+            }
+
+            return errors;
         }
+    } else {
+        return [];
     }
-
-    return errors;
 }

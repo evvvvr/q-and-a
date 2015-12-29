@@ -1,6 +1,6 @@
 import ActionTypes from '../actions/ActionTypes';
 import { handleActions } from 'redux-actions';
-import { unpackErrorsFromList, unpackErrorsFromMap } from '../validation/ValidationError';
+import { unpackErrors } from '../validation/ValidationError';
 
 const defaultState = {
     isSubmitting: false,
@@ -19,7 +19,7 @@ const answer = handleActions({
                         state.errors,
                         {
                             user: action.error
-                                ? unpackErrorsFromList(action.payload)
+                                ? unpackErrors(action.payload)
                                 : null
                         }
                     ),
@@ -44,7 +44,7 @@ const answer = handleActions({
                         state.errors,
                         {
                             text: action.error
-                                ? unpackErrorsFromList(action.payload)
+                                ? unpackErrors(action.payload)
                                 : null
                         }
                     ),
@@ -77,7 +77,7 @@ const answer = handleActions({
                 state,
                 {
                     isSubmitting: false,
-                    errors: action.error ? unpackErrorsFromMap(action.payload) : {},
+                    errors: action.error ? unpackErrors(action.payload) : {},
                     data: action.error ? action.payload.value : {}
                 }
             )
