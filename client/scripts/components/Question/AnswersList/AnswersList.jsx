@@ -38,7 +38,7 @@ class AnswersList extends React.Component {
                 </div>
             );
         } else {
-            content = (<div>There's no answers</div>);
+            content = <div />;
         }
 
         return content;
