@@ -1,18 +1,13 @@
 import ActionTypes from './ActionTypes';
 import API from '../API';
+import { createAction } from 'redux-actions';
 
-export function requestAllQuestions() {
-    return {
-        type: ActionTypes.RequestAllQuestions
-    };
-}
+export const requestAllQuestions = createAction(ActionTypes.RequestAllQuestions);
 
-export function recieveAllQuestions(questions) {
-    return {
-        type: ActionTypes.RecieveAllQuestions,
-        questions
-    };
-}
+export const recieveAllQuestions = createAction(
+    ActionTypes.RecieveAllQuestions,
+    questions => questions
+);
 
 export function fetchAllQuestions() {
     return function (dispatch, getState) {

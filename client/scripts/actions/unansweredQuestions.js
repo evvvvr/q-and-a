@@ -1,18 +1,13 @@
 import ActionTypes from './ActionTypes';
 import API from '../API';
+import { createAction } from 'redux-actions';
 
-export function requestUnansweredQuestions() {
-    return {
-        type: ActionTypes.RequestUnansweredQuestions
-    };
-}
+export const requestUnansweredQuestions = createAction(ActionTypes.RequestUnansweredQuestions);
 
-export function recieveUnansweredQuestions(questions) {
-    return {
-        type: ActionTypes.RecieveUnansweredQuestions,
-        questions
-    };
-}
+export const recieveUnansweredQuestions = createAction(
+    ActionTypes.RecieveUnansweredQuestions,
+    questions => questions
+);
 
 export function fetchUnansweredQuestions() {
     return function (dispatch, getState) {

@@ -1,32 +1,34 @@
 import ActionTypes from '../actions/ActionTypes';
+import { handleActions } from 'redux-actions';
 
 const defaultState = {
     isFetching: false,
     items: []
 };
 
-export default function allQuestions(state = defaultState, action) {
-    switch (action.type) {
-        case ActionTypes.RequestAllQuestions:
-            return Object.assign(
+const allQuestions = handleActions({
+        [ActionTypes.RequestAllQuestions]: (state, action) => (
+            Object.assign(
                 {},
                 state,
                 {
                     isFetching: true
                 }
-            );
+            )
+        ),
 
-        case ActionTypes.RecieveAllQuestions:
-            return Object.assign(
+        [ActionTypes.RecieveAllQuestions]: (state, action) => (
+            Object.assign(
                 {},
                 state,
                 {
                     isFetching: false,
-                    items: action.questions
+                    items: action.payload
                 }
-            );
+            )
+        )
+    },
+    defaultState
+);
 
-        default:
-            return state;
-    }
-}
+export default allQuestions;

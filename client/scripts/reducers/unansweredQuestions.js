@@ -1,32 +1,34 @@
 import ActionTypes from '../actions/ActionTypes';
+import { handleActions } from 'redux-actions';
 
 const defaultState = {
     isFetching: false,
     items: []
 };
 
-export default function unansweredQuestions(state = defaultState, action) {
-   switch (action.type) {
-        case ActionTypes.RequestUnansweredQuestions:
-            return Object.assign(
+ const unansweredQuestions = handleActions({
+        [ActionTypes.RequestUnansweredQuestions]: (state, action) => (
+            Object.assign(
                 {},
                 state,
                 {
                     isFetching: true
                 }
-            );
+            )
+        ),
 
-        case ActionTypes.RecieveUnansweredQuestions:
-            return Object.assign(
+        [ActionTypes.RecieveUnansweredQuestions]: (state, action) => (
+            Object.assign(
                 {},
                 state,
                 {
                     isFetching: false,
-                    items: action.questions
+                    items: action.payload
                 }
-            );
+            )
+        )
+    },
+    defaultState
+);
 
-        default:
-            return state;
-    }
-}
+export default unansweredQuestions;
