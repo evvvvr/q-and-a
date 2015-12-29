@@ -1,4 +1,6 @@
 import ActionTypes from '../actions/ActionTypes';
+import { handleActions } from 'redux-actions';
+import { unpackErrorsFromList, unpackErrorsFromMap } from '../validation/ValidationError';
 
 const defaultState = {
     isSubmitting: false,
@@ -6,21 +8,9 @@ const defaultState = {
     data: {}
 };
 
-export default function answer(state = defaultState, action) {
-    switch (action.type) {
-        case ActionTypes.SelectQuestion:
-            return Object.assign(
-                {},
-                state,
-                {
-                    isSubmitting: false,
-                    errors: {},
-                    data: {}
-                }
-            );
-
-        case ActionTypes.AnswerUsernameChanged:
-            return Object.assign(
+const answer = handleActions({
+        [ActionTypes.AnswerUsernameChanged]: (state, action) => (
+            Object.assign(
                 {},
                 state,
                 {
@@ -28,21 +18,24 @@ export default function answer(state = defaultState, action) {
                         {},
                         state.errors,
                         {
-                            user: action.errors,
+                            user: action.error
+                                ? unpackErrorsFromList(action.payload)
+                                : null
                         }
                     ),
                     data: Object.assign(
                         {},
                         state.data,
                         {
-                            user: action.user,
+                            user: action.error ? action.payload.value : action.payload
                         }
                     )
                 }
-            );
+            )
+        ),
 
-        case ActionTypes.AnswerTextChanged:
-            return Object.assign(
+        [ActionTypes.AnswerTextChanged]: (state, action) => (
+            Object.assign(
                 {},
                 state,
                 {
@@ -50,42 +43,48 @@ export default function answer(state = defaultState, action) {
                         {},
                         state.errors,
                         {
-                            text: action.errors,
+                            text: action.error
+                                ? unpackErrorsFromList(action.payload)
+                                : null
                         }
                     ),
                     data: Object.assign(
                         {},
                         state.data,
                         {
-                            text: action.text,
+                            text: action.error ? action.payload.value : action.payload
                         }
                     )
                 }
-            );
+            )
+        ),
 
-        case ActionTypes.AnswerValidationFailed:
-            return Object.assign(
-                {},
-                state,
-                {
-                    errors: action.validationErrors
-                }
-            );
-
-        case ActionTypes.SubmittingAnswer:
-            return Object.assign(
+        [ActionTypes.SubmittingAnswer]: (state, action) => (
+            Object.assign(
                 {},
                 state,
                 {
                     isSubmitting: true,
                     errors: {},
-                    data: action.answer
+                    data: action.payload.answer
                 }
-            );
+            )
+        ),
 
-        case ActionTypes.AnswerSubmitted:
-        case ActionTypes.CleanAnswer:
-            return Object.assign(
+        [ActionTypes.AnswerSubmitted]: (state, action) => (
+            Object.assign(
+                {},
+                state,
+                {
+                    isSubmitting: false,
+                    errors: action.error ? unpackErrorsFromMap(action.payload) : {},
+                    data: action.error ? action.payload.value : {}
+                }
+            )
+        ),
+
+        [ActionTypes.CleanAnswer]: (state, action) => (
+            Object.assign(
                 {},
                 state,
                 {
@@ -93,9 +92,10 @@ export default function answer(state = defaultState, action) {
                     errors: {},
                     data: {}
                 }
-            );
+            )
+        )
+    },
+    defaultState
+);
 
-        default:
-            return state;
-    }
-}
+export default answer;

@@ -17,7 +17,6 @@ const ActionTypes = keyMirror({
     CleanQuestionToSubmit: null,
     AnswerUsernameChanged: null,
     AnswerTextChanged: null,
-    AnswerValidationFailed: null,
     SubmittingAnswer: null,
     AnswerSubmitted: null,
     CleanAnswer: null
