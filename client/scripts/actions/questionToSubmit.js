@@ -1,34 +1,40 @@
 import ActionTypes from './ActionTypes';
 import API from '../API';
+import { createAction } from 'redux-actions';
 import { pushPath } from 'redux-simple-router';
 import { validateUsername, validateText, validateQuestion } from '../validation/validators';
 
-export function changeQuestionUsername(userName) {
-    return (dispatch) =>
-        dispatch(questionUsernameChanged(userName, validateUsername(userName)));
+export function changeQuestionUsername(username) {
+    return (dispatch) => {
+        const validationError = validateUsername(username);
+
+        dispatch(
+            questionUsernameChanged(validationError ? validationError : username)
+        );
+    }
 }
 
 export function changeQuestionText(text) {
-    return (dispatch) =>
-        dispatch(questionTextChanged(text, validateText(text)));
+    return (dispatch) => {
+        const validationError = validateText(text);
+
+        dispatch(
+            questionTextChanged(validationError ? validationError : text)
+        );
+    }
 }
 
 export function submitQuestion(question) {
     return (dispatch, getState) => {
         if (!getState().questionToSubmit.isSubmitting) {
-            console.info(`Submitting question ${question.text}
-                as ${question.user}`);
+            const validationError = validateQuestion(question); 
 
-            const validationErrors = validateQuestion(question); 
-
-            if (validationErrors.user.length > 0
-                || validationErrors.text.length > 0) {
-                dispatch(
-                    questionValidationFailed(
-                        question,
-                        validationErrors
-                ));
+            if (validationError) {
+                dispatch(questionSubmitted(validationError));
             } else {
+                console.info(`Submitting question ${question.text}`
+                    + ` as ${question.user}`);
+
                 dispatch(submittingQuestion(question));
      
                 API.submitQuestion(question, (err, res) => {
@@ -42,46 +48,24 @@ export function submitQuestion(question) {
     };
 }
 
-function questionUsernameChanged(user, errors) {
-    return {
-        type: ActionTypes.QuestionUsernameChanged,
-        user,
-        errors
-    };
-}
+const questionUsernameChanged = createAction(
+    ActionTypes.QuestionUsernameChanged,
+    usernameOrError => usernameOrError
+);
 
-function questionTextChanged(text, errors) {
-    return {
-        type: ActionTypes.QuestionTextChanged,
-        text,
-        errors
-    };
-}
+const questionTextChanged = createAction(
+    ActionTypes.QuestionTextChanged,
+    textOrError => textOrError
+);
 
-function questionValidationFailed(question, errors) {
-    return {
-        type: ActionTypes.QuestionValidationFailed,
-        question,
-        errors
-    };
-}
+const submittingQuestion = createAction(
+    ActionTypes.SubmittingQuestion,
+    question => question
+);
 
-function submittingQuestion(question) {
-    return {
-        type: ActionTypes.SubmittingQuestion,
-        question
-    };
-}
+const questionSubmitted = createAction(
+    ActionTypes.QuestionSubmitted, 
+    linkToQuestionOrError => linkToQuestionOrError
+);
 
-function questionSubmitted(linkToQuestion) {
-    return {
-        type: ActionTypes.QuestionSubmitted,
-        linkToQuestion
-    };
-}
-
-export function cleanQuestionToSubmit() {
-    return {
-        type: ActionTypes.CleanQuestionToSubmit
-    }
-}
+export const cleanQuestionToSubmit = createAction(ActionTypes.CleanQuestionToSubmit);

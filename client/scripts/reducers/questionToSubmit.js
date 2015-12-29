@@ -1,4 +1,6 @@
 import ActionTypes from '../actions/ActionTypes';
+import { handleActions } from 'redux-actions';
+import { unpackErrorsFromList, unpackErrorsFromMap } from '../validation/ValidationError';
 
 const defaultState = {
     isSubmitting: false,
@@ -6,10 +8,9 @@ const defaultState = {
     data: {}
 };
 
-export default function questionToSubmit(state = defaultState, action) {
-    switch (action.type) {
-        case ActionTypes.QuestionUsernameChanged:
-            return Object.assign(
+const questionToSubmit = handleActions({
+        [ActionTypes.QuestionUsernameChanged]: (state, action) => (
+            Object.assign(
                 {},
                 state,
                 {
@@ -17,21 +18,24 @@ export default function questionToSubmit(state = defaultState, action) {
                         {},
                         state.errors,
                         {
-                            user: action.errors,
+                            user: action.error
+                                ? unpackErrorsFromList(action.payload)
+                                : null
                         }
                     ),
                     data: Object.assign(
                         {},
                         state.data,
                         {
-                            user: action.user,
+                            user: action.error ? action.payload.value : action.payload
                         }
                     )
                 }
-            );
+            )
+        ),
 
-        case ActionTypes.QuestionTextChanged:
-            return Object.assign(
+        [ActionTypes.QuestionTextChanged]: (state, action) => (
+            Object.assign(
                 {},
                 state,
                 {
@@ -39,42 +43,48 @@ export default function questionToSubmit(state = defaultState, action) {
                         {},
                         state.errors,
                         {
-                            text: action.errors,
+                            text: action.error
+                                ? unpackErrorsFromList(action.payload)
+                                : null
                         }
                     ),
                     data: Object.assign(
                         {},
                         state.data,
                         {
-                            text: action.text,
+                            text: action.error ? action.payload.value : action.payload
                         }
                     )
                 }
-            );
+            )
+        ),
 
-        case ActionTypes.QuestionValidationFailed:
-            return Object.assign(
-                {},
-                state,
-                {
-                    errors: action.errors,
-                }
-            );
-
-        case ActionTypes.SubmittingQuestion:
-            return Object.assign(
+        [ActionTypes.SubmittingQuestion]: (state, action) => (
+            Object.assign(
                 {},
                 state,
                 {
                     isSubmitting: true,
                     errors: {},
-                    data: action.question
+                    data: action.payload
                 }
-            );
+            )
+        ),
 
-        case ActionTypes.QuestionSubmitted:
-        case ActionTypes.CleanQuestionToSubmit:
-            return Object.assign(
+        [ActionTypes.QuestionSubmitted]: (state, action) => (
+            Object.assign(
+                {},
+                state,
+                {
+                    isSubmitting: false,
+                    errors: action.error ? unpackErrorsFromMap(action.payload) : {},
+                    data: action.error ? action.payload.value : {}
+                }
+            )
+        ),
+
+        [ActionTypes.CleanQuestionToSubmit]: (state, action) => (
+            Object.assign(
                 {},
                 state,
                 {
@@ -82,9 +92,10 @@ export default function questionToSubmit(state = defaultState, action) {
                     errors: {},
                     data: {}
                 }
-            );
+            )
+        )
+    },
+    defaultState
+);
 
-        default:
-            return state;
-    }
-}
+export default questionToSubmit;

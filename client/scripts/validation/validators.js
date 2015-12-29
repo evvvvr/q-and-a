@@ -41,8 +41,12 @@ export function validateAnswer(answer) {
 };
 
 export function validateQuestion(question) {
-    return {
+    const errors = {
         user: validateUsername(question.user),
         text: validateText(question.text)
     };
+
+    if (errors.user || errors.text) {
+        return new ValidationError('Question validation failed', question, errors);
+    } 
 };
