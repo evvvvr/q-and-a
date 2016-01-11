@@ -1,5 +1,5 @@
 import ActionTypes from './ActionTypes';
-import API from '../API';
+import API from '../API/API';
 import { createAction } from 'redux-actions';
 
 export const requestAllQuestions = createAction(ActionTypes.RequestAllQuestions);
@@ -10,7 +10,7 @@ export const recieveAllQuestions = createAction(
 );
 
 export function fetchAllQuestions() {
-    return function (dispatch, getState) {
+    return (dispatch, getState) => {
         if (!getState().allQuestions.isFetching) {
             console.info('Retrieving all questions');
 

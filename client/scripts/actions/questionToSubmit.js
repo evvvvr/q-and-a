@@ -1,5 +1,5 @@
 import ActionTypes from './ActionTypes';
-import API from '../API';
+import API from '../API/API';
 import { createAction } from 'redux-actions';
 import { pushPath } from 'redux-simple-router';
 import { validateUsername, validateText, validateQuestion } from '../validation/validators';
@@ -37,12 +37,13 @@ export function submitQuestion(question) {
 
                 dispatch(submittingQuestion(question));
      
-                API.submitQuestion(question, (err, res) => {
-                    if (res.ok) {
-                        dispatch(questionSubmitted(res.header['Location']));
-                        dispatch(pushPath('/'));
-                    }
-                });
+                API.submitQuestion(question)
+                    .then((response) => {
+                        if (response.ok) {
+                            dispatch(questionSubmitted(response.headers['Location']));
+                            dispatch(pushPath('/'));
+                        }
+                    });
             }
         }
     };

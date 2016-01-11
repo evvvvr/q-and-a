@@ -1,5 +1,5 @@
 import ActionTypes from './ActionTypes';
-import API from '../API';
+import API from '../API/API';
 import { createAction } from 'redux-actions';
 import { fetchQuestion } from './question';
 import { validateUsername, validateText, validateAnswer } from '../validation/validators';
@@ -25,7 +25,7 @@ export function changeAnswerText(text) {
 }
 
 export function submitAnswer(questionId, answer) {
-   return function (dispatch, getState) {
+   return (dispatch, getState) => {
         if (!getState().answer.isSubmitting) {
             const validationError = validateAnswer(answer);
 
@@ -37,12 +37,13 @@ export function submitAnswer(questionId, answer) {
 
                 dispatch(submittingAnswer(questionId, answer));
 
-                API.submitAnswer(questionId, answer, (err, res) => {
-                    if (res.ok) {
-                        dispatch(answerSubmitted(res.header['Location']));
-                        dispatch(fetchQuestion(questionId));               
-                    }
-                });
+                API.submitAnswer(questionId, answer)
+                    .then((response) => {
+                        if (response.ok) {
+                            dispatch(answerSubmitted(response.headers['Location']));
+                            dispatch(fetchQuestion(questionId));                            
+                        }
+                    });
             }
         }
     };

@@ -1,6 +1,6 @@
 import '../styles/main.css';
 import 'purecss';
-import API from './API';
+import API from './API/API';
 import appReducer from './reducers/appReducer';
 import React from 'react';
 import ReactDOM from 'react-dom';
@@ -12,8 +12,7 @@ import { Provider } from 'react-redux';
 import { syncReduxAndRouter, routeReducer } from 'redux-simple-router';
 
 API.init({
-    hostURL: 'http://localhost:8080/api',
-    timeout: 5000
+    hostURL: 'http://localhost:8080/api'
 });
 
 const reducer = combineReducers(Object.assign({}, appReducer, {

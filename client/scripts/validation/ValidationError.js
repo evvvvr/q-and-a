@@ -1,13 +1,4 @@
-class ExtendableError extends Error {
-    constructor(message) {
-        super(message);
-
-        this.name = this.constructor.name;
-        this.message = message;
-
-        Error.captureStackTrace(this, this.constructor.name)
-    }
-} 
+import ExtendableError from '../ExtendableError'
 
 class ValidationError extends ExtendableError {
     constructor(message, value, errors) {   

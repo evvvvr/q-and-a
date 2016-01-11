@@ -1,5 +1,5 @@
 import ActionTypes from './ActionTypes';
-import API from '../API';
+import API from '../API/API';
 import { createAction } from 'redux-actions';
 
 export const requestQuestion = createAction(
@@ -13,21 +13,19 @@ export const recieveQuestion = createAction(
 );
 
 export function fetchQuestion(questionId) {
-    return function (dispatch, getState) {
+    return (dispatch, getState) => {
         if (!getState().question.isFetching) {
             console.info(`Retrieving question #${questionId}`);
 
             dispatch(requestQuestion(questionId));
 
-            API.fetchQuestion(questionId, (err, res) => {
-                if (res.ok) {
-                    dispatch(recieveQuestion(res.body));
-                } else if (res.error) {
-                    console.error(`Error fetching question: ${res.error}`);
+            API.fetchQuestion(questionId)
+                .then(question => dispatch(recieveQuestion(question)))
+                .catch(error => {
+                    console.error(`Error fetching question: ${error}`);
 
-                    dispatch(recieveQuestion(res.error));
-                }
-            });
+                    dispatch(recieveQuestion(error));                    
+                });
         }
     };
 }

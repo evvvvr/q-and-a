@@ -1,5 +1,5 @@
 import ActionTypes from './ActionTypes';
-import API from '../API';
+import API from '../API/API';
 import { createAction } from 'redux-actions';
 
 export const requestUnansweredQuestions = createAction(ActionTypes.RequestUnansweredQuestions);
@@ -10,17 +10,14 @@ export const recieveUnansweredQuestions = createAction(
 );
 
 export function fetchUnansweredQuestions() {
-    return function (dispatch, getState) {
+    return (dispatch, getState) => {
         if (!getState().unansweredQuestions.isFetching) {
             console.info('Retrieving unanswered questions');
 
             dispatch(requestUnansweredQuestions());
 
-            API.fetchUnansweredQuestions((err, res) => {
-                if (res.ok) {
-                    dispatch(recieveUnansweredQuestions(res.body));
-                }
-            });
+            return API.fetchUnansweredQuestions()
+                .then(unansweredQuestions => dispatch(recieveUnansweredQuestions(unansweredQuestions)));
         }
     };
 }
