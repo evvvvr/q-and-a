@@ -15,12 +15,9 @@ export function fetchAllQuestions() {
             console.info('Retrieving all questions');
 
             dispatch(requestAllQuestions());
-
-            API.fetchAllQuestions((err, res) => {
-                if (res.ok) {
-                    dispatch(recieveAllQuestions(res.body));                    
-                }
-            });
+            
+            return API.fetchAllQuestions()
+                .then(allQuestions => dispatch(recieveAllQuestions(allQuestions)));
         }
     };
 }

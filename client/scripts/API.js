@@ -14,10 +14,8 @@ const API = {
     },
 
     fetchAllQuestions(callback) {
-        request
-            .get(allQuestionsURL)
-            .timeout(timeoutValue)
-            .end(callback);
+        return fetch(allQuestionsURL)
+            .then((response) => response.json());
     },
 
     fetchAnsweredQuestions(callback) {
