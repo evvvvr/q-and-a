@@ -14,13 +14,15 @@ class QuestionsList extends React.Component {
                 b.dateTimeAsked
             ))
             .map((question) => {
-                const { id, ...questionProps } = question;
+                const { id, text, dateTimeAsked, user } = question;
 
                 return ( 
                     <QuestionsListItem
                         key={id}
                         questionId={id}
-                        {...questionProps}
+                        text={text}
+                        dateTimeAsked={dateTimeAsked}
+                        user={user}
                     />
                 );
             });

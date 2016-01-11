@@ -18,9 +18,17 @@ class AnswersList extends React.Component {
                 b.dateTimeAnswered
             ))
             .map((answer) => {
-                const { id, ...answerProps } = answer;
+                const { id, text, dateTimeAnswered, user } = answer;
 
-                return <AnswersListItem key={id} answerId={id} {...answerProps} />;
+                return (
+                    <AnswersListItem
+                        key={id}
+                        answerId={id}
+                        text={text}
+                        dateTimeAnswered={dateTimeAnswered}
+                        user={user}
+                    />
+                );
             });
 
         if (this.props.answers.length) {
