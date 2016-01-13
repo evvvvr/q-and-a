@@ -9,15 +9,35 @@ var express = require('express'),
     initializeDatabase = require('./db-initializer.js'),
     questionsController = require('./questions-controller.js');
 
+console.info('Starting app...');
+
 initializeDatabase(startApp);
 
 function startApp(error) {
+    function shutdownGracefully() {
+        console.info('Shutting down gracefully...');
+
+        server.close(function () {
+            console.info('Remaining client connections closed');
+
+            process.exit();
+        });
+
+        setTimeout(function () {
+            console.info('Failed to close client connections. Force shut down');
+
+            process.exit(1);
+        }, timeout);
+    }
+
     if (error) {
         console.error('Error starting application: %j', error);
-        return;
+
+        process.exit(1);
     }
 
     var port = process.env.PORT || AppDefaults.Port;
+    var timeout = process.env.TIMEOUT || AppDefaults.Timeout;
     var app = express();
 
     app.use(express.static('dist'));
@@ -25,6 +45,10 @@ function startApp(error) {
     app.use('/api', questionsController);
     app.use(middleware.handleError);
 
-    console.info('Starting app on port %d', port);
-    app.listen(port);
+    var server = app.listen(port, function (error) {
+        console.info('Listening on port %d', port);
+    });
+
+    process.on('SIGTERM', shutdownGracefully);
+    process.on('SIGINT', shutdownGracefully);
 }

@@ -5,5 +5,6 @@ module.exports = {
     DbFilename: 'data.db',
     PageNo: 1,
     PageSize: 10,
-    DateTimeFormat: 'YYYY-MM-DD HH:mm:ss'
+    DateTimeFormat: 'YYYY-MM-DD HH:mm:ss',
+    Timeout: 10*1000
 };
