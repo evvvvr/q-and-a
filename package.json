@@ -2,22 +2,24 @@
   "name": "q-and-a-app",
   "version": "0.0.1",
   "description": "Simple Q&A App Like Stackoverflow.com",
-  "scripts": {
-    "start": "node server/server.js"
+  "engines": {
+    "node": "4.2.4"
   },
-  "devDependencies": {
-    "babel-core": "^6.4.0",
-    "babel-loader": "^6.2.1",
-    "css-loader": "^0.16.0",
-    "file-loader": "^0.8.4",
-    "style-loader": "^0.12.3",
-    "webpack": "^1.11.0"
+  "scripts": {
+    "start": "node server/server.js",
+    "postinstall": "webpack --config client/webpack.config.js"
   },
   "dependencies": {
     "app-module-path": "^1.0.4",
+    "babel-core": "^6.4.0",
+    "babel-loader": "^6.2.1",
+    "babel-preset-es2015": "^6.3.13",
+    "babel-preset-react": "^6.3.13",
     "body-parser": "^1.13.3",
     "classnames": "^2.2.1",
+    "css-loader": "^0.16.0",
     "express": "^4.13.3",
+    "file-loader": "^0.8.4",
     "history": "^1.17.0",
     "jsonschema": "^1.0.2",
     "keymirror": "^0.1.1",
@@ -32,6 +34,8 @@
     "redux-simple-router": "^1.0.2",
     "redux-thunk": "^1.0.2",
     "sqlite3": "^3.0.10",
-    "underscore": "^1.8.3"
+    "style-loader": "^0.12.3",
+    "underscore": "^1.8.3",
+    "webpack": "^1.11.0"
   }
 }

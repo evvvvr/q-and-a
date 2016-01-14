@@ -12,7 +12,7 @@ import { Provider } from 'react-redux';
 import { syncReduxAndRouter, routeReducer } from 'redux-simple-router';
 
 API.init({
-    hostURL: 'http://localhost:8080/api'
+    hostURL: location.origin + '/api'
 });
 
 const reducer = combineReducers(Object.assign({}, appReducer, {
