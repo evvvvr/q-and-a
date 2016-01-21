@@ -3,20 +3,23 @@ import React, { PropTypes } from 'react';
 import { compareItemsChronologically } from '../../util/date-time-util';
 
 const propTypes = {
-    questions: PropTypes.arrayOf(React.PropTypes.object).isRequired,
+    questions: PropTypes.object.isRequired,
 };
 
 class QuestionsList extends React.Component {
     render() {
         const questionNodes = this.props.questions
             .sort((a, b) => compareItemsChronologically(
-                a.dateTimeAsked,
-                b.dateTimeAsked
+                a.get('dateTimeAsked'),
+                b.get('dateTimeAsked')
             ))
             .map((question) => {
-                const { id, text, dateTimeAsked, user } = question;
+                const id            = question.get('id');
+                const text          = question.get('text');
+                const dateTimeAsked = question.get('dateTimeAsked'); 
+                const user          = question.get('user');
 
-                return ( 
+                return (
                     <QuestionsListItem
                         key={id}
                         questionId={id}

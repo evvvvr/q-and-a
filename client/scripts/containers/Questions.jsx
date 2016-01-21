@@ -5,13 +5,12 @@ import { connect } from 'react-redux';
 const propTypes = {
     title: PropTypes.string.isRequired,
     mapStateToQuestions: PropTypes.func.isRequired,
-    isFetching: PropTypes.bool.isRequired,
-    items: PropTypes.arrayOf(PropTypes.object).isRequired
+    items: PropTypes.object.isRequired
 };
 
 class Questions extends React.Component {
     render() {
-        const { title, isFetching, items } = this.props;
+        const { title, items } = this.props;
 
         return (
             <div>
@@ -28,8 +27,7 @@ function mapStateToProps(state, ownProps) {
     const questions = ownProps.mapStateToQuestions(state);
 
     return {
-        isFetching: questions.isFetching,
-        items: questions.items
+        items: questions.get('items')
     };
 }
 
