@@ -26,10 +26,12 @@ class Question extends React.Component {
             return (
                 <div className="questionDetails">
                     <QuestionDetails
-                        {...data}
+                        user={data.get('user')}
+                        text={data.get('text')}
+                        dateTimeAsked={data.get('dateTimeAsked')}
                     />
-                    <AnswersList answers={data.answers} />
-                    <AnswerFormContainer />
+                    <AnswersList answers={data.get('answers')} />
+{/*                    <AnswerFormContainer />*/}
                 </div>
             ); 
         }
@@ -40,9 +42,9 @@ Question.propTypes = propTypes;
 
 function mapStateToProps(state) {
     return {
-        isFetching: state.question.isFetching,
-        data: state.question.data,
-        error: state.question.error
+        isFetching: state.question.get('isFetching'),
+        data: state.question.get('data'),
+        error: state.question.get('error')
     };
 }
 

@@ -1,34 +1,25 @@
 import ActionTypes from '../actions/ActionTypes';
+import Immutable from 'immutable';
 import { handleActions } from 'redux-actions';
 
-const defaultState = {
+const defaultState = Immutable.fromJS({
     isFetching: false,
     data: {}
-};
+});
 
 const question = handleActions({
-        [ActionTypes.RequestQuestion]: (state, action) => (
-            Object.assign(
-                {},
-                state,
-                {
-                    isFetching: true,
-                    error: null
-                }
-            )
-        ),
+        [ActionTypes.RequestQuestion]:
+            (state, action) => state.withMutations((state) =>
+                state.set('isFetching', true)
+                    .set('error', null)
+            ),
 
-        [ActionTypes.RecieveQuestion]: (state, action) => (
-            Object.assign(
-                {},
-                state,
-                {
-                    isFetching: false,
-                    data: action.error ? null : action.payload,
-                    error: action.error ? action.payload : null
-                }
+        [ActionTypes.RecieveQuestion]:
+            (state, action) => state.withMutations((state) =>
+                state.set('isFetching', false)
+                    .set('data', action.error ? null : Immutable.fromJS(action.payload))
+                    .set('error', action.error ? action.payload : null)
             )
-        )
     },
     defaultState
 );

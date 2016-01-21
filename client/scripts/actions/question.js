@@ -24,7 +24,7 @@ export function fetchQuestion(questionId) {
                 .catch(error => {
                     console.error(`Error fetching question: ${error}`);
 
-                    dispatch(recieveQuestion(error));                    
+                    dispatch(recieveQuestion(error));
                 });
         }
     };
