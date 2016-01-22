@@ -45,13 +45,13 @@ class AskQuestionForm extends React.Component {
 
     render() {
         const errors = this.props.errors;
-        let textError, usernameError;
+        let textErrorMessage, usernameErrorMessage;
 
         if (errors) {
             const usernameErrors = errors.get('user');
 
             if (usernameErrors) {
-                usernameError = usernameErrors
+                usernameErrorMessage = usernameErrors
                     .map(e => e.get('message'))
                     .reduce(
                         (prev, current) => prev + ' ' + current,
@@ -62,7 +62,7 @@ class AskQuestionForm extends React.Component {
             const textErrors = errors.get('text');
 
             if (textErrors) {
-                textError = textErrors
+                textErrorMessage = textErrors
                     .map(e => e.get('message'))
                     .reduce(
                         (prev, current) => prev + ' ' + current,
@@ -79,14 +79,14 @@ class AskQuestionForm extends React.Component {
                         ref="username"
                         placeholder="Your Name"
                         value={this.props.username}
-                        error={usernameError}
+                        error={usernameErrorMessage}
                         onChange={this.handleUsernameChange.bind(this)}
                     />
                     <TextAreaInput
                         ref="text"
                         placeholder="Your Answer"
                         value={this.props.text}
-                        error={textError}
+                        error={textErrorMessage}
                         onChange={this.handleTextChange.bind(this)}
                     />
                     <input

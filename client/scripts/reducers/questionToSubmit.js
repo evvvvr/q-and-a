@@ -5,7 +5,8 @@ import { unpackErrors } from '../validation/ValidationError';
 
 const defaultState = Immutable.fromJS({
     isSubmitting: false,
-    data: {}
+    data: {},
+    errors: {}
 });
 
 const questionToSubmit = handleActions({
@@ -34,14 +35,14 @@ const questionToSubmit = handleActions({
         [ActionTypes.SubmittingQuestion]:
             (state, action) => state.withMutations((state) => 
                 state.set('isSubmitting', true)
-                    .set('errors', null)
+                    .set('errors', Immutable.fromJS({}))
                     .set('data', Immutable.fromJS(action.payload))
             ),
 
         [ActionTypes.QuestionSubmitted]:
             (state, action) => state.withMutations((state) =>
                 state.set('isSubmitting', false)
-                    .set('errors', action.error ? Immutable.fromJS(unpackErrors(action.payload)) : null)
+                    .set('errors', action.error ? Immutable.fromJS(unpackErrors(action.payload)) : Immutable.fromJS({}))
                     .set(
                         'data',
                         action.error ? Immutable.fromJS(action.payload.value) : Immutable.fromJS({})
@@ -51,7 +52,7 @@ const questionToSubmit = handleActions({
         [ActionTypes.CleanQuestionToSubmit]:
             (state, action) => state.withMutations((state) =>
                 state.set('isSubmitting', false)
-                    .set('errors', null)
+                    .set('errors', Immutable.fromJS({}))
                     .set('data', Immutable.fromJS({}))
             )
     },
