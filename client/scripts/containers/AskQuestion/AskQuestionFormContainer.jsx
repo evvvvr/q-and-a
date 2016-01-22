@@ -53,10 +53,12 @@ class AskQuestionFormContainer extends React.Component {
 AskQuestionFormContainer.propTypes = propTypes;
 
 function select(state) {
+    console.log('AskQuestionFormContainer');
+    console.log(state);
     return {
-        username: state.questionToSubmit.data.user,
-        text: state.questionToSubmit.data.text,
-        errors: state.questionToSubmit.errors
+        username: state.questionToSubmit.getIn(['data', 'user']),
+        text: state.questionToSubmit.getIn(['data', 'text']),
+        errors: state.questionToSubmit.get('errors')
     };
 }
 

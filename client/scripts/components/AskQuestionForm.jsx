@@ -47,19 +47,26 @@ class AskQuestionForm extends React.Component {
         const errors = this.props.errors;
         let textError, usernameError;
 
+        console.log('errors');
+        console.log(errors);
+
         if (errors) {
-            if (errors.user) {
-                usernameError = errors.user
-                    .map(e => e.message)
+            const usernameErrors = errors.get('user');
+
+            if (usernameErrors) {
+                usernameError = usernameErrors
+                    .map(e => e.get('message'))
                     .reduce(
                         (prev, current) => prev + ' ' + current,
                         ''
                     );
             }
 
-            if (errors.text) {
-                textError = errors.text
-                    .map(e => e.message)
+            const textErrors = errors.get('text');
+
+            if (textErrors) {
+                textError = textErrors
+                    .map(e => e.get('message'))
                     .reduce(
                         (prev, current) => prev + ' ' + current,
                         ''
