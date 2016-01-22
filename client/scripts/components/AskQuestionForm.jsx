@@ -47,9 +47,6 @@ class AskQuestionForm extends React.Component {
         const errors = this.props.errors;
         let textError, usernameError;
 
-        console.log('errors');
-        console.log(errors);
-
         if (errors) {
             const usernameErrors = errors.get('user');
 
