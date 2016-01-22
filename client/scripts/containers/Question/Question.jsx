@@ -31,7 +31,7 @@ class Question extends React.Component {
                         dateTimeAsked={data.get('dateTimeAsked')}
                     />
                     <AnswersList answers={data.get('answers')} />
-{/*                    <AnswerFormContainer />*/}
+                    <AnswerFormContainer />
                 </div>
             ); 
         }

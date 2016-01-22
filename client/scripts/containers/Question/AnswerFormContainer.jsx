@@ -58,10 +58,10 @@ AnswerFormContainer.propTypes = propTypes;
 
 function select(state) {
     return {
-        questionId: state.question.data.id,
-        username: state.answer.data.user,
-        text: state.answer.data.text,
-        errors: state.answer.errors
+        questionId: state.question.getIn(['data', 'id']),
+        username: state.answer.getIn(['data', 'user']),
+        text: state.answer.getIn(['data', 'text']),
+        errors: state.answer.get('errors')
     };
 }
 

@@ -43,21 +43,25 @@ class AnswerForm extends React.Component {
 
     render() {
         const errors = this.props.errors;
-        let textError, userNameError;
+        let textErrorMessage, usernameErrorMessage;
 
         if (errors) {
-            if (errors.user) {
-                userNameError = errors.user
-                    .map(e => e.message)
+            const usernameErrors = errors.get('user');
+
+            if (usernameErrors) {
+                usernameErrorMessage = usernameErrors
+                    .map(e => e.get('message'))
                     .reduce(
                         (prev, current) => prev + ' ' + current,
                         ''
                     );                                
             }
 
-            if (errors.text) {
-                textError = errors.text
-                    .map(e => e.message)
+            const textErrors = errors.get('text');
+
+            if (textErrors) {
+                textErrorMessage = textErrors
+                    .map(e => e.get('message'))
                     .reduce(
                         (prev, current) => prev + ' ' + current,
                         ''
@@ -76,14 +80,14 @@ class AnswerForm extends React.Component {
                         ref="username"
                         placeholder="Your Name"
                         value={this.props.username}
-                        error={userNameError}
+                        error={usernameErrorMessage}
                         onChange={this.handleUserNameChange.bind(this)}
                     />
                     <TextAreaInput
                         ref="text"
                         placeholder="Your Answer"
                         value={this.props.text}
-                        error={textError}
+                        error={textErrorMessage}
                         onChange={this.handleTextChange.bind(this)}
                     />
                     <input
