@@ -36,3 +36,19 @@ export function unpackErrors(validationError) {
         return [];
     }
 }
+
+export function getErrorsMessageFromErrorField(error, fieldName) {
+    const errors = error.get(fieldName);
+
+    if (errors) {
+        return getErrorsMessage(errors);
+    }
+}
+
+export function getErrorsMessage(listOfErrors) {
+    return listOfErrors.map(e => e.get('message'))
+        .reduce(
+            (prev, current) => prev + ' ' + current,
+            ''
+        );
+}

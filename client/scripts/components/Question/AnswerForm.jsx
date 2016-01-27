@@ -4,6 +4,7 @@ import PureComponent from 'react-pure-render/component';
 import React, { PropTypes } from 'react';
 import TextAreaInput from '../common/TextAreaInput';
 import TextInput from '../common/TextInput';
+import { getErrorsMessageFromErrorField } from '../../validation/ValidationError';
 
 const propTypes = {
     username            : PropTypes.string,
@@ -57,31 +58,8 @@ class AnswerForm extends PureComponent {
         const username = this.props.username;
         const text     = this.props.text;
 
-        let textErrorMessage, usernameErrorMessage;
-
-        if (errors) {
-            const usernameErrors = errors.get('user');
-
-            if (usernameErrors) {
-                usernameErrorMessage = usernameErrors
-                    .map(e => e.get('message'))
-                    .reduce(
-                        (prev, current) => prev + ' ' + current,
-                        ''
-                    );                                
-            }
-
-            const textErrors = errors.get('text');
-
-            if (textErrors) {
-                textErrorMessage = textErrors
-                    .map(e => e.get('message'))
-                    .reduce(
-                        (prev, current) => prev + ' ' + current,
-                        ''
-                    );                                
-            }
-        }
+        const usernameErrorMessage = getErrorsMessageFromErrorField(errors, 'user');
+        const textErrorMessage     = getErrorsMessageFromErrorField(errors, 'text');
 
         return (
             <form
