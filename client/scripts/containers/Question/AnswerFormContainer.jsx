@@ -10,6 +10,14 @@ const propTypes = {
 };
 
 class AnswerFormContainer extends React.Component {
+    constructor(props) {
+        super(props);
+
+        this.handleUsernameChange = this.handleUsernameChange.bind(this);
+        this.handleTextChange     = this.handleTextChange.bind(this);
+        this.handleSubmit         = this.handleSubmit.bind(this);
+    }
+
     componentWillUnmount() {
         const { dispatch } = this.props;
 
@@ -47,9 +55,9 @@ class AnswerFormContainer extends React.Component {
                 username={username}
                 text={text}
                 errors={errors}
-                onUsernameChange={this.handleUsernameChange.bind(this)}
-                onTextChange={this.handleTextChange.bind(this)}
-                onSubmit={this.handleSubmit.bind(this)}
+                onUsernameChange={this.handleUsernameChange}
+                onTextChange={this.handleTextChange}
+                onSubmit={this.handleSubmit}
             />
         );
     }

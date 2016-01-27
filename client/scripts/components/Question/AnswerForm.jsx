@@ -18,6 +18,14 @@ const defaultProps = {
 };
 
 class AnswerForm extends React.Component {
+    constructor(props) {
+        super(props);
+
+        this.handleSubmit         = this.handleSubmit.bind(this);
+        this.handleUserNameChange = this.handleUserNameChange.bind(this);
+        this.handleTextChange     = this.handleTextChange.bind(this);
+    }
+
     handleUserNameChange(event) {
         this.props.onUsernameChange({
             username: event.value.trim()
@@ -75,7 +83,7 @@ class AnswerForm extends React.Component {
         return (
             <form
                 className="pure-form pure-form-stacked"
-                onSubmit={this.handleSubmit.bind(this)}
+                onSubmit={this.handleSubmit}
             >
                 <fieldset>
                     <legend>Your Answer</legend>
@@ -84,14 +92,14 @@ class AnswerForm extends React.Component {
                         placeholder="Your Name"
                         value={username}
                         error={usernameErrorMessage}
-                        onChange={this.handleUserNameChange.bind(this)}
+                        onChange={this.handleUserNameChange}
                     />
                     <TextAreaInput
                         ref="text"
                         placeholder="Your Answer"
                         value={text}
                         error={textErrorMessage}
-                        onChange={this.handleTextChange.bind(this)}
+                        onChange={this.handleTextChange}
                     />
                     <input
                         className="pure-button pure-button-primary"
