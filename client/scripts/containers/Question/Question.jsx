@@ -23,14 +23,19 @@ class Question extends React.Component {
                 return <div>Sorry, something went wrong</div>; 
             }
         } else {
+            const username      = this.props.data.get('user');
+            const text          = this.props.data.get('text');
+            const dateTimeAsked = this.props.data.get('dateTimeAsked');
+            const answers       = data.get('answers');
+
             return (
                 <div className="questionDetails">
                     <QuestionDetails
-                        user={data.get('user')}
-                        text={data.get('text')}
-                        dateTimeAsked={data.get('dateTimeAsked')}
+                        user={username}
+                        text={text}
+                        dateTimeAsked={dateTimeAsked}
                     />
-                    <AnswersList answers={data.get('answers')} />
+                    <AnswersList answers={answers} />
                     <AnswerFormContainer />
                 </div>
             ); 

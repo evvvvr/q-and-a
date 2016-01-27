@@ -42,7 +42,10 @@ class AnswerForm extends React.Component {
     }
 
     render() {
-        const errors = this.props.errors;
+        const errors   = this.props.errors;
+        const username = this.props.username;
+        const text     = this.props.text;
+
         let textErrorMessage, usernameErrorMessage;
 
         if (errors) {
@@ -79,14 +82,14 @@ class AnswerForm extends React.Component {
                     <TextInput
                         ref="username"
                         placeholder="Your Name"
-                        value={this.props.username}
+                        value={username}
                         error={usernameErrorMessage}
                         onChange={this.handleUserNameChange.bind(this)}
                     />
                     <TextAreaInput
                         ref="text"
                         placeholder="Your Answer"
-                        value={this.props.text}
+                        value={text}
                         error={textErrorMessage}
                         onChange={this.handleTextChange.bind(this)}
                     />

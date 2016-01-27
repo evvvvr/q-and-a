@@ -5,9 +5,8 @@ import { connect } from 'react-redux';
 
 const propTypes = {
     questionId: PropTypes.number.isRequired,
-    username: PropTypes.string,
-    text: PropTypes.string,
-    errors: PropTypes.object
+    errors: PropTypes.object,
+    data: PropTypes.object
 };
 
 class AnswerFormContainer extends React.Component {
@@ -39,7 +38,9 @@ class AnswerFormContainer extends React.Component {
     }
 
     render() {
-        const { username, text, errors } = this.props;
+        const errors   = this.props.errors;
+        const username = this.props.data.get('user');
+        const text     = this.props.data.get('text');
 
         return (
             <AnswerForm
@@ -59,9 +60,8 @@ AnswerFormContainer.propTypes = propTypes;
 function select(state) {
     return {
         questionId: state.question.getIn(['data', 'id']),
-        username: state.answer.getIn(['data', 'user']),
-        text: state.answer.getIn(['data', 'text']),
-        errors: state.answer.get('errors')
+        errors: state.answer.get('errors'),
+        data: state.answer.get('data')
     };
 }
 

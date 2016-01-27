@@ -4,9 +4,8 @@ import { changeQuestionUsername, changeQuestionText, submitQuestion, cleanQuesti
 import { connect } from 'react-redux';
 
 const propTypes = {
-    username: PropTypes.string,
-    text: PropTypes.string,
-    errors: PropTypes.object
+    errors: PropTypes.object,
+    data: PropTypes.object
 };
 
 class AskQuestionFormContainer extends React.Component {
@@ -35,7 +34,9 @@ class AskQuestionFormContainer extends React.Component {
     }
 
     render() {
-        const { username, text, errors } = this.props;
+        const errors   = this.props.errors;
+        const username = this.props.data.get('user');
+        const text     = this.props.data.get('text');
 
         return (
             <AskQuestionForm
@@ -54,9 +55,8 @@ AskQuestionFormContainer.propTypes = propTypes;
 
 function select(state) {
     return {
-        username: state.questionToSubmit.getIn(['data', 'user']),
-        text: state.questionToSubmit.getIn(['data', 'text']),
-        errors: state.questionToSubmit.get('errors')
+        errors: state.questionToSubmit.get('errors'),
+        data: state.questionToSubmit.get('data')
     };
 }
 
