@@ -1,5 +1,5 @@
-import PureComponent from 'react-pure-render/component';
-import React, { PropTypes } from 'react';
+import PureComponent from 'react-pure-render/component'
+import React, { PropTypes } from 'react'
 
 class NotFound extends PureComponent {
     render() {
@@ -11,4 +11,4 @@ class NotFound extends PureComponent {
     }
 }
 
-export default NotFound;
+export default NotFound

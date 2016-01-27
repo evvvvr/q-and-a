@@ -1,7 +1,7 @@
-import ActionTypes from '../actions/ActionTypes';
+import ActionTypes from '../actions/ActionTypes'
 import Immutable from 'immutable'
-import { handleActions } from 'redux-actions';
-import { unpackErrors } from '../validation/ValidationError';
+import { handleActions } from 'redux-actions'
+import { unpackErrors } from '../validation/ValidationError'
 
 const defaultState = Immutable.fromJS({
     isSubmitting: false,
@@ -63,4 +63,4 @@ const answer = handleActions({
     defaultState
 );
 
-export default answer;
+export default answer

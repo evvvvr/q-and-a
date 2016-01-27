@@ -1,6 +1,6 @@
-import classNames from 'classnames';
-import PureComponent from 'react-pure-render/component';
-import React, { PropTypes } from 'react';
+import classNames from 'classnames'
+import PureComponent from 'react-pure-render/component'
+import React, { PropTypes } from 'react'
 
 const propTypes = {
     value: PropTypes.string,
@@ -53,4 +53,4 @@ class TextAreaInput extends PureComponent {
 TextAreaInput.propTypes = propTypes;
 TextAreaInput.defaultProps = defaultProps;
 
-export default TextAreaInput;
+export default TextAreaInput

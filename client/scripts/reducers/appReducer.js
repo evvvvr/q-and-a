@@ -1,9 +1,9 @@
-import allQuestions from './allQuestions';
-import answer from './answer';
-import answeredQuestions from './answeredQuestions';
-import question from './question';
-import questionToSubmit from './questionToSubmit';
-import unansweredQuestions from './unansweredQuestions';
+import allQuestions from './allQuestions'
+import answer from './answer'
+import answeredQuestions from './answeredQuestions'
+import question from './question'
+import questionToSubmit from './questionToSubmit'
+import unansweredQuestions from './unansweredQuestions'
 
 const appReducer = {
     allQuestions,
@@ -14,4 +14,4 @@ const appReducer = {
     answer
 };
 
-export default appReducer;
+export default appReducer

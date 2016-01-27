@@ -1,12 +1,12 @@
-import ImmutablePropTypes from 'react-immutable-proptypes';
-import PureComponent from 'react-pure-render/component';
-import QuestionShape from '../../propTypes/QuestionShape';
-import QuestionsListItem from './QuestionsListItem';
-import React, { PropTypes } from 'react';
-import { compareItemsChronologically } from '../../util/date-time-util';
+import ImmutablePropTypes from 'react-immutable-proptypes'
+import PureComponent from 'react-pure-render/component'
+import QuestionShape from '../../propTypes/QuestionShape'
+import QuestionsListItem from './QuestionsListItem'
+import React, { PropTypes } from 'react'
+import { compareItemsChronologically } from '../../util/date-time-util'
 
 const propTypes = {
-    questions : ImmutablePropTypes.listOf(ImmutablePropTypes.contains(QuestionShape))
+    questions: ImmutablePropTypes.listOf(ImmutablePropTypes.contains(QuestionShape))
 };
 
 class QuestionsList extends PureComponent {
@@ -39,4 +39,4 @@ class QuestionsList extends PureComponent {
 
 QuestionsList.propTypes = propTypes;
 
-export default QuestionsList;
+export default QuestionsList

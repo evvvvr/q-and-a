@@ -9,16 +9,16 @@ class ValidationError extends ExtendableError {
     }
 }
 
-export default ValidationError;
+export default ValidationError
 
-function unpackErrorsFromlist(validationError) {
+function unpackErrorsFromList(validationError) {
     return validationError.errors;
 }
 
 export function unpackErrors(validationError) {
     if (validationError.errors) {
         if (Array.isArray(validationError.errors)) {
-            return unpackErrorsFromlist(validationError);
+            return unpackErrorsFromList(validationError);
         } else {
             let errors = {};
 
@@ -26,7 +26,7 @@ export function unpackErrors(validationError) {
                 const nestedError = validationError.errors[k];
 
                 if (nestedError) {
-                    errors[k] = unpackErrorsFromlist(nestedError);
+                    errors[k] = unpackErrorsFromList(nestedError);
                 }
             }
 
@@ -45,7 +45,7 @@ export function getErrorsMessageFromErrorField(error, fieldName) {
     }
 }
 
-export function getErrorsMessage(listOfErrors) {
+function getErrorsMessage(listOfErrors) {
     return listOfErrors.map(e => e.get('message'))
         .reduce(
             (prev, current) => prev + ' ' + current,

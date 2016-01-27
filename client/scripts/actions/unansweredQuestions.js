@@ -1,6 +1,6 @@
-import ActionTypes from './ActionTypes';
-import API from '../API/API';
-import { createAction } from 'redux-actions';
+import ActionTypes from './ActionTypes'
+import API from '../API/API'
+import { createAction } from 'redux-actions'
 
 export const requestUnansweredQuestions = createAction(ActionTypes.RequestUnansweredQuestions);
 

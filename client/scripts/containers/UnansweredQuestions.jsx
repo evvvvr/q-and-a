@@ -1,6 +1,6 @@
-import PureComponent from 'react-pure-render/component';
-import Questions from './Questions';
-import React, { PropTypes } from 'react';
+import PureComponent from 'react-pure-render/component'
+import Questions from './Questions'
+import React, { PropTypes } from 'react'
 
 class UnansweredQuestions extends PureComponent {
     selectUnansweredQuestions(state) {
@@ -17,4 +17,4 @@ class UnansweredQuestions extends PureComponent {
     }
 }
 
-export default UnansweredQuestions;
+export default UnansweredQuestions

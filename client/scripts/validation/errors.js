@@ -1,11 +1,11 @@
-import keyMirror from 'keymirror';
+import keyMirror from 'keymirror'
 
 export const ErrorTypes = keyMirror({
     UserIsEmpty: null,
     UserIsTooLong: null,
     TextIsEmpty: null,
     TextIsTooLong: null
-});
+})
 
 export const Errors = {
     userIsEmpty() {

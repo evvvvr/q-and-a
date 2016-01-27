@@ -1,7 +1,7 @@
-import AnswerShape from '../../../propTypes/AnswerShape';
-import PureComponent from 'react-pure-render/component';
-import React  from 'react';
-import { formatDateTime } from '../../../util/date-time-util';
+import AnswerShape from '../../../propTypes/AnswerShape'
+import PureComponent from 'react-pure-render/component'
+import React  from 'react'
+import { formatDateTime } from '../../../util/date-time-util'
 
 const propTypes = AnswerShape;
 
@@ -22,4 +22,4 @@ class AnswersListItem extends PureComponent {
 
 AnswersListItem.propTypes = propTypes;
 
-export default AnswersListItem;
+export default AnswersListItem

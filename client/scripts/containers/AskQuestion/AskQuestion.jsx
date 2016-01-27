@@ -1,6 +1,6 @@
-import AskQuestionFormContainer from './AskQuestionFormContainer';
-import PureComponent from 'react-pure-render/component';
-import React from 'react';
+import AskQuestionFormContainer from './AskQuestionFormContainer'
+import PureComponent from 'react-pure-render/component'
+import React from 'react'
 
 class AskQuestion extends PureComponent {
     render() {
@@ -12,4 +12,4 @@ class AskQuestion extends PureComponent {
     }
 }
 
-export default AskQuestion;
+export default AskQuestion

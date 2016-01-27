@@ -1,8 +1,8 @@
-import ActionTypes from './ActionTypes';
-import API from '../API/API';
-import { createAction } from 'redux-actions';
-import { fetchQuestion } from './question';
-import { validateUsername, validateText, validateAnswer } from '../validation/validators';
+import ActionTypes from './ActionTypes'
+import API from '../API/API'
+import { createAction } from 'redux-actions'
+import { fetchQuestion } from './question'
+import { validateUsername, validateText, validateAnswer } from '../validation/validators'
 
 export function changeAnswerUsername(username) {
     return (dispatch) => {

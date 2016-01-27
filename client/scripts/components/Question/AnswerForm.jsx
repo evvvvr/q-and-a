@@ -1,18 +1,18 @@
-import AnswerToSubmitErrorShape from '../../propTypes/AnswerToSubmitErrorShape';
-import ImmutablePropTypes from 'react-immutable-proptypes';
-import PureComponent from 'react-pure-render/component';
-import React, { PropTypes } from 'react';
-import TextAreaInput from '../common/TextAreaInput';
-import TextInput from '../common/TextInput';
-import { getErrorsMessageFromErrorField } from '../../validation/ValidationError';
+import AnswerToSubmitErrorShape from '../../propTypes/AnswerToSubmitErrorShape'
+import ImmutablePropTypes from 'react-immutable-proptypes'
+import PureComponent from 'react-pure-render/component'
+import React, { PropTypes } from 'react'
+import TextAreaInput from '../common/TextAreaInput'
+import TextInput from '../common/TextInput'
+import { getErrorsMessageFromErrorField } from '../../validation/ValidationError'
 
 const propTypes = {
-    username            : PropTypes.string,
-    text                : PropTypes.string,
-    errors              : ImmutablePropTypes.contains(AnswerToSubmitErrorShape).isRequired,
-    onUsernameChange    : PropTypes.func,
-    onTextChange        : PropTypes.func,
-    onSubmit            : PropTypes.func
+    username: PropTypes.string,
+    text: PropTypes.string,
+    errors: ImmutablePropTypes.contains(AnswerToSubmitErrorShape).isRequired,
+    onUsernameChange: PropTypes.func,
+    onTextChange: PropTypes.func,
+    onSubmit: PropTypes.func
 };
 
 const defaultProps = {
@@ -96,4 +96,4 @@ class AnswerForm extends PureComponent {
 AnswerForm.propTypes = propTypes;
 AnswerForm.defaultProps = defaultProps;
 
-export default AnswerForm;
+export default AnswerForm

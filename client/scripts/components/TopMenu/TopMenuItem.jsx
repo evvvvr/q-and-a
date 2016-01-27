@@ -1,7 +1,7 @@
-import classNames from 'classnames'; 
-import PureComponent from 'react-pure-render/component';
-import React, { PropTypes } from 'react';
-import { Link, IndexLink } from 'react-router';
+import classNames from 'classnames'
+import PureComponent from 'react-pure-render/component'
+import React, { PropTypes } from 'react'
+import { Link, IndexLink } from 'react-router'
 
 const propTypes = {
     link: PropTypes.string.isRequired,
@@ -32,4 +32,4 @@ class TopMenuItem extends PureComponent {
 
 TopMenuItem.propTypes = propTypes;
 
-export default TopMenuItem;
+export default TopMenuItem

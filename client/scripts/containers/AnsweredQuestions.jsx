@@ -1,6 +1,6 @@
-import PureComponent from 'react-pure-render/component';
-import Questions from './Questions';
-import React from 'react';
+import PureComponent from 'react-pure-render/component'
+import Questions from './Questions'
+import React from 'react'
 
 class AnsweredQuestions extends PureComponent {
     selectAnsweredQuestions(state) {
@@ -17,4 +17,4 @@ class AnsweredQuestions extends PureComponent {
     }
 }
 
-export default AnsweredQuestions;
+export default AnsweredQuestions

@@ -1,7 +1,7 @@
-import PureComponent from 'react-pure-render/component';
-import QuestionDetailsShape from '../../propTypes/QuestionDetailsShape';
-import React from 'react';
-import { formatDateTime } from '../../util/date-time-util';
+import PureComponent from 'react-pure-render/component'
+import QuestionDetailsShape from '../../propTypes/QuestionDetailsShape'
+import React from 'react'
+import { formatDateTime } from '../../util/date-time-util'
 
 const propTypes = QuestionDetailsShape;
 
@@ -22,4 +22,4 @@ class QuestionDetails extends PureComponent {
 
 QuestionDetails.propTypes = propTypes;
 
-export default QuestionDetails;
+export default QuestionDetails
