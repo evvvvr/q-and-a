@@ -10,7 +10,7 @@ import { connect } from 'react-redux';
 const propTypes = {
     isFetching  : PropTypes.bool.isRequired,
     data        : ImmutablePropTypes.contains(QuestionDetailsShape),
-    error       : PropTypes.object
+    error       : ImmutablePropTypes.map
 };
 
 class Question extends PureComponent {
