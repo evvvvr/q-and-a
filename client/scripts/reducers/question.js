@@ -1,5 +1,6 @@
 import ActionTypes from '../actions/ActionTypes';
 import Immutable from 'immutable';
+import { fromJSToImmutableGreedy }  from '../util/fromJSToImmutableGreedy'; 
 import { handleActions } from 'redux-actions';
 
 const defaultState = Immutable.fromJS({
@@ -19,7 +20,7 @@ const question = handleActions({
             (state, action) => state.withMutations((state) =>
                 state.set('isFetching', false)
                     .set('data', action.error ? null : Immutable.fromJS(action.payload))
-                    .set('error', action.error ? action.payload : null)
+                    .set('error', action.error ? fromJSToImmutableGreedy(action.payload) : null)
             )
     },
     defaultState

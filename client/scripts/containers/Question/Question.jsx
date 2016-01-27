@@ -20,7 +20,7 @@ class Question extends PureComponent {
         if (isFetching) {
             return <div className="questionDetails"></div>;
         } else if (error) {
-            if (error.status === 404) {
+            if (error.get('status') === 404) {
                 return <div>Sorry, question not found</div>;
             } else {
                 return <div>Sorry, something went wrong</div>; 
