@@ -1,15 +1,20 @@
-import Questions from './Questions';
-import React, { PropTypes } from 'react';
+import PureComponent from 'react-pure-render/component'
+import Questions from './Questions'
+import React, { PropTypes } from 'react'
 
-class UnansweredQuestions extends React.Component {
+class UnansweredQuestions extends PureComponent {
+    selectUnansweredQuestions(state) {
+        return state.unansweredQuestions;
+    }
+
     render() {
         return ( 
             <Questions
                 title="Unanswered Questions"
-                mapStateToQuestions={(state) => state.unansweredQuestions}
+                mapStateToQuestions={this.selectUnansweredQuestions}
             />
         );
     }
 }
 
-export default UnansweredQuestions;
+export default UnansweredQuestions

@@ -1,25 +1,31 @@
-import QuestionsListItem from './QuestionsListItem';
-import React, { PropTypes } from 'react';
-import { compareItemsChronologically } from '../../util/date-time-util';
+import ImmutablePropTypes from 'react-immutable-proptypes'
+import PureComponent from 'react-pure-render/component'
+import QuestionShape from '../../propTypes/QuestionShape'
+import QuestionsListItem from './QuestionsListItem'
+import React, { PropTypes } from 'react'
+import { compareItemsChronologically } from '../../util/date-time-util'
 
 const propTypes = {
-    questions: PropTypes.arrayOf(React.PropTypes.object).isRequired,
+    questions: ImmutablePropTypes.listOf(ImmutablePropTypes.contains(QuestionShape))
 };
 
-class QuestionsList extends React.Component {
+class QuestionsList extends PureComponent {
     render() {
         const questionNodes = this.props.questions
             .sort((a, b) => compareItemsChronologically(
-                a.dateTimeAsked,
-                b.dateTimeAsked
+                a.get('dateTimeAsked'),
+                b.get('dateTimeAsked')
             ))
             .map((question) => {
-                const { id, text, dateTimeAsked, user } = question;
+                const id            = question.get('id');
+                const text          = question.get('text');
+                const dateTimeAsked = question.get('dateTimeAsked'); 
+                const user          = question.get('user');
 
-                return ( 
+                return (
                     <QuestionsListItem
                         key={id}
-                        questionId={id}
+                        id={id}
                         text={text}
                         dateTimeAsked={dateTimeAsked}
                         user={user}
@@ -33,4 +39,4 @@ class QuestionsList extends React.Component {
 
 QuestionsList.propTypes = propTypes;
 
-export default QuestionsList;
+export default QuestionsList

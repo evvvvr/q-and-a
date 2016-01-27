@@ -1,4 +1,4 @@
-import moment from 'moment';
+import moment from 'moment'
 
 export function formatDateTime(dateTime) {
  return moment.utc(dateTime).local()

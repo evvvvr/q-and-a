@@ -1,11 +1,15 @@
-import React, { PropTypes } from 'react';
-import TextAreaInput from '../common/TextAreaInput';
-import TextInput from '../common/TextInput';
+import AnswerToSubmitErrorShape from '../../propTypes/AnswerToSubmitErrorShape'
+import ImmutablePropTypes from 'react-immutable-proptypes'
+import PureComponent from 'react-pure-render/component'
+import React, { PropTypes } from 'react'
+import TextAreaInput from '../common/TextAreaInput'
+import TextInput from '../common/TextInput'
+import { getErrorsMessageFromErrorField } from '../../validation/ValidationError'
 
 const propTypes = {
     username: PropTypes.string,
     text: PropTypes.string,
-    errors: PropTypes.object,
+    errors: ImmutablePropTypes.contains(AnswerToSubmitErrorShape).isRequired,
     onUsernameChange: PropTypes.func,
     onTextChange: PropTypes.func,
     onSubmit: PropTypes.func
@@ -17,7 +21,15 @@ const defaultProps = {
     onSubmit: () => {}  
 };
 
-class AnswerForm extends React.Component {
+class AnswerForm extends PureComponent {
+    constructor(props) {
+        super(props);
+
+        this.handleSubmit         = this.handleSubmit.bind(this);
+        this.handleUserNameChange = this.handleUserNameChange.bind(this);
+        this.handleTextChange     = this.handleTextChange.bind(this);
+    }
+
     handleUserNameChange(event) {
         this.props.onUsernameChange({
             username: event.value.trim()
@@ -42,49 +54,33 @@ class AnswerForm extends React.Component {
     }
 
     render() {
-        const errors = this.props.errors;
-        let textError, userNameError;
+        const errors   = this.props.errors;
+        const username = this.props.username;
+        const text     = this.props.text;
 
-        if (errors) {
-            if (errors.user) {
-                userNameError = errors.user
-                    .map(e => e.message)
-                    .reduce(
-                        (prev, current) => prev + ' ' + current,
-                        ''
-                    );                                
-            }
-
-            if (errors.text) {
-                textError = errors.text
-                    .map(e => e.message)
-                    .reduce(
-                        (prev, current) => prev + ' ' + current,
-                        ''
-                    );                                
-            }
-        }
+        const usernameErrorMessage = getErrorsMessageFromErrorField(errors, 'user');
+        const textErrorMessage     = getErrorsMessageFromErrorField(errors, 'text');
 
         return (
             <form
                 className="pure-form pure-form-stacked"
-                onSubmit={this.handleSubmit.bind(this)}
+                onSubmit={this.handleSubmit}
             >
                 <fieldset>
                     <legend>Your Answer</legend>
                     <TextInput
                         ref="username"
                         placeholder="Your Name"
-                        value={this.props.username}
-                        error={userNameError}
-                        onChange={this.handleUserNameChange.bind(this)}
+                        value={username}
+                        error={usernameErrorMessage}
+                        onChange={this.handleUserNameChange}
                     />
                     <TextAreaInput
                         ref="text"
                         placeholder="Your Answer"
-                        value={this.props.text}
-                        error={textError}
-                        onChange={this.handleTextChange.bind(this)}
+                        value={text}
+                        error={textErrorMessage}
+                        onChange={this.handleTextChange}
                     />
                     <input
                         className="pure-button pure-button-primary"
@@ -100,4 +96,4 @@ class AnswerForm extends React.Component {
 AnswerForm.propTypes = propTypes;
 AnswerForm.defaultProps = defaultProps;
 
-export default AnswerForm;
+export default AnswerForm

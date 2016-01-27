@@ -9,4 +9,4 @@ class ExtendableError extends Error {
     }
 }
 
-export default ExtendableError;
+export default ExtendableError

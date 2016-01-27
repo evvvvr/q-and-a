@@ -1,5 +1,5 @@
-import ValidationError from './ValidationError';
-import { Errors } from './errors';
+import ValidationError from './ValidationError'
+import { Errors } from './errors'
 
 export function validateUsername(username) {
     const errors = [];

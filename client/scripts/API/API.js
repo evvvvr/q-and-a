@@ -1,4 +1,4 @@
-import NetworkError from './NetworkError';
+import NetworkError from './NetworkError'
 
 let hostURLValue, allQuestionsURL;
 
@@ -65,4 +65,4 @@ const API = {
     }
 };
 
-export default API;
+export default API

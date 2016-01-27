@@ -1,16 +1,27 @@
-import AnswerForm from '../../components/Question/AnswerForm';
-import React, { PropTypes } from 'react';
-import { changeAnswerUsername, changeAnswerText, submitAnswer, cleanAnswer } from '../../actions/answer';
-import { connect } from 'react-redux';
+import AnswerForm from '../../components/Question/AnswerForm'
+import AnswerToSubmitErrorShape from '../../propTypes/AnswerToSubmitErrorShape'
+import AnswerToSubmitShape from '../../propTypes/AnswerToSubmitShape'
+import ImmutablePropTypes from 'react-immutable-proptypes'
+import PureComponent from 'react-pure-render/component'
+import React, { PropTypes } from 'react'
+import { changeAnswerUsername, changeAnswerText, submitAnswer, cleanAnswer } from '../../actions/answer'
+import { connect } from 'react-redux'
 
 const propTypes = {
     questionId: PropTypes.number.isRequired,
-    username: PropTypes.string,
-    text: PropTypes.string,
-    errors: PropTypes.object
+    errors: ImmutablePropTypes.contains(AnswerToSubmitErrorShape).isRequired,
+    data: ImmutablePropTypes.contains(AnswerToSubmitShape).isRequired
 };
 
-class AnswerFormContainer extends React.Component {
+class AnswerFormContainer extends PureComponent {
+    constructor(props) {
+        super(props);
+
+        this.handleUsernameChange = this.handleUsernameChange.bind(this);
+        this.handleTextChange     = this.handleTextChange.bind(this);
+        this.handleSubmit         = this.handleSubmit.bind(this);
+    }
+
     componentWillUnmount() {
         const { dispatch } = this.props;
 
@@ -39,16 +50,18 @@ class AnswerFormContainer extends React.Component {
     }
 
     render() {
-        const { username, text, errors } = this.props;
+        const errors   = this.props.errors;
+        const username = this.props.data.get('user');
+        const text     = this.props.data.get('text');
 
         return (
             <AnswerForm
                 username={username}
                 text={text}
                 errors={errors}
-                onUsernameChange={this.handleUsernameChange.bind(this)}
-                onTextChange={this.handleTextChange.bind(this)}
-                onSubmit={this.handleSubmit.bind(this)}
+                onUsernameChange={this.handleUsernameChange}
+                onTextChange={this.handleTextChange}
+                onSubmit={this.handleSubmit}
             />
         );
     }
@@ -58,10 +71,9 @@ AnswerFormContainer.propTypes = propTypes;
 
 function select(state) {
     return {
-        questionId: state.question.data.id,
-        username: state.answer.data.user,
-        text: state.answer.data.text,
-        errors: state.answer.errors
+        questionId: state.question.getIn(['data', 'id']),
+        errors: state.answer.get('errors'),
+        data: state.answer.get('data')
     };
 }
 

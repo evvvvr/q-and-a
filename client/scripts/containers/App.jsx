@@ -1,12 +1,13 @@
-import React, { PropTypes } from 'react';
-import TopMenu from '../components/TopMenu/TopMenu';
-import { connect } from 'react-redux';
+import PureComponent from 'react-pure-render/component'
+import React, { PropTypes } from 'react'
+import TopMenu from '../components/TopMenu/TopMenu'
+import { connect } from 'react-redux'
 
 const propTypes = {
     path: PropTypes.string.isRequired
 };
 
-class App extends React.Component {
+class App extends PureComponent {
     render() {
         const { path } = this.props;
 

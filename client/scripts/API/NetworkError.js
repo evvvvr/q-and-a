@@ -9,4 +9,4 @@ class NetworkError extends ExtendableError {
     }
 }
 
-export default NetworkError;
+export default NetworkError

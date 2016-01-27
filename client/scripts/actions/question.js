@@ -1,6 +1,6 @@
-import ActionTypes from './ActionTypes';
-import API from '../API/API';
-import { createAction } from 'redux-actions';
+import ActionTypes from './ActionTypes'
+import API from '../API/API'
+import { createAction } from 'redux-actions'
 
 export const requestQuestion = createAction(
     ActionTypes.RequestQuestion,
@@ -24,7 +24,7 @@ export function fetchQuestion(questionId) {
                 .catch(error => {
                     console.error(`Error fetching question: ${error}`);
 
-                    dispatch(recieveQuestion(error));                    
+                    dispatch(recieveQuestion(error));
                 });
         }
     };

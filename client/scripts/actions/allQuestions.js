@@ -1,6 +1,6 @@
-import ActionTypes from './ActionTypes';
-import API from '../API/API';
-import { createAction } from 'redux-actions';
+import ActionTypes from './ActionTypes'
+import API from '../API/API'
+import { createAction } from 'redux-actions'
 
 export const requestAllQuestions = createAction(ActionTypes.RequestAllQuestions);
 

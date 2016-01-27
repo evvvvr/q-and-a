@@ -1,4 +1,4 @@
-import keyMirror from 'keymirror';
+import keyMirror from 'keymirror'
 
 const ActionTypes = keyMirror({
     RequestAllQuestions: null,
@@ -21,4 +21,4 @@ const ActionTypes = keyMirror({
     CleanAnswer: null
 });
 
-export default ActionTypes;
+export default ActionTypes

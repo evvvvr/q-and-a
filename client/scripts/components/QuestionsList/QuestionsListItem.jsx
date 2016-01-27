@@ -1,18 +1,15 @@
-import React, { PropTypes } from 'react';
-import { formatDateTime } from '../../util/date-time-util';
-import { Link } from 'react-router';
+import PureComponent from 'react-pure-render/component'
+import QuestionShape from '../../propTypes/QuestionShape'
+import React from 'react'
+import { formatDateTime } from '../../util/date-time-util'
+import { Link } from 'react-router'
 
-const propTypes = {
-    questionId: PropTypes.number.isRequired,
-    user: PropTypes.string.isRequired,
-    text: PropTypes.string.isRequired,
-    dateTimeAsked: PropTypes.string.isRequired
-};
+const propTypes = QuestionShape; 
 
-class QuestionsListItem extends React.Component {
+class QuestionsListItem extends PureComponent {
     render() {
-        const { questionId, text, dateTimeAsked, user } = this.props;
-        const questionLink = '/questions/' + questionId; 
+        const { id, text, dateTimeAsked, user } = this.props;
+        const questionLink = '/questions/' + id; 
 
         return (
             <li className="appItem">
@@ -29,4 +26,4 @@ class QuestionsListItem extends React.Component {
 
 QuestionsListItem.propTypes = propTypes;
 
-export default QuestionsListItem;
+export default QuestionsListItem

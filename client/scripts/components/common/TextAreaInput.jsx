@@ -1,5 +1,6 @@
-import classNames from 'classnames';
-import React, { PropTypes } from 'react';
+import classNames from 'classnames'
+import PureComponent from 'react-pure-render/component'
+import React, { PropTypes } from 'react'
 
 const propTypes = {
     value: PropTypes.string,
@@ -12,7 +13,7 @@ const defaultProps = {
     onChange: () => {}
 };
 
-class TextAreaInput extends React.Component {
+class TextAreaInput extends PureComponent {
     handleChange(event) {
         this.props.onChange({
             value: event.target.value
@@ -52,4 +53,4 @@ class TextAreaInput extends React.Component {
 TextAreaInput.propTypes = propTypes;
 TextAreaInput.defaultProps = defaultProps;
 
-export default TextAreaInput;
+export default TextAreaInput

@@ -1,15 +1,26 @@
-import AskQuestionForm from '../../components/AskQuestionForm';
-import React, { PropTypes } from 'react';
-import { changeQuestionUsername, changeQuestionText, submitQuestion, cleanQuestionToSubmit } from '../../actions/questionToSubmit';
-import { connect } from 'react-redux';
+import AskQuestionForm from '../../components/AskQuestionForm'
+import ImmutablePropTypes from 'react-immutable-proptypes'
+import PureComponent from 'react-pure-render/component'
+import QuestionToSubmitErrorShape from '../../propTypes/QuestionToSubmitErrorShape'
+import QuestionToSubmitShape from '../../propTypes/QuestionToSubmitShape'
+import React from 'react'
+import { changeQuestionUsername, changeQuestionText, submitQuestion, cleanQuestionToSubmit } from '../../actions/questionToSubmit'
+import { connect } from 'react-redux'
 
 const propTypes = {
-    username: PropTypes.string,
-    text: PropTypes.string,
-    errors: PropTypes.object
+    errors: ImmutablePropTypes.contains(QuestionToSubmitErrorShape).isRequired,
+    data: ImmutablePropTypes.contains(QuestionToSubmitShape).isRequired
 };
 
-class AskQuestionFormContainer extends React.Component {
+class AskQuestionFormContainer extends PureComponent {
+    constructor(props) {
+        super(props);
+
+        this.handleUsernameChange = this.handleUsernameChange.bind(this);
+        this.handleTextChange     = this.handleTextChange.bind(this);
+        this.handleSubmit         = this.handleSubmit.bind(this);
+    }
+
     componentWillUnmount() {
         const { dispatch } = this.props;
 
@@ -35,16 +46,18 @@ class AskQuestionFormContainer extends React.Component {
     }
 
     render() {
-        const { username, text, errors } = this.props;
+        const errors   = this.props.errors;
+        const username = this.props.data.get('user');
+        const text     = this.props.data.get('text');
 
         return (
             <AskQuestionForm
                 username={username}
                 text={text}
                 errors={errors}
-                onUsernameChange={this.handleUsernameChange.bind(this)}
-                onTextChange={this.handleTextChange.bind(this)}
-                onSubmit={this.handleSubmit.bind(this)}
+                onUsernameChange={this.handleUsernameChange}
+                onTextChange={this.handleTextChange}
+                onSubmit={this.handleSubmit}
             />
         );
     }
@@ -54,9 +67,8 @@ AskQuestionFormContainer.propTypes = propTypes;
 
 function select(state) {
     return {
-        username: state.questionToSubmit.data.user,
-        text: state.questionToSubmit.data.text,
-        errors: state.questionToSubmit.errors
+        errors: state.questionToSubmit.get('errors'),
+        data: state.questionToSubmit.get('data')
     };
 }
 

@@ -1,15 +1,20 @@
-import Questions from './Questions';
-import React from 'react';
+import PureComponent from 'react-pure-render/component'
+import Questions from './Questions'
+import React from 'react'
 
-class AllQuestions extends React.Component {
+class AllQuestions extends PureComponent {
+    selectAllQuestions(state) {
+        return state.allQuestions;
+    }
+
     render() {
         return ( 
             <Questions
                 title="All Questions"
-                mapStateToQuestions={(state) => state.allQuestions}
+                mapStateToQuestions={this.selectAllQuestions}
             />
         );
     }
 }
 
-export default AllQuestions;
+export default AllQuestions
