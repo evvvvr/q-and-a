@@ -28,6 +28,7 @@
     "purecss": "^0.6.0",
     "react": "^0.14.0",
     "react-dom": "^0.14.0",
+    "react-immutable-proptypes": "^1.5.1",
     "react-pure-render": "^1.0.2",
     "react-redux": "^4.0.3",
     "react-router": "^1.0.3",

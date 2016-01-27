@@ -1,13 +1,16 @@
 import AnswerForm from '../../components/Question/AnswerForm';
+import AnswerToSubmitErrorShape from '../../propTypes/AnswerToSubmitErrorShape';
+import AnswerToSubmitShape from '../../propTypes/AnswerToSubmitShape';
+import ImmutablePropTypes from 'react-immutable-proptypes';
 import PureComponent from 'react-pure-render/component';
 import React, { PropTypes } from 'react';
 import { changeAnswerUsername, changeAnswerText, submitAnswer, cleanAnswer } from '../../actions/answer';
 import { connect } from 'react-redux';
 
 const propTypes = {
-    questionId: PropTypes.number.isRequired,
-    errors: PropTypes.object,
-    data: PropTypes.object
+    questionId  : PropTypes.number.isRequired,
+    errors      : ImmutablePropTypes.contains(AnswerToSubmitErrorShape).isRequired,
+    data        : ImmutablePropTypes.contains(AnswerToSubmitShape).isRequired
 };
 
 class AnswerFormContainer extends PureComponent {

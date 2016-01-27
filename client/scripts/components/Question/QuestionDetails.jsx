@@ -1,12 +1,9 @@
 import PureComponent from 'react-pure-render/component';
-import React, { PropTypes } from 'react';
+import QuestionDetailsShape from '../../propTypes/QuestionDetailsShape';
+import React from 'react';
 import { formatDateTime } from '../../util/date-time-util';
 
-const propTypes = {
-    user: PropTypes.string.isRequired,
-    text: PropTypes.string.isRequired,
-    dateTimeAsked: PropTypes.string.isRequired,
-};
+const propTypes = QuestionDetailsShape;
 
 class QuestionDetails extends PureComponent {
     render() {

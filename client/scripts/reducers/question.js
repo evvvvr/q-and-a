@@ -4,7 +4,8 @@ import { handleActions } from 'redux-actions';
 
 const defaultState = Immutable.fromJS({
     isFetching: false,
-    data: {}
+    data: null,
+    error: null
 });
 
 const question = handleActions({

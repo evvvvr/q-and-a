@@ -1,10 +1,12 @@
+import ImmutablePropTypes from 'react-immutable-proptypes';
 import PureComponent from 'react-pure-render/component';
+import QuestionShape from '../../propTypes/QuestionShape';
 import QuestionsListItem from './QuestionsListItem';
 import React, { PropTypes } from 'react';
 import { compareItemsChronologically } from '../../util/date-time-util';
 
 const propTypes = {
-    questions: PropTypes.object.isRequired,
+    questions : ImmutablePropTypes.listOf(ImmutablePropTypes.contains(QuestionShape))
 };
 
 class QuestionsList extends PureComponent {
@@ -23,7 +25,7 @@ class QuestionsList extends PureComponent {
                 return (
                     <QuestionsListItem
                         key={id}
-                        questionId={id}
+                        id={id}
                         text={text}
                         dateTimeAsked={dateTimeAsked}
                         user={user}

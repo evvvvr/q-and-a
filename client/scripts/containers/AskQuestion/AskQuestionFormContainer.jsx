@@ -1,12 +1,15 @@
 import AskQuestionForm from '../../components/AskQuestionForm';
+import ImmutablePropTypes from 'react-immutable-proptypes';
 import PureComponent from 'react-pure-render/component';
-import React, { PropTypes } from 'react';
+import QuestionToSubmitErrorShape from '../../propTypes/QuestionToSubmitErrorShape';
+import QuestionToSubmitShape from '../../propTypes/QuestionToSubmitShape';
+import React from 'react';
 import { changeQuestionUsername, changeQuestionText, submitQuestion, cleanQuestionToSubmit } from '../../actions/questionToSubmit';
 import { connect } from 'react-redux';
 
 const propTypes = {
-    errors: PropTypes.object,
-    data: PropTypes.object
+    errors  : ImmutablePropTypes.contains(QuestionToSubmitErrorShape).isRequired,
+    data    : ImmutablePropTypes.contains(QuestionToSubmitShape).isRequired
 };
 
 class AskQuestionFormContainer extends PureComponent {

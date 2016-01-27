@@ -1,17 +1,19 @@
 import classNames from 'classnames';
+import ImmutablePropTypes from 'react-immutable-proptypes';
 import PureComponent from 'react-pure-render/component';
+import QuestionToSubmitErrorShape from '../propTypes/QuestionToSubmitErrorShape';
 import React, { PropTypes } from 'react';
 import TextAreaInput from './common/TextAreaInput';
 import TextInput from './common/TextInput';
 import { ErrorTypes } from '../validation/errors';
 
 const propTypes = {
-    username: PropTypes.string,
-    text: PropTypes.string,
-    errors: PropTypes.object,
-    onUsernameChange: PropTypes.func,
-    onTextChange: PropTypes.func,
-    onSubmit: PropTypes.func
+    username            : PropTypes.string,
+    text                : PropTypes.string,
+    errors              : ImmutablePropTypes.contains(QuestionToSubmitErrorShape).isRequired,
+    onUsernameChange    : PropTypes.func,
+    onTextChange        : PropTypes.func,
+    onSubmit            : PropTypes.func
 };
 
 const defaultProps = {

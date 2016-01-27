@@ -1,13 +1,9 @@
+import AnswerShape from '../../../propTypes/AnswerShape';
 import PureComponent from 'react-pure-render/component';
-import React, { PropTypes } from 'react';
+import React  from 'react';
 import { formatDateTime } from '../../../util/date-time-util';
 
-const propTypes = {
-    answerId: PropTypes.number.isRequired,
-    text: PropTypes.string.isRequired,
-    dateTimeAnswered: PropTypes.string.isRequired,
-    user: PropTypes.string.isRequired
-};
+const propTypes = AnswerShape;
 
 class AnswersListItem extends PureComponent {
     render() {
