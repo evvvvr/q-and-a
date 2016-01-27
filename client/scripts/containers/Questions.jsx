@@ -1,3 +1,4 @@
+import PureComponent from 'react-pure-render/component';
 import QuestionsList from '../components/QuestionsList/QuestionsList';
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
@@ -8,7 +9,7 @@ const propTypes = {
     items: PropTypes.object.isRequired
 };
 
-class Questions extends React.Component {
+class Questions extends PureComponent {
     render() {
         const { title, items } = this.props;
 

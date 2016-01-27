@@ -1,3 +1,4 @@
+import PureComponent from 'react-pure-render/component';
 import React, { PropTypes } from 'react';
 import { formatDateTime } from '../../util/date-time-util';
 
@@ -7,7 +8,7 @@ const propTypes = {
     dateTimeAsked: PropTypes.string.isRequired,
 };
 
-class QuestionDetails extends React.Component {
+class QuestionDetails extends PureComponent {
     render() {
         const { user, text, dateTimeAsked } = this.props;
 

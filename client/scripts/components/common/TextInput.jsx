@@ -1,4 +1,5 @@
 import classNames from 'classnames';
+import PureComponent from 'react-pure-render/component';
 import React, { PropTypes } from 'react';
 
 const propTypes = {
@@ -12,7 +13,7 @@ const defaultProps = {
     onChange: () => {}
 };
 
-class TextInput extends React.Component {
+class TextInput extends PureComponent {
     handleChange(event) {
         this.props.onChange({
             value: event.target.value

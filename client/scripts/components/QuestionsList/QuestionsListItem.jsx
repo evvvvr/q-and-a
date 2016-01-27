@@ -1,3 +1,4 @@
+import PureComponent from 'react-pure-render/component';
 import React, { PropTypes } from 'react';
 import { formatDateTime } from '../../util/date-time-util';
 import { Link } from 'react-router';
@@ -9,7 +10,7 @@ const propTypes = {
     dateTimeAsked: PropTypes.string.isRequired
 };
 
-class QuestionsListItem extends React.Component {
+class QuestionsListItem extends PureComponent {
     render() {
         const { questionId, text, dateTimeAsked, user } = this.props;
         const questionLink = '/questions/' + questionId; 

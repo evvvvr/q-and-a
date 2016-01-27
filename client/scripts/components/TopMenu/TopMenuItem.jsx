@@ -1,4 +1,5 @@
 import classNames from 'classnames'; 
+import PureComponent from 'react-pure-render/component';
 import React, { PropTypes } from 'react';
 import { Link, IndexLink } from 'react-router';
 
@@ -8,7 +9,7 @@ const propTypes = {
     isSelected: PropTypes.bool
 };
 
-class TopMenuItem extends React.Component {
+class TopMenuItem extends PureComponent {
     render() {
         const { link, text, isSelected } = this.props;
 

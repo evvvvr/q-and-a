@@ -1,7 +1,8 @@
+import PureComponent from 'react-pure-render/component';
 import Questions from './Questions';
 import React from 'react';
 
-class AnsweredQuestions extends React.Component {
+class AnsweredQuestions extends PureComponent {
     selectAnsweredQuestions(state) {
         return state.answeredQuestions;
     }

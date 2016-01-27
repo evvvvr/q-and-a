@@ -1,4 +1,5 @@
 import AskQuestionForm from '../../components/AskQuestionForm';
+import PureComponent from 'react-pure-render/component';
 import React, { PropTypes } from 'react';
 import { changeQuestionUsername, changeQuestionText, submitQuestion, cleanQuestionToSubmit } from '../../actions/questionToSubmit';
 import { connect } from 'react-redux';
@@ -8,7 +9,7 @@ const propTypes = {
     data: PropTypes.object
 };
 
-class AskQuestionFormContainer extends React.Component {
+class AskQuestionFormContainer extends PureComponent {
     constructor(props) {
         super(props);
 

@@ -1,4 +1,5 @@
 import classNames from 'classnames';
+import PureComponent from 'react-pure-render/component';
 import React, { PropTypes } from 'react';
 import TextAreaInput from './common/TextAreaInput';
 import TextInput from './common/TextInput';
@@ -19,7 +20,7 @@ const defaultProps = {
     onSubmit: () => {}  
 };
 
-class AskQuestionForm extends React.Component {
+class AskQuestionForm extends PureComponent {
     constructor(props) {
         super(props);
 

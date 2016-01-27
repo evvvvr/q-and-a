@@ -1,3 +1,4 @@
+import PureComponent from 'react-pure-render/component';
 import QuestionsListItem from './QuestionsListItem';
 import React, { PropTypes } from 'react';
 import { compareItemsChronologically } from '../../util/date-time-util';
@@ -6,7 +7,7 @@ const propTypes = {
     questions: PropTypes.object.isRequired,
 };
 
-class QuestionsList extends React.Component {
+class QuestionsList extends PureComponent {
     render() {
         const questionNodes = this.props.questions
             .sort((a, b) => compareItemsChronologically(

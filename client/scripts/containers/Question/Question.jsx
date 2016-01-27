@@ -1,5 +1,6 @@
 import AnswerFormContainer from './AnswerFormContainer';
 import AnswersList from '../../components/Question/AnswersList/AnswersList';
+import PureComponent from 'react-pure-render/component';
 import QuestionDetails from '../../components/Question/QuestionDetails';
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
@@ -10,7 +11,7 @@ const propTypes = {
     error: PropTypes.object
 };
 
-class Question extends React.Component {
+class Question extends PureComponent {
     render () {
         const { isFetching, data, error } = this.props;
 

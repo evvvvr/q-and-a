@@ -1,3 +1,4 @@
+import PureComponent from 'react-pure-render/component';
 import React, { PropTypes } from 'react';
 import TopMenuItem from './TopMenuItem';
 
@@ -5,7 +6,7 @@ const propTypes = {
     currentPath: PropTypes.string.isRequired
 };
 
-class TopMenu extends React.Component {
+class TopMenu extends PureComponent {
     render() {
         const { currentPath } = this.props;
 

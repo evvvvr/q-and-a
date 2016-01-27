@@ -1,4 +1,5 @@
 import AnswersListItem from './AnswersListItem';
+import PureComponent from 'react-pure-render/component';
 import React, { PropTypes } from 'react';
 import { compareItemsChronologically } from '../../../util/date-time-util';
 
@@ -6,7 +7,7 @@ const propTypes = {
     answers: PropTypes.object.isRequired,
 };
 
-class AnswersList extends React.Component {
+class AnswersList extends PureComponent {
     render() {
         const answers = this.props.answers;
         let content;
