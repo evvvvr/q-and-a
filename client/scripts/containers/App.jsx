@@ -13,12 +13,12 @@ class App extends PureComponent {
 
         return (
             <div>
-                <TopMenu currentPath={path} />
-                <div className="pure-g">
-                    <div className="content pure-u-1 pure-u-md-3-4">
-                        <section id="mainContent">{this.props.children}</section>
-                    </div>
-                </div>
+                <header>
+                    <TopMenu currentPath={path} />
+                </header>
+                <main id="mainContent">
+                    {this.props.children}
+                </main>
             </div>
         );
     }

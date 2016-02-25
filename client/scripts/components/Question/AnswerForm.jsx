@@ -63,7 +63,6 @@ class AnswerForm extends PureComponent {
 
         return (
             <form
-                className="pure-form pure-form-stacked"
                 onSubmit={this.handleSubmit}
             >
                 <fieldset>
@@ -83,7 +82,6 @@ class AnswerForm extends PureComponent {
                         onChange={this.handleTextChange}
                     />
                     <input
-                        className="pure-button pure-button-primary"
                         type="submit"
                         value="Post Your Answer"
                     />

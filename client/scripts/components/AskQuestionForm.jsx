@@ -64,7 +64,7 @@ class AskQuestionForm extends PureComponent {
         const textErrorMessage     = getErrorsMessageFromErrorField(errors, 'text');
 
         return (
-            <form className="pure-form pure-form-stacked" onSubmit={this.handleSubmit}>
+            <form onSubmit={this.handleSubmit}>
                 <fieldset>
                     <legend>Ask Your Question</legend>
                     <TextInput
@@ -82,7 +82,6 @@ class AskQuestionForm extends PureComponent {
                         onChange={this.handleTextChange}
                     />
                     <input
-                        className="pure-button pure-button-primary"
                         type="submit"
                         value="Post Your Question"
                     />

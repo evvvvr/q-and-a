@@ -19,8 +19,8 @@ class TopMenuItem extends PureComponent {
         });
 
         const linkElement = link === '/'
-            ? <IndexLink to="/" className="pure-menu-link">{text}</IndexLink>
-            : <Link to={link} className="pure-menu-link">{text}</Link>;
+            ? <IndexLink to="/">{text}</IndexLink>
+            : <Link to={link}>{text}</Link>;
  
         return (
             <li className={itemClass}>

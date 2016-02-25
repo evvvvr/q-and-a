@@ -11,11 +11,10 @@ class TopMenu extends PureComponent {
         const { currentPath } = this.props;
 
         return (
-            <div
+            <nav
                 id="topMenu"
-                className="pure-menu pure-menu-horizontal"
             >
-                <ul className="pure-menu-list">
+                <ul>
                     <TopMenuItem
                         text="Questions"
                         link="/"
@@ -37,7 +36,7 @@ class TopMenu extends PureComponent {
                         isSelected={currentPath === '/ask'}
                     />
                 </ul>
-            </div>
+            </nav>
         );
     }
 }

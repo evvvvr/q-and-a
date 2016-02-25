@@ -1,7 +1,8 @@
 'use strict';
 
 var webpack = require('webpack'),
-    path = require('path');
+    path = require('path'),
+    ExtractTextPlugin = require("extract-text-webpack-plugin");
 
 module.exports = {
     entry: {
@@ -14,12 +15,24 @@ module.exports = {
     },
     module: {
         loaders: [
-            { test: /\.html$/, loader: 'file?name=[name].[ext]' },
-            { test: path.resolve(__dirname, './scripts'), loader: 'babel' },
-            { test: /\.css$/, loader: 'style!css' }
+            {
+                test: /\.html$/,
+                loader: 'file?name=[name].[ext]'
+            },
+            {
+                test: path.resolve(__dirname, './scripts'),
+                loader: 'babel'
+            },
+            {
+                test: /\.css$/,
+                loader: ExtractTextPlugin.extract("style-loader", "css-loader")
+            }
         ]
     },
     resolve: {
         extensions: [ '', '.js', '.jsx' ]
-    }
+    },
+    plugins: [
+        new ExtractTextPlugin("styles.css",  {allChunks: true})
+    ]
 };
