@@ -16,8 +16,7 @@ Consists of web server providing a REST API and web front end client
 
 - Users can answer questions
 
-## Things To Do
-- Add application title
+## Things To Improve
 - Handle whether there's no data or server returned an error
 - Show loading spinners
 - Disable 'Post' buttons if validation has failed
