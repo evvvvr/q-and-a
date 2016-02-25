@@ -11,10 +11,8 @@ class TopMenu extends PureComponent {
         const { currentPath } = this.props;
 
         return (
-            <nav
-                id="topMenu"
-            >
-                <ul>
+            <nav>
+                <ul className="navigationList">
                     <TopMenuItem
                         text="Questions"
                         link="/"

@@ -12,10 +12,10 @@ const propTypes = {
 class TopMenuItem extends PureComponent {
     render() {
         const { link, text, isSelected } = this.props;
-
+        
         const itemClass = classNames({
-            'pure-menu-item': true,
-            'pure-menu-selected': this.props.isSelected
+            'navigationList-item': true,
+            'navigationList-item_is-selected': this.props.isSelected
         });
 
         const linkElement = link === '/'

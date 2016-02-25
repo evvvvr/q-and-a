@@ -4,6 +4,28 @@
     box-sizing: border-box;
 }
 
+body {
+    background-color: rgb(251,255,229);
+}
+
+@media screen and (max-width: 768px) {
+    body {
+        font-size: 80%;
+    }
+}
+
+.mainContainer {
+    padding: 0.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.appContainer {
+    display: flex;
+    flex-flow: column;
+}
+
 a {
     text-decoration: none;
     color: rgb(61, 146, 201);
@@ -14,20 +36,24 @@ a:focus {
     text-decoration: underline;
 }
 
-h3 {
-    font-weight: 100;
-}
-
-h4 {
-    font-weight: 700;
-}
-
 legend {
     font-weight: 700;   
 }
 
-.content {
-    padding: 2em 1em 0;
+.navigationList {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-between;
+    list-style-type: none;
+    padding: 0;
+}
+
+.navigationList-item {
+    padding: 0.5em 0 0; 
+}
+
+.navigationList-item_is-selected {
+    text-decoration: underline;
 }
 
 .textarea-text {
