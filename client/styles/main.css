@@ -14,18 +14,6 @@ body {
     }
 }
 
-.mainContainer {
-    padding: 0.5rem;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.appContainer {
-    display: flex;
-    flex-flow: column;
-}
-
 a {
     text-decoration: none;
     color: rgb(61, 146, 201);
@@ -40,10 +28,32 @@ legend {
     font-weight: 700;   
 }
 
+.appContainer {
+    padding: 0.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.appContent {
+    display: flex;
+    flex-flow: column;
+    flex: 0 0 75%;
+}
+
+.headerContent {
+    flex: 0 0 5%;
+}
+
+.mainContent {
+    flex: 0 0 90%
+}
+
 .navigationList {
     display: flex;
     flex-flow: row wrap;
     justify-content: space-between;
+    align-items: center;
     list-style-type: none;
     padding: 0;
 }
