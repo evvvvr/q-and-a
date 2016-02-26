@@ -1,7 +1,7 @@
 import PureComponent from 'react-pure-render/component'
 import QuestionDetailsShape from '../../propTypes/QuestionDetailsShape'
 import React from 'react'
-import { formatDateTime } from '../../util/date-time-util'
+import { formatDateTimeForHuman } from '../../util/date-time-util'
 
 const propTypes = QuestionDetailsShape;
 
@@ -13,7 +13,7 @@ class QuestionDetails extends PureComponent {
             <div className="questionDetails-question">
                 {text}
                 <p className="appItemMeta">
-                    {formatDateTime(dateTimeAsked)} by {user}
+                    {formatDateTimeForHuman(dateTimeAsked)} by {user}
                 </p>
             </div>
         );

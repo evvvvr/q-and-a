@@ -33,7 +33,7 @@ class QuestionsList extends PureComponent {
                 );
             });
 
-        return <ul className="appItemList">{questionNodes}</ul>;
+        return <ul className="appItemsList">{questionNodes}</ul>;
     }  
 }
 
