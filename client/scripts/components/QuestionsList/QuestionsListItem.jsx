@@ -27,7 +27,10 @@ class QuestionsListItem extends PureComponent {
                         dateTime={formatDateTime(dateTimeAsked)}
                     >
                         {formatDateTimeForHuman(dateTimeAsked)}
-                    </time> by {user}
+                    </time>
+                    <span>
+                    by {user}
+                    </span>
                 </p>
             </li>
         );

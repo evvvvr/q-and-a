@@ -6,7 +6,7 @@ export function formatDateTime(dateTime) {
 
 export function formatDateTimeForHuman(dateTime) {
  return moment.utc(dateTime).local()
-    .format('MMMM Do YYYY, HH:mm');
+    .format('MMM Do YYYY, HH:mm');
 }
 
 export function compareItemsChronologically(a, b) {

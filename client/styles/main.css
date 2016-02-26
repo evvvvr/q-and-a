@@ -75,7 +75,11 @@ ul {
 }
 
 .appItemsList-item{
-    padding: 0 0 0 0;
+    padding: 0 0 1em;
+}
+
+.appItemsList-item-detailsLink {
+    color: rgb(0, 119, 204);
 }
 
 .appItemsList-item-meta {
@@ -83,10 +87,8 @@ ul {
     font-size: 95%;
     margin: 0;
     padding: 0 0 0 2em;
-}
-
-.appItemsList-item-detailsLink {
-    color: rgb(0, 119, 204);
+    display: flex;
+    flex-flow: column;
 }
 
 .textarea-text {
