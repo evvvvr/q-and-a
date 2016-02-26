@@ -63,7 +63,7 @@ ul {
 
 .navigationList-item {
     padding: 0.5em 0 0;
-    flex: 1 0 4.75rem;
+    flex: 1 0 4.75em;
 }
 
 .navigationList-item_is-selected {
