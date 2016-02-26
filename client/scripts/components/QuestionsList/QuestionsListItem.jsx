@@ -15,28 +15,19 @@ class QuestionsListItem extends PureComponent {
         return (
             <li
                 className="appItemsList-item"
-                itemScope
-                itemType="http://schema.org/Question"
             >
                 <Link
                     to={questionLink}
                     className="appItemsList-item-detailsLink"
                 >
-                    <span itemProp="text">{text}</span>
+                    {text}
                 </Link>
                 <p className="appItemsList-item-meta">
                     <time
                         dateTime={formatDateTime(dateTimeAsked)}
-                        itemProp="dateCreated"
                     >
                         {formatDateTimeForHuman(dateTimeAsked)}
-                    </time> by <span
-                        itemProp="author"
-                        itemScope
-                        itemType="http://schema.org/Person"
-                    >
-                        <span itemProp="name">{user}</span>
-                    </span>
+                    </time> by {user}
                 </p>
             </li>
         );
