@@ -14,8 +14,8 @@ class TopMenuItem extends PureComponent {
         const { link, text, isSelected } = this.props;
         
         const itemClass = classNames({
-            'navigationList-item': true,
-            'navigationList-item_is-selected': this.props.isSelected
+            'navList-item': true,
+            'navList-item_is-selected': this.props.isSelected
         });
 
         const linkElement = link === '/'

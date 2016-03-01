@@ -5,6 +5,7 @@
 }
 
 body {
+    font-size: 100%;
     background-color: rgb(251,255,229);
 }
 
@@ -15,52 +16,46 @@ body {
 }
 
 a {
+    color: rgb(0, 0, 0);
     text-decoration: none;
-    color: rgb(61, 146, 201);
-}
-
-a:hover,
-a:focus {
-    text-decoration: underline;
-}
-
-legend {
-    font-weight: 700;   
 }
 
 ul {
     padding: 0;
 }
 
-
-.appContainer {
-    padding: 0.5rem;
+.mainContainer {
+    padding: 0.5em;
     display: flex;
+    justify-content: center;
+    align-items: center;
+    border: solid 1px gray;
 }
 
-.appContent {
-    display: flex;
-    flex-flow: column;
+.app {
+    width: 100%;
+    flex: 0 0 85%;
+    border: solid 1px gray;
 }
 
-.headerContent {
+.app-header {
+    border: solid 1px gray;
 }
 
-.mainContent {
+.app-main {
+    border: solid 1px gray;
 }
 
-.navigationList {
-    display: flex;
-    flex-flow: row wrap;
+.navList {
     list-style-type: none;
 }
 
-.navigationList-item {
+.navList-item {
     display: inline;
-    padding: 0.5em;
+    padding: 0 0.5em 0 0;
 }
 
-.navigationList-item_is-selected {
+.navList-item_is-selected {
     text-decoration: underline;
 }
 
@@ -68,12 +63,10 @@ ul {
     list-style-type: none;
 }
 
-.appItemsList-item{
+.appItemsList-item {
     padding: 0 0 1em;
-}
-
-.appItemsList-item-detailsLink:link {
-    color: rgb(0, 0, 0);
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .appItemsList-item-detailsLink:visited {
@@ -82,9 +75,11 @@ ul {
 
 .appItemsList-item-meta {
     color: rgb(153, 153, 153);
-    font-size: 95%;
+    font-size: 80%;
     margin: 0;
-    padding: 0 0 0 2em;
+    padding: 0.25em 0 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .textarea-text {

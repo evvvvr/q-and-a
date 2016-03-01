@@ -12,7 +12,7 @@ class TopMenu extends PureComponent {
 
         return (
             <nav>
-                <ul className="navigationList">
+                <ul className="navList">
                     <TopMenuItem
                         text="Questions"
                         link="/"
