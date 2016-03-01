@@ -45,10 +45,10 @@ class AnswersList extends PureComponent {
 
             content = (
                 <div>
-                    <h4>
+                    <h2>
                         {answers.size} {answersNumeral}
-                    </h4>
-                    <ul className="appItemList">
+                    </h2>
+                    <ul className="appItemsList">
                         {answerNodes}
                     </ul>
                 </div>

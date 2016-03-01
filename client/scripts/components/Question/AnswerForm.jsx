@@ -64,6 +64,7 @@ class AnswerForm extends PureComponent {
         return (
             <form
                 onSubmit={this.handleSubmit}
+                className="answerForm"
             >
                 <fieldset>
                     <legend>Your Answer</legend>

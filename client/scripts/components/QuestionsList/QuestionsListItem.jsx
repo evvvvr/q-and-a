@@ -22,7 +22,7 @@ class QuestionsListItem extends PureComponent {
                 >
                     {text}
                 </Link>
-                <p className="appItemsList-item-meta">
+                <p className="appItemMeta">
                     <time
                         dateTime={formatDateTime(dateTimeAsked)}
                     >

@@ -10,8 +10,10 @@ class QuestionDetails extends PureComponent {
         const { user, text, dateTimeAsked } = this.props;
 
         return (
-            <div className="questionDetails-question">
-                {text}
+            <div>
+                <div class="appItemFullText">
+                    {text}
+                </div>
                 <p className="appItemMeta">
                     {formatDateTimeForHuman(dateTimeAsked)} by {user}
                 </p>

@@ -61,6 +61,7 @@ ul {
 
 .appItemsList {
     list-style-type: none;
+    margin: 0;
 }
 
 .appItemsList-item {
@@ -73,13 +74,21 @@ ul {
     color: rgb(153, 153, 153);
 }
 
-.appItemsList-item-meta {
+.appItemMeta {
     color: rgb(153, 153, 153);
     font-size: 80%;
     margin: 0;
     padding: 0.25em 0 0;
     overflow: hidden;
     text-overflow: ellipsis;
+}
+
+.appItemFullText {
+    word-break: break-all;
+}
+
+.answerForm {
+    padding: 1em 0 0;
 }
 
 .textarea-text {
