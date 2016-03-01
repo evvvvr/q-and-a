@@ -64,27 +64,32 @@ class AskQuestionForm extends PureComponent {
         const textErrorMessage     = getErrorsMessageFromErrorField(errors, 'text');
 
         return (
-            <form className="pure-form pure-form-stacked" onSubmit={this.handleSubmit}>
+            <form
+                onSubmit={this.handleSubmit}
+                className="nameAndTextForm"
+            >
                 <fieldset>
                     <legend>Ask Your Question</legend>
-                    <TextInput
-                        ref="username"
-                        placeholder="Your Name"
-                        value={username}
-                        error={usernameErrorMessage}
-                        onChange={this.handleUsernameChange}
-                    />
                     <TextAreaInput
                         ref="text"
                         placeholder="Your Answer"
                         value={text}
                         error={textErrorMessage}
                         onChange={this.handleTextChange}
+                        className="nameAndTextForm-textInput nameAndTextForm-textTextAreaInput"
+                    />
+                    <TextInput
+                        ref="username"
+                        placeholder="Your Name"
+                        value={username}
+                        error={usernameErrorMessage}
+                        onChange={this.handleUsernameChange}
+                        className="nameAndTextForm-textInput"
                     />
                     <input
-                        className="pure-button pure-button-primary"
                         type="submit"
-                        value="Post Your Question"
+                        value="Post"
+                        className="nameAndTextForm-postButton"
                     />
                 </fieldset>
             </form>

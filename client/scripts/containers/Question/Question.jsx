@@ -32,7 +32,7 @@ class Question extends PureComponent {
             const answers       = data.get('answers');
 
             return (
-                <div className="questionDetails">
+                <div>
                     <QuestionDetails
                         user={username}
                         text={text}

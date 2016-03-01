@@ -1,7 +1,7 @@
 import AnswerShape from '../../../propTypes/AnswerShape'
+import AppItemMeta from '../../AppItemMeta'
 import PureComponent from 'react-pure-render/component'
-import React  from 'react'
-import { formatDateTime } from '../../../util/date-time-util'
+import React from 'react'
 
 const propTypes = AnswerShape;
 
@@ -10,11 +10,11 @@ class AnswersListItem extends PureComponent {
         const { id, text, dateTimeAnswered, user } = this.props;
 
         return (
-            <li key={id} className="appItem">
-                {text}
-                <p className="appItemMeta">
-                    {formatDateTime(dateTimeAnswered)} by {user}
-                </p>
+            <li key={id} className="appItemsList-item">
+                <div className="appItemFullText">
+                    {text}
+                </div>
+                <AppItemMeta dateTime={dateTimeAnswered} user={user} />
             </li>
         );
     }

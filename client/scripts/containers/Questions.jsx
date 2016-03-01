@@ -17,7 +17,7 @@ class Questions extends PureComponent {
 
         return (
             <div>
-                <h3>{title}</h3>
+                <h1>{title}</h1>
                 <QuestionsList questions={items} />
             </div>
         );

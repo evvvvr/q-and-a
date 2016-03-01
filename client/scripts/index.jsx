@@ -1,13 +1,16 @@
+// Following two lines is for CSS loading in correct order,
+// so don't re-order them
+import 'normalize.css'
 import '../styles/main.css'
-import 'purecss'
+
 import API from './API/API'
 import appReducer from './reducers/appReducer'
+import createHashHistory from 'history/lib/createHashHistory'
 import React from 'react'
 import ReactDOM from 'react-dom'
 import router from './router'
 import thunkMiddleware from 'redux-thunk'
 import { combineReducers, createStore, applyMiddleware } from 'redux'
-import createHashHistory from 'history/lib/createHashHistory'
 import { Provider } from 'react-redux'
 import { syncReduxAndRouter, routeReducer } from 'redux-simple-router'
 

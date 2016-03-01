@@ -5,6 +5,7 @@ import React, { PropTypes } from 'react'
 const propTypes = {
     value: PropTypes.string,
     placeholder: PropTypes.string,
+    className: PropTypes.string,
     onChange: PropTypes.func,
     error: PropTypes.string
 };
@@ -26,7 +27,7 @@ class TextAreaInput extends PureComponent {
 
     render() {
         const className = classNames({
-            'pure-input-2-3 textarea-text': true,
+            [this.props.className]: true,
             'invalidElement': this.props.error
         });
 

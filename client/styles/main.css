@@ -4,61 +4,111 @@
     box-sizing: border-box;
 }
 
-a {
-    text-decoration: none;
-    color: rgb(61, 146, 201);
+body {
+    font-size: 100%;
+    background-color: rgb(251,255,229);
 }
 
-a:hover,
-a:focus {
+@media screen and (max-width: 768px) {
+    body {
+        font-size: 80%;
+    }
+}
+
+a {
+    color: rgb(0, 0, 0);
+    text-decoration: none;
+}
+
+ul {
+    padding: 0;
+}
+
+form * {
+    margin: 0.25em 0 0;
+}
+
+fieldset {
+    border: none;
+    margin: 0;
+    padding: 0;
+}
+
+.mainContainer {
+    padding: 0.5em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: solid 1px gray;
+}
+
+.app {
+    width: 100%;
+    flex: 0 0 85%;
+}
+
+.navList {
+    list-style-type: none;
+}
+
+.navList-item {
+    display: inline;
+    padding: 0 0.5em 0 0;
+}
+
+.navList-item_is-selected {
     text-decoration: underline;
 }
 
-h3 {
-    font-weight: 100;
+.appItemsList {
+    list-style-type: none;
+    margin: 0;
 }
 
-h4 {
-    font-weight: 700;
+.appItemsList-item {
+    padding: 0 0 1em;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
-legend {
-    font-weight: 700;   
-}
-
-.content {
-    padding: 2em 1em 0;
-}
-
-.textarea-text {
-    height: 25em;
+.appItemsList-item-detailsLink:visited {
+    color: rgb(153, 153, 153);
 }
 
 .appItemMeta {
     color: rgb(153, 153, 153);
-    font-size: 95%;
+    font-size: 80%;
     margin: 0;
-    padding: 0 0 0 2em;
+    padding: 0.25em 0 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
-.appItemList {
-    list-style-type: none;
+.appItemFullText {
+    word-break: break-all;
 }
 
-.appItem {
-    padding: 0.25em 0 0.25em;
+.nameAndTextForm {
+    padding: 1em 0 0;
 }
 
-.appItem-detailsLink {
-    color: rgb(0, 119, 204);
+.nameAndTextForm-textInput {
+    width: 50%;
 }
 
-.questionDetails-question {
-    padding: 0 0 0.5em;
+.nameAndTextForm-textTextAreaInput {
+    height: 8em;
+    resize: none;
+}
+
+.nameAndTextForm-postButton {
+    margin: 1em 0 0;
+    padding: 0.25em 1em;
+    border: 1px solid rgb(148,137,121);    
 }
 
 .invalidElement {
-     border: 0.15em solid red !important;
+    border: 0.15em solid red !important;
 }
 
 .errorMessage {

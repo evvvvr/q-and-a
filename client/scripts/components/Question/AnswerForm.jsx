@@ -63,29 +63,31 @@ class AnswerForm extends PureComponent {
 
         return (
             <form
-                className="pure-form pure-form-stacked"
                 onSubmit={this.handleSubmit}
+                className="nameAndTextForm"
             >
                 <fieldset>
-                    <legend>Your Answer</legend>
-                    <TextInput
-                        ref="username"
-                        placeholder="Your Name"
-                        value={username}
-                        error={usernameErrorMessage}
-                        onChange={this.handleUserNameChange}
-                    />
+                    <legend>Add Answer</legend>
                     <TextAreaInput
                         ref="text"
                         placeholder="Your Answer"
                         value={text}
                         error={textErrorMessage}
                         onChange={this.handleTextChange}
+                        className="nameAndTextForm-textInput nameAndTextForm-textTextAreaInput"
+                    />
+                    <TextInput
+                        ref="username"
+                        placeholder="Your Name"
+                        value={username}
+                        error={usernameErrorMessage}
+                        onChange={this.handleUserNameChange}
+                        className="nameAndTextForm-textInput"
                     />
                     <input
-                        className="pure-button pure-button-primary"
                         type="submit"
-                        value="Post Your Answer"
+                        value="Post"
+                        className="nameAndTextForm-postButton"
                     />
                 </fieldset>
             </form>

@@ -12,15 +12,15 @@ const propTypes = {
 class TopMenuItem extends PureComponent {
     render() {
         const { link, text, isSelected } = this.props;
-
+        
         const itemClass = classNames({
-            'pure-menu-item': true,
-            'pure-menu-selected': this.props.isSelected
+            'navList-item': true,
+            'navList-item_is-selected': this.props.isSelected
         });
 
         const linkElement = link === '/'
-            ? <IndexLink to="/" className="pure-menu-link">{text}</IndexLink>
-            : <Link to={link} className="pure-menu-link">{text}</Link>;
+            ? <IndexLink to="/">{text}</IndexLink>
+            : <Link to={link}>{text}</Link>;
  
         return (
             <li className={itemClass}>

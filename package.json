@@ -7,7 +7,8 @@
   },
   "scripts": {
     "start": "node server/server.js",
-    "postinstall": "webpack --config client/webpack.config.js"
+    "postinstall": "webpack --config client/webpack.config.js",
+    "watch": "webpack --watch --config client/webpack.config.js"
   },
   "dependencies": {
     "app-module-path": "^1.0.4",
@@ -19,13 +20,14 @@
     "classnames": "^2.2.1",
     "css-loader": "^0.16.0",
     "express": "^4.13.3",
+    "extract-text-webpack-plugin": "^1.0.1",
     "file-loader": "^0.8.4",
     "history": "^1.17.0",
     "immutable": "^3.7.6",
     "jsonschema": "^1.0.2",
     "keymirror": "^0.1.1",
     "moment": "^2.10.6",
-    "purecss": "^0.6.0",
+    "normalize.css": "^3.0.3",
     "react": "^0.14.0",
     "react-dom": "^0.14.0",
     "react-immutable-proptypes": "^1.5.1",
@@ -37,7 +39,7 @@
     "redux-simple-router": "^1.0.2",
     "redux-thunk": "^1.0.2",
     "sqlite3": "^3.0.10",
-    "style-loader": "^0.12.3",
+    "style-loader": "^0.13.0",
     "underscore": "^1.8.3",
     "webpack": "^1.11.0"
   }
