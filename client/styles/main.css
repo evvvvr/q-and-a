@@ -45,15 +45,6 @@ fieldset {
 .app {
     width: 100%;
     flex: 0 0 85%;
-    border: solid 1px gray;
-}
-
-.app-header {
-    border: solid 1px gray;
-}
-
-.app-main {
-    border: solid 1px gray;
 }
 
 .navList {
