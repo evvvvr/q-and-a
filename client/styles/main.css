@@ -24,6 +24,16 @@ ul {
     padding: 0;
 }
 
+form * {
+    margin: 0.25em 0 0;
+}
+
+fieldset {
+    border: none;
+    margin: 0;
+    padding: 0;
+}
+
 .mainContainer {
     padding: 0.5em;
     display: flex;
@@ -87,12 +97,23 @@ ul {
     word-break: break-all;
 }
 
-.answerForm {
+.nameAndTextForm {
     padding: 1em 0 0;
 }
 
-.textarea-text {
-    height: 25em;
+.nameAndTextForm-textInput {
+    width: 50%;
+}
+
+.nameAndTextForm-textTextAreaInput {
+    height: 8em;
+    resize: none;
+}
+
+.nameAndTextForm-postButton {
+    margin: 1em 0 0;
+    padding: 0.25em 1em;
+    border: 1px solid rgb(148,137,121);    
 }
 
 .questionDetails-question {

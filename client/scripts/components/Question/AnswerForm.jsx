@@ -64,27 +64,30 @@ class AnswerForm extends PureComponent {
         return (
             <form
                 onSubmit={this.handleSubmit}
-                className="answerForm"
+                className="nameAndTextForm"
             >
                 <fieldset>
-                    <legend>Your Answer</legend>
-                    <TextInput
-                        ref="username"
-                        placeholder="Your Name"
-                        value={username}
-                        error={usernameErrorMessage}
-                        onChange={this.handleUserNameChange}
-                    />
+                    <legend>Add Answer</legend>
                     <TextAreaInput
                         ref="text"
                         placeholder="Your Answer"
                         value={text}
                         error={textErrorMessage}
                         onChange={this.handleTextChange}
+                        className="nameAndTextForm-textInput nameAndTextForm-textTextAreaInput"
+                    />
+                    <TextInput
+                        ref="username"
+                        placeholder="Your Name"
+                        value={username}
+                        error={usernameErrorMessage}
+                        onChange={this.handleUserNameChange}
+                        className="nameAndTextForm-textInput"
                     />
                     <input
                         type="submit"
-                        value="Post Your Answer"
+                        value="Post"
+                        className="nameAndTextForm-postButton"
                     />
                 </fieldset>
             </form>
