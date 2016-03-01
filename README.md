@@ -22,7 +22,6 @@ Consists of web server providing a REST API and web front end client
 - Disable 'Post' buttons if validation has failed
 - Ask user confirmation when leaving non-empty ask or answer page without sending the data
 - For text inputs show counter how many symbols left
-- Handle long strings appearance on client
 - Add paging
 - Add required title for questions
 - Don't trim answer/question text
