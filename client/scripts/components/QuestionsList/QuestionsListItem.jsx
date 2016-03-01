@@ -1,7 +1,7 @@
+import AppItemMeta from '../AppItemMeta'
 import PureComponent from 'react-pure-render/component'
 import QuestionShape from '../../propTypes/QuestionShape'
 import React from 'react'
-import { formatDateTime, formatDateTimeForHuman } from '../../util/date-time-util'
 import { Link } from 'react-router'
 
 const propTypes = QuestionShape; 
@@ -10,7 +10,6 @@ class QuestionsListItem extends PureComponent {
     render() {
         const { id, text, dateTimeAsked, user } = this.props;
         const questionLink                      = '/questions/' + id; 
-        const dateTimeAskedFormatted            = formatDateTime(dateTimeAsked)
 
         return (
             <li
@@ -22,13 +21,7 @@ class QuestionsListItem extends PureComponent {
                 >
                     {text}
                 </Link>
-                <p className="appItemMeta">
-                    <time
-                        dateTime={formatDateTime(dateTimeAsked)}
-                    >
-                        {formatDateTimeForHuman(dateTimeAsked)}
-                    </time> by {user}
-                </p>
+                <AppItemMeta dateTime={dateTimeAsked} user={user} />
             </li>
         );
     }
