@@ -7,10 +7,10 @@ var webpack = require('webpack'),
 module.exports = {
     entry: {
         javascript: path.resolve(__dirname, './scripts/index.jsx'),
-        html: path.resolve(__dirname, './index.html')
+        html: path.resolve(__dirname, './public/index.html')
     },
     output: {
-        path: path.resolve(__dirname, '../../build/assets'),
+        path: path.resolve(__dirname, '../../build/public'),
         filename: 'bundle.js'
     },
     module: {

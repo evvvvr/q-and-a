@@ -38,7 +38,7 @@ function startApp(error) {
     var timeout = process.env.TIMEOUT || AppDefaults.Timeout;
     var app = express();
 
-    app.use(express.static('./build/assets'));
+    app.use(express.static('./build/public'));
     app.use('/api', bodyParser.json());
     app.use('/api', questionsController);
     app.use(middleware.handleError);
