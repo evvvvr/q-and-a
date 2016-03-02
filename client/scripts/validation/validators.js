@@ -18,7 +18,7 @@ export function validateUsername(username) {
 export function validateText(text) {
     const errors = [];
 
-    if (!text) {
+    if (!text.trim()) {
         errors.push(Errors.textIsEmpty());
     } else if (text.length > 3000) {
         errors.push(Errors.userIsTooLong(3000));

@@ -38,7 +38,7 @@ class AnswerForm extends PureComponent {
 
     handleTextChange(event) {
         this.props.onTextChange({
-            text: event.value.trim()
+            text: event.value
         });
     }
 
@@ -48,7 +48,7 @@ class AnswerForm extends PureComponent {
         this.props.onSubmit({
             answer: {
                 user: this.refs.username.getValue().trim(),
-                text: this.refs.text.getValue().trim()
+                text: this.refs.text.getValue()
             }
         });
     }

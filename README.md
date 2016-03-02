@@ -24,7 +24,6 @@ Consists of web server providing a REST API and web front end client
 - For text inputs show counter how many symbols left
 - Add paging
 - Add required title for questions
-- Don't trim answer/question text
 - Show type and date/time of last activity for question (answered etc.) and initially sort questions using this information
 - Add ability to sort questions by date/time asked, date/time of 
 last activity, number of answers etc.

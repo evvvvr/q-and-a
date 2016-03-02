@@ -40,7 +40,7 @@ class AskQuestionForm extends PureComponent {
 
     handleTextChange(event) {
         this.props.onTextChange({
-            text: event.value.trim()
+            text: event.value
         });
     }
 
@@ -50,7 +50,7 @@ class AskQuestionForm extends PureComponent {
         this.props.onSubmit({
             question: {
                 user: this.refs.username.getValue().trim(),
-                text: this.refs.text.getValue().trim()
+                text: this.refs.text.getValue()
             }
         });
     }
