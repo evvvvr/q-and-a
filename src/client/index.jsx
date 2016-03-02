@@ -11,6 +11,7 @@ import appReducer from './reducers/appReducer'
 import createHashHistory from 'history/lib/createHashHistory'
 import createSagaMiddleware from 'redux-saga'
 import fetchAllQuestions from './sagas/fetchAllQuestions'
+import fetchAnsweredQuestions from './sagas/fetchAnsweredQuestions'
 import React from 'react'
 import ReactDOM from 'react-dom'
 import router from './router'
@@ -23,7 +24,7 @@ API.init({
     hostURL: location.origin + '/api'
 });
 
-const sagaMiddleware = createSagaMiddleware(fetchAllQuestions);
+const sagaMiddleware = createSagaMiddleware(fetchAllQuestions, fetchAnsweredQuestions);
 
 const createStoreWithMiddleware = applyMiddleware(
     sagaMiddleware, thunkMiddleware)(createStore);

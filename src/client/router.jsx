@@ -6,10 +6,10 @@ import NotFound from './components/NotFound'
 import Question from './containers/Question/Question'
 import React from 'react'
 import UnansweredQuestions from './containers/UnansweredQuestions'
-import { requestAllQuestions } from './actions/allQuestions'
-import { fetchAnsweredQuestions } from './actions/answeredQuestions'
 import { fetchQuestion } from './actions/question'
 import { fetchUnansweredQuestions } from './actions/unansweredQuestions'
+import { requestAllQuestions } from './actions/allQuestions'
+import { requestAnsweredQuestions } from './actions/answeredQuestions'
 import { Router, Route, IndexRoute } from 'react-router'
 
 const onEnterAllQuestions = (store) => {
@@ -21,7 +21,11 @@ const onEnterAllQuestions = (store) => {
 };
 
 const onEnterAnsweredQuestions = (store) => {
-    return () => store.dispatch(fetchAnsweredQuestions());
+    return () => {
+        if (!store.getState().answeredQuestions.isFetching) {
+            store.dispatch(requestAnsweredQuestions());
+        }
+    };
 };
 
 const onEnterUnansweredQuestions = (store) => {
