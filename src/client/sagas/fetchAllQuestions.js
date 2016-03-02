@@ -1,16 +1,12 @@
+import { createSagaToFetchItems } from './saga-util' 
 import ActionTypes from '../actions/ActionTypes'
 import API from '../API/API'
 import { recieveAllQuestions } from '../actions/allQuestions' 
-import { take, call, put } from 'redux-saga/effects'
 
-function* fetchAllQuestions() {
-    while (true) {
-        yield take(ActionTypes.RequestAllQuestions);
-
-        const allQuestions = yield call(API.fetchAllQuestions);
-
-        yield (put(recieveAllQuestions(allQuestions)));
-    }
-}
+const fetchAllQuestions = createSagaToFetchItems(
+    ActionTypes.RequestAllQuestions,
+    API.fetchAllQuestions,
+    recieveAllQuestions
+);
 
 export default fetchAllQuestions;
