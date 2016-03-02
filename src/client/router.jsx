@@ -6,14 +6,19 @@ import NotFound from './components/NotFound'
 import Question from './containers/Question/Question'
 import React from 'react'
 import UnansweredQuestions from './containers/UnansweredQuestions'
-import { fetchAllQuestions } from './actions/allQuestions'
+import { requestAllQuestions } from './actions/allQuestions'
 import { fetchAnsweredQuestions } from './actions/answeredQuestions'
 import { fetchQuestion } from './actions/question'
 import { fetchUnansweredQuestions } from './actions/unansweredQuestions'
 import { Router, Route, IndexRoute } from 'react-router'
 
 const onEnterAllQuestions = (store) => {
-    return () => store.dispatch(fetchAllQuestions());
+    return () => {
+        if (!store.getState().allQuestions.isFetching) {
+            console.log('dispatch REQUEST_ALL_QUESTIONS action');
+            store.dispatch(requestAllQuestions());
+        } 
+    };
 };
 
 const onEnterAnsweredQuestions = (store) => {
