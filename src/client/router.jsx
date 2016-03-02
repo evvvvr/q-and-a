@@ -15,7 +15,6 @@ import { Router, Route, IndexRoute } from 'react-router'
 const onEnterAllQuestions = (store) => {
     return () => {
         if (!store.getState().allQuestions.isFetching) {
-            console.log('dispatch REQUEST_ALL_QUESTIONS action');
             store.dispatch(requestAllQuestions());
         } 
     };
