@@ -9,7 +9,7 @@ function* fetchAllQuestions() {
 
         const allQuestions = yield call(API.fetchAllQuestions);
 
-        yield(put(recieveAllQuestions(allQuestions)));
+        yield (put(recieveAllQuestions(allQuestions)));
     }
 }
 

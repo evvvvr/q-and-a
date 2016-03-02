@@ -7,9 +7,9 @@ import Question from './containers/Question/Question'
 import React from 'react'
 import UnansweredQuestions from './containers/UnansweredQuestions'
 import { fetchQuestion } from './actions/question'
-import { fetchUnansweredQuestions } from './actions/unansweredQuestions'
 import { requestAllQuestions } from './actions/allQuestions'
 import { requestAnsweredQuestions } from './actions/answeredQuestions'
+import { requestUnansweredQuestions } from './actions/unansweredQuestions'
 import { Router, Route, IndexRoute } from 'react-router'
 
 const onEnterAllQuestions = (store) => {
@@ -29,7 +29,11 @@ const onEnterAnsweredQuestions = (store) => {
 };
 
 const onEnterUnansweredQuestions = (store) => {
-    return () => store.dispatch(fetchUnansweredQuestions());
+    return () => {
+        if (!store.getState().unansweredQuestions.isFetching) {
+            store.dispatch(requestUnansweredQuestions());
+        }
+    }
 };
 
 const onEnterQuestion = (store) => {
