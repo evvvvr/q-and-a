@@ -1,7 +1,7 @@
 // Following two lines is for CSS loading in correct order,
 // so don't re-order them
 import 'normalize.css'
-import '../styles/main.css'
+import './styles/main.css'
 
 import API from './API/API'
 import appReducer from './reducers/appReducer'

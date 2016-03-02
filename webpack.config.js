@@ -6,11 +6,11 @@ var webpack = require('webpack'),
 
 module.exports = {
     entry: {
-        javascript: path.resolve(__dirname, './scripts/index.jsx'),
-        html: path.resolve(__dirname, './public/index.html')
+        javascript: path.resolve(__dirname, './src/client/index.jsx'),
+        html: path.resolve(__dirname, './src/client/public/index.html')
     },
     output: {
-        path: path.resolve(__dirname, '../../build/public'),
+        path: path.resolve(__dirname, './build/public'),
         filename: 'bundle.js'
     },
     module: {
@@ -20,7 +20,10 @@ module.exports = {
                 loader: 'file?name=[name].[ext]'
             },
             {
-                test: path.resolve(__dirname, './scripts'),
+                include: [
+                    path.resolve(__dirname, './src/client'),
+                ],
+                test: /\.jsx?$/,
                 loader: 'babel'
             },
             {
