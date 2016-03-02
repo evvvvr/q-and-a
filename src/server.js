@@ -1,7 +1,5 @@
 'use strict';
 
-require('app-module-path').addPath(__dirname + '/server');
-
 var express = require('express'),
     bodyParser = require('body-parser'),
     middleware = require('./middleware.js'),
@@ -40,7 +38,7 @@ function startApp(error) {
     var timeout = process.env.TIMEOUT || AppDefaults.Timeout;
     var app = express();
 
-    app.use(express.static('dist'));
+    app.use(express.static('./build/assets'));
     app.use('/api', bodyParser.json());
     app.use('/api', questionsController);
     app.use(middleware.handleError);

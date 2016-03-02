@@ -30,5 +30,5 @@ node_modules
 data.db
 data.db-journal
 
-# Front-end build result
-dist
+# Build output
+build
