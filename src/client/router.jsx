@@ -6,9 +6,9 @@ import NotFound from './components/NotFound'
 import Question from './containers/Question/Question'
 import React from 'react'
 import UnansweredQuestions from './containers/UnansweredQuestions'
-import { fetchQuestion } from './actions/question'
 import { requestAllQuestions } from './actions/allQuestions'
 import { requestAnsweredQuestions } from './actions/answeredQuestions'
+import { requestQuestion } from './actions/question'
 import { requestUnansweredQuestions } from './actions/unansweredQuestions'
 import { Router, Route, IndexRoute } from 'react-router'
 
@@ -37,7 +37,11 @@ const onEnterUnansweredQuestions = (store) => {
 };
 
 const onEnterQuestion = (store) => {
-    return (nextState) => store.dispatch(fetchQuestion(nextState.params.id));
+    return (nextState) => {
+        if (!store.getState().question.isFetching) {
+            store.dispatch(requestQuestion(nextState.params.id));
+        }
+    };
 };
 
 export default function router(history, store) {
