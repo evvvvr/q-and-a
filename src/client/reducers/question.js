@@ -1,6 +1,6 @@
 import ActionTypes from '../actions/ActionTypes'
 import Immutable from 'immutable'
-import { fromJSToImmutableGreedy }  from '../util/fromJSToImmutableGreedy' 
+import { fromJSToImmutableGreedy }  from '../util/immutablejs-util' 
 import { handleActions } from 'redux-actions'
 
 const defaultState = Immutable.fromJS({
