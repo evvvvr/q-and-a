@@ -9,7 +9,7 @@ export default function initializeDb(callback) {
     const dbCreationScript = fs.readFileSync(path.join(__dirname, 'db/create.sql'),
         'utf8');
 
-    db.exec(dbCreationScript, function (err) {
+    db.exec(dbCreationScript, (err) => {
         if (err) {
             callback(err);
         } else {
