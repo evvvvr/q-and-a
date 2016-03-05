@@ -5,29 +5,30 @@ import initializeDb from './initializeDb'
 import { handleError } from './middleware'
 import QuestionsController from './QuestionsController'
 
-console.info(`Starting app...`);
+console.info('Starting app...');
 
 initializeDb(startApp);
 
 function startApp(error) {
     function shutdownGracefully() {
-        console.info(`Shutting down gracefully...`);
+        console.info('Shutting down gracefully...');
 
         server.close(() => {
-            console.info(`Remaining client connections closed`);
+            console.info('Remaining client connections closed');
 
             process.exit();
         });
 
         setTimeout(() => {
-            console.error(`Failed to close client connections. Force shut down`);
+            console.error('Failed to close client connections. Force shut down');
 
             process.exit(1);
         }, timeout);
     }
 
     if (error) {
-        console.error(`Error starting application: ${error}`);
+        const errorMessage = error.stack ? error.stack : error.toString();
+        console.error(`Error starting application: ${errorMessage}`);
 
         process.exit(1);
     }

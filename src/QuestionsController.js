@@ -18,14 +18,14 @@ const QuestionTypes = {
 
     parse: function (value) {
         switch (value.toLowerCase()) {
-            case "yes":
+            case 'yes':
                 return this.Answered;
 
-            case "no":
+            case 'no':
                 return this.Unanswered;
 
             default:
-                throw "Invalid value";
+                throw new Error(`Invalid QuestionTypes value ${value}`);
         }
     }
 };
@@ -33,7 +33,7 @@ const QuestionTypes = {
 const QuestionsController = express.Router();
 
 QuestionsController.get('/questions', (request, response, next) => {
-    console.info(`Retrieving questions`);
+    console.info('Retrieving questions');
 
     let questionType = QuestionTypes.All;
 
@@ -48,9 +48,9 @@ QuestionsController.get('/questions', (request, response, next) => {
     }
     
     if (questionType === QuestionTypes.All) {
-        console.info(`Retrieving all questions`);
+        console.info('Retrieving all questions');
 
-        DbService.getAllQuestions(function (err, res) {
+        DbService.getAllQuestions((err, res) => {
             if (err) {
                 return next(err);
             }
@@ -60,9 +60,9 @@ QuestionsController.get('/questions', (request, response, next) => {
             response.status(200).json(res);
         });
     } else if (questionType === QuestionTypes.Unanswered) {
-        console.info(`Retrieving unanswered question`);
+        console.info('Retrieving unanswered question');
 
-        DbService.getUnansweredQuestions(function (err, res) {
+        DbService.getUnansweredQuestions((err, res) => {
             if (err) {
                 return next(err);
             }
@@ -72,9 +72,9 @@ QuestionsController.get('/questions', (request, response, next) => {
             response.status(200).json(res);
         });
     } else if (questionType === QuestionTypes.Answered) {
-        console.info(`Retrieving answered questions`);
+        console.info('Retrieving answered questions');
         
-        DbService.getAnsweredQuestions(function (err, res) {
+        DbService.getAnsweredQuestions((err, res) => {
             if (err) {
                 return next(err);
             }
@@ -89,7 +89,7 @@ QuestionsController.get('/questions', (request, response, next) => {
 QuestionsController.post('/questions', (request, response, next) => {
     const question = _.clone(request.body);
 
-    console.info(`Posting a question. Data is: ${question}`);
+    console.info('Posting a question. Data is: %j', question);
 
     const objectValidator = new jsonschema.Validator();
     const validationResult = objectValidator.validate(
@@ -98,14 +98,14 @@ QuestionsController.post('/questions', (request, response, next) => {
     );
 
     if (!validationResult.valid) {
-        const errorMessage = validationResult.errors[0].stack;
-        console.error(`Bad request: ${errorMessage}`);
-        response.status(400).json({'error': errorMessage});
+        const validationErrorMessage = validationResult.errors[0].stack;
+        console.error(`Bad request: ${validationErrorMessage}`);
+        response.status(400).json({'error': validationErrorMessage});
     } else {
         question.dateTimeAsked = moment.utc()
             .format(AppDefaults.DateTimeFormat);
 
-        DbService.insertQuestion(question, function (err, newQuestionId) {
+        DbService.insertQuestion(question, (err, newQuestionId) => {
             if (err) {
                 return next(err);
             }
@@ -113,18 +113,18 @@ QuestionsController.post('/questions', (request, response, next) => {
             question.id = newQuestionId;
             question.answers = [];
 
-            console.info(`New question has been posted. Id is ${newQuestionId}`);
+            console.info(`New question has been posted. Id is ${question.id}`);
             
             var newQuestionURL = url.format({
                 protocol : request.protocol,
                 hostname : request.hostname,
                 port : port,
-                pathname : (request.baseUrl !== '/' ?
-                    request.baseUrl : '') + '/questions/'+ newQuestionId
+                pathname : `${request.baseUrl !== '/' ?
+                    request.baseUrl : ''}/questions/${newQuestionId}`
             });
 
             response.setHeader('Location', newQuestionURL);
-            response.status(201).json(question);
+            response.sendStatus(201);
         });
     }
 });
@@ -134,13 +134,13 @@ QuestionsController.get('/questions/:questionId(\\d+)', (request, response, next
 
     console.info(`Retrieving question with id ${questionId}`);
 
-    DbService.getQuestion(questionId, function (err, question) {
+    DbService.getQuestion(questionId, (err, question) => {
         if (err) {
             return next(err);
         }
         
         if (!question) {
-            console.error('Question with id ${questionId} not found');
+            console.error(`Question with id ${questionId} not found`);
             response.sendStatus(404);
         } else {
             response.status(200).json(question);
@@ -153,22 +153,21 @@ QuestionsController.post('/questions/:questionId(\\d+)/answers', (request, respo
     const answer = _.clone(request.body);
 
     console.info(`Posting an answer for question with id ${questionId}.`
-        + ` Data is ${answer}`);
+        + ` Data is %j`, answer);
 
     const objectValidator = new jsonschema.Validator();
     const validationResult = objectValidator.validate(answer, AnswerSchema);
 
     if (!validationResult.valid) {
-        const errorMessage = validationResult.errors[0].stack;
+        const validationErrorMessage = validationResult.errors[0].stack;
 
-        console.error(`Bad request: ${errorMessage}`);
-        response.status(400).json({'error': errorMessage});
+        console.error(`Bad request: ${validationErrorMessage}`);
+        response.status(400).json({'error': validationErrorMessage});
     } else {
-        request.body.dateTimeAnswered = moment.utc()
+        answer.dateTimeAnswered = moment.utc()
             .format(AppDefaults.DateTimeFormat);
 
-        DbService.insertAnswer(questionId, request.body,
-            function (err, newAnswerId) {
+        DbService.insertAnswer(questionId, answer, (err, newAnswerId) => {
                 if (err) {
                     return next(err);
                 }
@@ -177,10 +176,9 @@ QuestionsController.post('/questions/:questionId(\\d+)/answers', (request, respo
                     console.error(`Question with id ${questionId} not found`);
                     response.sendStatus(404)
                 } else {
-                    const newAnswer = _.clone(request.body);
-                    newAnswer.id = newAnswerId;
+                    answer.id = newAnswerId;
 
-                    response.status(201).json(newAnswer);
+                    response.sendStatus(201);
                 }
         });
     }
