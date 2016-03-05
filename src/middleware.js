@@ -1,7 +1,7 @@
-'use strict';
+export function handleError(err, request, response, next) {
+    const errMessage = err.stack ? err.stack : err.toString();
 
-module.exports.handleError = function (err, request, response, next) {
-    console.error('Error occured: %j', err);
+    console.error(`Error occured: ${errMessage}`);
 
     response.json({'error' : 'Sorry, something went wrong'}).status(500);
 };
