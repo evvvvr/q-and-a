@@ -1,4 +1,3 @@
-import _  from 'underscore'
 import AppDefaults from './AppDefaults'
 import DbService from './DbService'
 import express from 'express'
@@ -87,7 +86,7 @@ QuestionsController.get('/questions', (request, response, next) => {
 });
 
 QuestionsController.post('/questions', (request, response, next) => {
-    const question = _.clone(request.body);
+    const question = Object.assign({}, request.body);
 
     console.info('Posting a question. Data is: %j', question);
 
@@ -150,7 +149,7 @@ QuestionsController.get('/questions/:questionId(\\d+)', (request, response, next
 
 QuestionsController.post('/questions/:questionId(\\d+)/answers', (request, response, next) => {
     const questionId = request.params.questionId;
-    const answer = _.clone(request.body);
+    const answer = Object.assign({}, request.body);
 
     console.info(`Posting an answer for question with id ${questionId}.`
         + ` Data is: %j`, answer);
