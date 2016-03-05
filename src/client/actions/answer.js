@@ -1,7 +1,7 @@
 import ActionTypes from './ActionTypes'
 import API from '../API/API'
 import { createAction } from 'redux-actions'
-import { fetchQuestion } from './question'
+import { requestQuestion } from './question'
 import { validateUsername, validateText, validateAnswer } from '../validation/validators'
 
 export function changeAnswerUsername(username) {
@@ -41,7 +41,7 @@ export function submitAnswer(questionId, answer) {
                     .then((response) => {
                         if (response.ok) {
                             dispatch(answerSubmitted(response.headers['Location']));
-                            dispatch(fetchQuestion(questionId));                            
+                            dispatch(requestQuestion(questionId));                            
                         }
                     });
             }
