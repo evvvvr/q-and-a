@@ -10,8 +10,8 @@ export function formatDateTimeForHuman(dateTime) {
 }
 
 export function compareItemsChronologically(a, b) {
-    var firstItemDateTime = moment(a);
-    var secondItemDateTime = moment(b);
+    const firstItemDateTime = moment(a);
+    const secondItemDateTime = moment(b);
 
     if (firstItemDateTime.isBefore(secondItemDateTime)) {
         return 1;

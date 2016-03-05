@@ -1,50 +1,49 @@
-'use strict';
-
-var express = require('express'),
-    bodyParser = require('body-parser'),
-    middleware = require('./middleware.js'),
-    AppDefaults = require('./app-defaults.js'),
-    initializeDatabase = require('./db-initializer.js'),
-    questionsController = require('./questions-controller.js');
+import AppDefaults from './AppDefaults'
+import bodyParser from 'body-parser'
+import express from 'express'
+import initializeDb from './initializeDb'
+import { handleError } from './middleware'
+import QuestionsController from './QuestionsController'
 
 console.info('Starting app...');
 
-initializeDatabase(startApp);
+initializeDb(startApp);
 
 function startApp(error) {
     function shutdownGracefully() {
         console.info('Shutting down gracefully...');
 
-        server.close(function () {
+        server.close(() => {
             console.info('Remaining client connections closed');
 
             process.exit();
         });
 
-        setTimeout(function () {
-            console.info('Failed to close client connections. Force shut down');
+        setTimeout(() => {
+            console.error('Failed to close client connections. Force shut down');
 
             process.exit(1);
         }, timeout);
     }
 
     if (error) {
-        console.error('Error starting application: %j', error);
+        const errorMessage = error.stack ? error.stack : error;
+        console.error(`Error starting application: ${errorMessage}`);
 
         process.exit(1);
     }
 
-    var port = process.env.PORT || AppDefaults.Port;
-    var timeout = process.env.TIMEOUT || AppDefaults.Timeout;
-    var app = express();
+    const port    = process.env.PORT || AppDefaults.Port;
+    const timeout = process.env.TIMEOUT || AppDefaults.Timeout;
+    const app     = express();
 
     app.use(express.static('./build/public'));
     app.use('/api', bodyParser.json());
-    app.use('/api', questionsController);
-    app.use(middleware.handleError);
+    app.use('/api', QuestionsController);
+    app.use(handleError);
 
-    var server = app.listen(port, function (error) {
-        console.info('Listening on port %d', port);
+    const server = app.listen(port, (error) => {
+        console.info(`Listening on port ${port}`);
     });
 
     process.on('SIGTERM', shutdownGracefully);

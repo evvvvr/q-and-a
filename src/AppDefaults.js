@@ -1,10 +1,8 @@
-'use strict';
-
-module.exports = {
+const AppDefaults = {
     Port: 8080,
     DbFilename: 'data.db',
-    PageNo: 1,
-    PageSize: 10,
     DateTimeFormat: 'YYYY-MM-DD HH:mm:ss',
     Timeout: 10*1000
 };
+
+export default AppDefaults;
