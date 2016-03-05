@@ -56,7 +56,7 @@ QuestionsController.get('/questions', (request, response, next) => {
 
             console.info(`Returning ${res.length} question(s)`);
 
-            response.status(200).json(res);
+            response.json(res);
         });
     } else if (questionType === QuestionTypes.Unanswered) {
         console.info('Retrieving unanswered question');
@@ -68,7 +68,7 @@ QuestionsController.get('/questions', (request, response, next) => {
 
             console.info(`Returning ${res.length} question(s)`);
 
-            response.status(200).json(res);
+            response.json(res);
         });
     } else if (questionType === QuestionTypes.Answered) {
         console.info('Retrieving answered questions');
@@ -80,7 +80,7 @@ QuestionsController.get('/questions', (request, response, next) => {
             
             console.info(`Returning ${res.length} question(s)`);
 
-            response.status(200).json(res);
+            response.json(res);
         });
     }
 });
@@ -142,7 +142,7 @@ QuestionsController.get('/questions/:questionId(\\d+)', (request, response, next
             console.error(`Question with id ${questionId} not found`);
             response.sendStatus(404);
         } else {
-            response.status(200).json(question);
+            response.json(question);
         }
     });
 });
