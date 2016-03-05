@@ -89,7 +89,6 @@ QuestionsController.get('/questions', (request, response, next) => {
 QuestionsController.post('/questions', (request, response, next) => {
     const question = _.clone(request.body);
 
-    console.info(`QuestionSchema11 is ${QuestionSchema}`);
     console.info(`Posting a question. Data is: ${question}`);
 
     const objectValidator = new jsonschema.Validator();
