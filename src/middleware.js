@@ -1,5 +1,5 @@
 export function handleError(err, request, response, next) {
-    const errMessage = err.stack ? err.stack : err.toString();
+    const errMessage = err.stack ? err.stack : err;
 
     console.error(`Error occured: ${errMessage}`);
 
