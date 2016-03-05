@@ -112,7 +112,7 @@ QuestionsController.post('/questions', (request, response, next) => {
             question.id = newQuestionId;
             question.answers = [];
 
-            var newQuestionURL = url.format({
+            const newQuestionURL = url.format({
                 protocol : request.protocol,
                 hostname : request.hostname,
                 port : port,
