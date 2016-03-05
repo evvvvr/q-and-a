@@ -113,8 +113,6 @@ QuestionsController.post('/questions', (request, response, next) => {
             question.id = newQuestionId;
             question.answers = [];
 
-            console.info(`New question has been posted. Id is ${question.id}`);
-            
             var newQuestionURL = url.format({
                 protocol : request.protocol,
                 hostname : request.hostname,
@@ -125,6 +123,8 @@ QuestionsController.post('/questions', (request, response, next) => {
 
             response.setHeader('Location', newQuestionURL);
             response.sendStatus(201);
+
+            console.info(`New question has been posted. Data is: %j`, question);
         });
     }
 });
@@ -153,7 +153,7 @@ QuestionsController.post('/questions/:questionId(\\d+)/answers', (request, respo
     const answer = _.clone(request.body);
 
     console.info(`Posting an answer for question with id ${questionId}.`
-        + ` Data is %j`, answer);
+        + ` Data is: %j`, answer);
 
     const objectValidator = new jsonschema.Validator();
     const validationResult = objectValidator.validate(answer, AnswerSchema);
@@ -179,6 +179,9 @@ QuestionsController.post('/questions/:questionId(\\d+)/answers', (request, respo
                     answer.id = newAnswerId;
 
                     response.sendStatus(201);
+
+                    console.info(`Answer for question with id ${questionId} has been posted.`
+                        + ` Data is: %j`, answer);
                 }
         });
     }

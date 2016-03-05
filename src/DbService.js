@@ -79,7 +79,7 @@ const DbService = {
                     $login: question.user,
                     $dateTimeAsked: question.dateTimeAsked
                 },
-                (err) => {
+                function (err) {
                     db.close();
                     callback(err, this.lastID);
             });
@@ -119,7 +119,7 @@ const DbService = {
                     $login: answer.user,
                     $questionid: questionId,
                     $dateTimeAnswered: answer.dateTimeAnswered
-                }, (error) => {
+                }, function (error) {
                     db.close();
 
                     callback(error, this.lastID);
