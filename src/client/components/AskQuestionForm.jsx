@@ -72,7 +72,7 @@ class AskQuestionForm extends PureComponent {
                     <legend>Ask Your Question</legend>
                     <TextAreaInput
                         ref="text"
-                        placeholder="Your Answer"
+                        placeholder="Your Question"
                         value={text}
                         error={textErrorMessage}
                         onChange={this.handleTextChange}
