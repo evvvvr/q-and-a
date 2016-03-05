@@ -85,6 +85,25 @@ QuestionsController.get('/questions', (request, response, next) => {
     }
 });
 
+QuestionsController.get('/questions/:questionId(\\d+)', (request, response, next) => {
+    const questionId = request.params.questionId;
+
+    console.info(`Retrieving question with id ${questionId}`);
+
+    DbService.getQuestion(questionId, (err, question) => {
+        if (err) {
+            return next(err);
+        }
+        
+        if (!question) {
+            console.error(`Question with id ${questionId} not found`);
+            response.sendStatus(404);
+        } else {
+            response.json(question);
+        }
+    });
+});
+
 QuestionsController.post('/questions', (request, response, next) => {
     const question = Object.assign({}, request.body);
 
@@ -126,25 +145,6 @@ QuestionsController.post('/questions', (request, response, next) => {
             console.info(`New question has been posted. Data is: %j`, question);
         });
     }
-});
-
-QuestionsController.get('/questions/:questionId(\\d+)', (request, response, next) => {
-    const questionId = request.params.questionId;
-
-    console.info(`Retrieving question with id ${questionId}`);
-
-    DbService.getQuestion(questionId, (err, question) => {
-        if (err) {
-            return next(err);
-        }
-        
-        if (!question) {
-            console.error(`Question with id ${questionId} not found`);
-            response.sendStatus(404);
-        } else {
-            response.json(question);
-        }
-    });
 });
 
 QuestionsController.post('/questions/:questionId(\\d+)/answers', (request, response, next) => {

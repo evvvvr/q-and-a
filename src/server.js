@@ -27,7 +27,7 @@ function startApp(error) {
     }
 
     if (error) {
-        const errorMessage = error.stack ? error.stack : error.toString();
+        const errorMessage = error.stack ? error.stack : error;
         console.error(`Error starting application: ${errorMessage}`);
 
         process.exit(1);
