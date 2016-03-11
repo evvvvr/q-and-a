@@ -7,9 +7,11 @@ import QuestionsController from './QuestionsController'
 
 console.info('Starting app...');
 
-initializeDb(startApp);
+initializeDb()
+    .then(startApp)
+    .catch(dbInitializationErrorHandler);
 
-function startApp(error) {
+function startApp() {
     function shutdownGracefully() {
         console.info('Shutting down gracefully...');
 
@@ -26,13 +28,6 @@ function startApp(error) {
         }, timeout);
     }
 
-    if (error) {
-        const errorMessage = error.stack ? error.stack : error;
-        console.error(`Error starting application: ${errorMessage}`);
-
-        process.exit(1);
-    }
-
     const port    = process.env.PORT || AppDefaults.Port;
     const timeout = process.env.TIMEOUT || AppDefaults.Timeout;
     const app     = express();
@@ -43,9 +38,16 @@ function startApp(error) {
     app.use(handleError);
 
     const server = app.listen(port, (error) => {
-        console.info(`Listening on port ${port}`);
+        console.info(`Listening port ${port}`);
     });
 
     process.on('SIGTERM', shutdownGracefully);
     process.on('SIGINT', shutdownGracefully);
+}
+
+function dbInitializationErrorHandler(error) {
+    const errorMessage = error.stack ? error.stack : error;
+    console.error(`Error initializing database: ${errorMessage}`);
+
+    process.exit(1);    
 }
