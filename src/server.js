@@ -3,7 +3,7 @@ import bodyParser from 'body-parser'
 import express from 'express'
 import initializeDb from './initializeDb'
 import { handleError } from './middleware'
-import QuestionsController from './QuestionsController'
+import QuestionsController from './controllers/QuestionsController'
 
 console.info('Starting app...');
 

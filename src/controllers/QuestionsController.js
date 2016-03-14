@@ -1,10 +1,11 @@
-import AppDefaults from './AppDefaults'
-import DbService from './DbService'
+import AnswersController from './AnswersController'
+import AppDefaults from '../AppDefaults'
+import DbService from '../DbService'
 import express from 'express'
 import jsonschema from 'jsonschema'
 import moment from 'moment'
 import url from 'url'
-import { QuestionSchema, AnswerSchema } from './json-schemas'
+import { QuestionSchema } from '../json-schemas'
 
 const port = process.env.PORT || AppDefaults.Port;
 
@@ -143,41 +144,9 @@ QuestionsController.post('/questions', (request, response, next) => {
     }
 });
 
-QuestionsController.post('/questions/:questionId(\\d+)/answers', (request, response, next) => {
-    const questionId = request.params.questionId;
-
-    console.info(`Posting an answer for question with id ${questionId}.`
-        + ` Data is: %j`, request.body);
-
-    const objectValidator = new jsonschema.Validator();
-    const validationResult = objectValidator.validate(request.body, AnswerSchema);
-
-    if (!validationResult.valid) {
-        const validationErrorMessage = validationResult.errors[0].stack;
-
-        console.error(`Bad request: ${validationErrorMessage}`);
-        response.status(400).json({'error': validationErrorMessage});
-    } else {
-        const answer = Object.assign({
-            dateTimeAnswered: moment.utc().format(AppDefaults.DateTimeFormat)
-        }, request.body);
-
-        DbService.insertAnswer(questionId, answer)
-            .then((answer) => {
-                if (!answer) {
-                    console.error(`Question with id ${questionId} not found`);
-                    response.sendStatus(404);                    
-                } else {
-                    response.sendStatus(201);
-
-                    console.info(`Answer for question with id ${questionId} has been posted.`
-                        + ` Data is: %j`, answer);                    
-                }
-            })
-            .catch((err) => {
-                next(err);
-            });
-    }
-});
+QuestionsController.use(
+    '/questions/:questionId(\\d+)/answers',
+    AnswersController
+);
 
 export default QuestionsController;
