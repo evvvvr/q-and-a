@@ -49,39 +49,39 @@ QuestionsController.get('/questions', (request, response, next) => {
     if (questionType === QuestionTypes.All) {
         console.info('Retrieving all questions');
 
-        DbService.getAllQuestions((err, res) => {
-            if (err) {
-                return next(err);
-            }
+        DbService.getAllQuestions()
+            .then((res) => {
+                console.info(`Returning ${res.length} all question(s)`);
 
-            console.info(`Returning ${res.length} question(s)`);
-
-            response.json(res);
-        });
+                response.json(res);
+            })
+            .catch((err) => {
+                next(err);
+            });
     } else if (questionType === QuestionTypes.Unanswered) {
         console.info('Retrieving unanswered question');
 
-        DbService.getUnansweredQuestions((err, res) => {
-            if (err) {
-                return next(err);
-            }
+        DbService.getUnansweredQuestions()
+            .then((res) => {
+                console.info(`Returning ${res.length} unanswered question(s)`);
 
-            console.info(`Returning ${res.length} question(s)`);
-
-            response.json(res);
-        });
+                response.json(res);
+            })
+            .catch((err) => {
+                next(err);
+            });
     } else if (questionType === QuestionTypes.Answered) {
         console.info('Retrieving answered questions');
         
-        DbService.getAnsweredQuestions((err, res) => {
-            if (err) {
-                return next(err);
-            }
-            
-            console.info(`Returning ${res.length} question(s)`);
+        DbService.getAnsweredQuestions()
+            .then((res) => {
+                console.info(`Returning ${res.length} answered question(s)`);
 
-            response.json(res);
-        });
+                response.json(res);
+            })
+            .catch((err) => {
+                next(err);
+            });
     }
 });
 

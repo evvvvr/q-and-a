@@ -1,4 +1,5 @@
 import AppDefaults from './AppDefaults'
+import Promise from 'bluebird'
 import sqlite3 from 'sqlite3'
 
 const GET_ALL_QUESTIONS_SQL = 'Select  Questions.id as id, Questions.Text as text, '
@@ -46,26 +47,33 @@ const INSERT_ANSWER_SQL = 'Insert Into Answers (Text, DateTimeAnswered, Question
     + 'cross join Questions '
     + 'Where Users.Login = $login and Questions.Id = $questionid';
 
-function runAll(query, callback) {
-    const db = new sqlite3.Database(AppDefaults.DbFilename);
+function runAll(query) {
+    return new Promise((resolve, reject) => {
+        const db = new sqlite3.Database(AppDefaults.DbFilename);
 
-    db.all(query, (err, res) => {
-        db.close();
-        callback(err, res);
+        db.all(query, (err, res) => {
+            db.close();
+
+            if (err) {
+                reject(err);
+            } else {
+                resolve(res);
+            }
+        });
     });
 }
 
 const DbService = {
-    getAllQuestions(callback) {
-        runAll(GET_ALL_QUESTIONS_SQL, callback);
+    getAllQuestions() {
+        return runAll(GET_ALL_QUESTIONS_SQL);
     },
 
     getUnansweredQuestions(callback) {
-        runAll(GET_UNANSWERED_QUESTIONS_SQL, callback);
+        return runAll(GET_UNANSWERED_QUESTIONS_SQL, callback);
     },
 
     getAnsweredQuestions(callback) {
-        runAll(GET_ANSWERED_QUESTIONS_SQL, callback);
+        return runAll(GET_ANSWERED_QUESTIONS_SQL, callback);
     },
 
     insertQuestion(question, callback) {
