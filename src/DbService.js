@@ -1,4 +1,5 @@
 import AppDefaults from './AppDefaults'
+import Promise from 'bluebird'
 import sqlite3 from 'sqlite3'
 
 const GET_ALL_QUESTIONS_SQL = 'Select  Questions.id as id, Questions.Text as text, '
@@ -21,12 +22,6 @@ const GET_ANSWERED_QUESTIONS_SQL = 'Select  Questions.id as id, Questions.Text a
     + 'Where Exists (Select * From Answers Where Answers.QuestionId = Questions.Id) '
     + 'Order By datetime(Questions.DateTimeAsked) desc, id desc';
 
-const INSERT_USER_SQL = 'Insert or Ignore Into "Users" (Login) Values ($login)';
-
-const INSERT_QUESTION_SQL = 'Insert Into Questions (Text, DateTimeAsked, UserAsked) ' 
-    + 'Select $text, datetime($dateTimeAsked), Id from Users '
-    + 'Where Login = $login';
-
 const GET_QUESTION_SQL = 'Select Questions.Id as id, Users.Login as user, '
     + 'Questions.Text as text, Questions.DateTimeAsked as dateTimeAsked '
     + 'From Questions '
@@ -41,89 +36,139 @@ const GET_ANSWERS_FOR_QUESTION = 'Select Users.Login as user, '
     + 'Order By datetime(Answers.DateTimeAnswered) desc, '
     + 'Answers.Id desc';
 
+const INSERT_QUESTION_SQL = 'Insert Into Questions (Text, DateTimeAsked, UserAsked) ' 
+    + 'Select $text, datetime($dateTimeAsked), Id from Users '
+    + 'Where Login = $login';
+
+const INSERT_USER_SQL = 'Insert or Ignore Into "Users" (Login) Values ($login)';
+
 const INSERT_ANSWER_SQL = 'Insert Into Answers (Text, DateTimeAnswered, QuestionId, UserAnswered) ' 
     + 'Select $text, datetime($dateTimeAnswered), Questions.Id, Users.Id from Users '
     + 'cross join Questions '
     + 'Where Users.Login = $login and Questions.Id = $questionid';
 
-function runAll(query, callback) {
-    const db = new sqlite3.Database(AppDefaults.DbFilename);
+function runAll(query) {
+    return new Promise((resolve, reject) => {
+        const db = new sqlite3.Database(AppDefaults.DbFilename);
 
-    db.all(query, (err, res) => {
-        db.close();
-        callback(err, res);
+        db.all(query, (err, res) => {
+            db.close();
+
+            if (err) {
+                reject(err);
+            } else {
+                resolve(res);
+            }
+        });
     });
 }
 
 const DbService = {
-    getAllQuestions(callback) {
-        runAll(GET_ALL_QUESTIONS_SQL, callback);
+    getAllQuestions() {
+        return runAll(GET_ALL_QUESTIONS_SQL);
     },
 
-    getUnansweredQuestions(callback) {
-        runAll(GET_UNANSWERED_QUESTIONS_SQL, callback);
+    getUnansweredQuestions() {
+        return runAll(GET_UNANSWERED_QUESTIONS_SQL);
     },
 
-    getAnsweredQuestions(callback) {
-        runAll(GET_ANSWERED_QUESTIONS_SQL, callback);
+    getAnsweredQuestions() {
+        return runAll(GET_ANSWERED_QUESTIONS_SQL);
     },
 
-    insertQuestion(question, callback) {
-        const db = new sqlite3.Database(AppDefaults.DbFilename);
+    getQuestion(id) {
+        return new Promise((resolve, reject) => {
+            const db = new sqlite3.Database(AppDefaults.DbFilename);
 
-        db.serialize(function () {
-            db.run(INSERT_USER_SQL, { $login: question.user });
+            db.get(GET_QUESTION_SQL, {
+                    $questionid : id
+                }, (err, question) => {
+                    if (err) {
+                        db.close();
+                        reject(err);
+                    } else {
+                        if (!question) {
+                            db.close();
+                            resolve(undefined); //TODO: Reject with 'question not found' error
+                        } else {
+                            db.all(GET_ANSWERS_FOR_QUESTION, {
+                                    $questionIdForAnswers : id
+                                }, (err, answers) => {
+                                    if (err) {
+                                        db.close();
+                                        reject(err);
+                                    } else {
+                                        db.close();
 
-            db.run(INSERT_QUESTION_SQL, {
-                    $text: question.text,
-                    $login: question.user,
-                    $dateTimeAsked: question.dateTimeAsked
-                },
-                function (err) {
-                    db.close();
-                    callback(err, this.lastID);
+                                        question.answers = answers;
+                                        resolve(question);                            
+                                    }
+                                });
+                        }
+                    }
             });
         });
     },
 
-    getQuestion(id, callback) {
-        const db = new sqlite3.Database(AppDefaults.DbFilename);
+    insertQuestion(question) {
+        return new Promise((resolve, reject) => {
+            const db = new sqlite3.Database(AppDefaults.DbFilename);
 
-        //TODO: Retrieve question and its answers using join, not two queries
-        db.get(GET_QUESTION_SQL, { $questionid : id }, function (error, question) {
-            if (!question) {
-                db.close();
-                
-                callback(error, undefined);
-            } else {
-                db.all(GET_ANSWERS_FOR_QUESTION, {
-                        $questionIdForAnswers : id
-                    }, (err, answers) => {
+            db.serialize(function () {
+                db.run(INSERT_USER_SQL, { $login: question.user });
+
+                db.run(INSERT_QUESTION_SQL, {
+                        $text: question.text,
+                        $login: question.user,
+                        $dateTimeAsked: question.dateTimeAsked
+                    }, function (err) {
                         db.close();
 
-                        question.answers = answers;
-                        callback(err, question);
-                    });
-            }
+                        if (err) {
+                            reject(err);
+                        } else {
+                            const res = Object.assign({
+                                id: this.lastID,
+                                answers: []
+                            }, question);
+
+                            resolve(res);
+                        }
+                });
+            });
         });
     },
 
-    insertAnswer(questionId, answer, callback) {
-        const db = new sqlite3.Database(AppDefaults.DbFilename);
+    insertAnswer(questionId, answer) {
+        return new Promise((resolve, reject) => {
+            const db = new sqlite3.Database(AppDefaults.DbFilename);
 
-        db.serialize(function () {
-            db.run(INSERT_USER_SQL, { $login: answer.user });
+            db.serialize(function () {
+                db.run(INSERT_USER_SQL, { $login: answer.user });
 
-            db.run(INSERT_ANSWER_SQL, {
-                    $text: answer.text,
-                    $login: answer.user,
-                    $questionid: questionId,
-                    $dateTimeAnswered: answer.dateTimeAnswered
-                }, function (error) {
-                    db.close();
+                db.run(INSERT_ANSWER_SQL, {
+                        $text: answer.text,
+                        $login: answer.user,
+                        $questionid: questionId,
+                        $dateTimeAnswered: answer.dateTimeAnswered
+                    }, function (err) {
+                        db.close();
 
-                    callback(error, this.lastID);
-            });
+                        if (err) {
+                            reject(err);
+                        } else {
+                            if (!this.lastID) {
+                                resolve(undefined); // TODO: Reject with 'question not found' error 
+                            } else {
+                                const res = Object.assign({
+                                    id : this.lastID
+                                }, answer);
+
+                                resolve(res);
+                            }
+                        }
+                });
+            })
         });
     }
 };
