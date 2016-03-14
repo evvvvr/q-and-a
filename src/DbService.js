@@ -68,12 +68,12 @@ const DbService = {
         return runAll(GET_ALL_QUESTIONS_SQL);
     },
 
-    getUnansweredQuestions(callback) {
-        return runAll(GET_UNANSWERED_QUESTIONS_SQL, callback);
+    getUnansweredQuestions() {
+        return runAll(GET_UNANSWERED_QUESTIONS_SQL);
     },
 
-    getAnsweredQuestions(callback) {
-        return runAll(GET_ANSWERED_QUESTIONS_SQL, callback);
+    getAnsweredQuestions() {
+        return runAll(GET_ANSWERED_QUESTIONS_SQL);
     },
 
     getQuestion(id) {
