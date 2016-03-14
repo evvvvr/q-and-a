@@ -127,9 +127,12 @@ const DbService = {
                         if (err) {
                             reject(err);
                         } else {
-                            question.id = this.lastID;
-                            question.answers = []; 
-                            resolve(question);
+                            const res = Object.assign({
+                                id: this.lastID,
+                                answers: []
+                            }, question);
+
+                            resolve(res);
                         }
                 });
             });

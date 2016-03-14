@@ -105,13 +105,11 @@ QuestionsController.get('/questions/:questionId(\\d+)', (request, response, next
 });
 
 QuestionsController.post('/questions', (request, response, next) => {
-    const question = Object.assign({}, request.body);
-
-    console.info('Posting a question. Data is: %j', question);
+    console.info('Posting a question. Data is: %j', request.body);
 
     const objectValidator = new jsonschema.Validator();
     const validationResult = objectValidator.validate(
-        question,
+        request.body,
         QuestionSchema
     );
 
@@ -120,8 +118,9 @@ QuestionsController.post('/questions', (request, response, next) => {
         console.error(`Bad request: ${validationErrorMessage}`);
         response.status(400).json({'error': validationErrorMessage});
     } else {
-        question.dateTimeAsked = moment.utc()
-            .format(AppDefaults.DateTimeFormat);
+        const question = Object.assign({
+            dateTimeAsked: moment.utc().format(AppDefaults.DateTimeFormat) 
+        }, request.body);
 
         DbService.insertQuestion(question)
             .then((question) => {
