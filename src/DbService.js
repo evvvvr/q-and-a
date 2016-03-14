@@ -136,22 +136,36 @@ const DbService = {
         });
     },
 
-    insertAnswer(questionId, answer, callback) {
-        const db = new sqlite3.Database(AppDefaults.DbFilename);
+    insertAnswer(questionId, answer) {
+        return new Promise((resolve, reject) => {
+            const db = new sqlite3.Database(AppDefaults.DbFilename);
 
-        db.serialize(function () {
-            db.run(INSERT_USER_SQL, { $login: answer.user });
+            db.serialize(function () {
+                db.run(INSERT_USER_SQL, { $login: answer.user });
 
-            db.run(INSERT_ANSWER_SQL, {
-                    $text: answer.text,
-                    $login: answer.user,
-                    $questionid: questionId,
-                    $dateTimeAnswered: answer.dateTimeAnswered
-                }, function (error) {
-                    db.close();
+                db.run(INSERT_ANSWER_SQL, {
+                        $text: answer.text,
+                        $login: answer.user,
+                        $questionid: questionId,
+                        $dateTimeAnswered: answer.dateTimeAnswered
+                    }, function (err) {
+                        db.close();
 
-                    callback(error, this.lastID);
-            });
+                        if (err) {
+                            reject(err);
+                        } else {
+                            if (!this.lastID) {
+                                resolve(undefined); // TODO: Reject with 'question not found' error 
+                            } else {
+                                const res = Object.assign({
+                                    id : this.lastID
+                                }, answer);
+
+                                resolve(res);
+                            }
+                        }
+                });
+            })
         });
     }
 };

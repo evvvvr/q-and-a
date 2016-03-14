@@ -146,13 +146,12 @@ QuestionsController.post('/questions', (request, response, next) => {
 
 QuestionsController.post('/questions/:questionId(\\d+)/answers', (request, response, next) => {
     const questionId = request.params.questionId;
-    const answer = Object.assign({}, request.body);
 
     console.info(`Posting an answer for question with id ${questionId}.`
-        + ` Data is: %j`, answer);
+        + ` Data is: %j`, request.body);
 
     const objectValidator = new jsonschema.Validator();
-    const validationResult = objectValidator.validate(answer, AnswerSchema);
+    const validationResult = objectValidator.validate(request.body, AnswerSchema);
 
     if (!validationResult.valid) {
         const validationErrorMessage = validationResult.errors[0].stack;
@@ -160,26 +159,25 @@ QuestionsController.post('/questions/:questionId(\\d+)/answers', (request, respo
         console.error(`Bad request: ${validationErrorMessage}`);
         response.status(400).json({'error': validationErrorMessage});
     } else {
-        answer.dateTimeAnswered = moment.utc()
-            .format(AppDefaults.DateTimeFormat);
+        const answer = Object.assign({
+            dateTimeAnswered: moment.utc().format(AppDefaults.DateTimeFormat)
+        }, request.body);
 
-        DbService.insertAnswer(questionId, answer, (err, newAnswerId) => {
-                if (err) {
-                    return next(err);
-                }
-            
-                if (newAnswerId === 0) {
+        DbService.insertAnswer(questionId, answer)
+            .then((answer) => {
+                if (!answer) {
                     console.error(`Question with id ${questionId} not found`);
-                    response.sendStatus(404)
+                    response.sendStatus(404);                    
                 } else {
-                    answer.id = newAnswerId;
-
                     response.sendStatus(201);
 
                     console.info(`Answer for question with id ${questionId} has been posted.`
-                        + ` Data is: %j`, answer);
+                        + ` Data is: %j`, answer);                    
                 }
-        });
+            })
+            .catch((err) => {
+                next(err);
+            });
     }
 });
 
