@@ -90,18 +90,18 @@ QuestionsController.get('/questions/:questionId(\\d+)', (request, response, next
 
     console.info(`Retrieving question with id ${questionId}`);
 
-    DbService.getQuestion(questionId, (err, question) => {
-        if (err) {
-            return next(err);
-        }
-        
-        if (!question) {
-            console.error(`Question with id ${questionId} not found`);
-            response.sendStatus(404);
-        } else {
-            response.json(question);
-        }
-    });
+    DbService.getQuestion(questionId)
+        .then((question) => {
+            if (!question) {
+                console.error(`Question with id ${questionId} not found`);
+                response.sendStatus(404);                
+            } else {
+                response.json(question);
+            }
+        })
+        .catch((err) => {
+            next(err);
+        });
 });
 
 QuestionsController.post('/questions', (request, response, next) => {

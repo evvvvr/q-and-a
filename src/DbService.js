@@ -22,12 +22,6 @@ const GET_ANSWERED_QUESTIONS_SQL = 'Select  Questions.id as id, Questions.Text a
     + 'Where Exists (Select * From Answers Where Answers.QuestionId = Questions.Id) '
     + 'Order By datetime(Questions.DateTimeAsked) desc, id desc';
 
-const INSERT_USER_SQL = 'Insert or Ignore Into "Users" (Login) Values ($login)';
-
-const INSERT_QUESTION_SQL = 'Insert Into Questions (Text, DateTimeAsked, UserAsked) ' 
-    + 'Select $text, datetime($dateTimeAsked), Id from Users '
-    + 'Where Login = $login';
-
 const GET_QUESTION_SQL = 'Select Questions.Id as id, Users.Login as user, '
     + 'Questions.Text as text, Questions.DateTimeAsked as dateTimeAsked '
     + 'From Questions '
@@ -41,6 +35,12 @@ const GET_ANSWERS_FOR_QUESTION = 'Select Users.Login as user, '
     + 'Where Answers.QuestionId = $questionIdForAnswers '
     + 'Order By datetime(Answers.DateTimeAnswered) desc, '
     + 'Answers.Id desc';
+
+const INSERT_QUESTION_SQL = 'Insert Into Questions (Text, DateTimeAsked, UserAsked) ' 
+    + 'Select $text, datetime($dateTimeAsked), Id from Users '
+    + 'Where Login = $login';
+
+const INSERT_USER_SQL = 'Insert or Ignore Into "Users" (Login) Values ($login)';
 
 const INSERT_ANSWER_SQL = 'Insert Into Answers (Text, DateTimeAnswered, QuestionId, UserAnswered) ' 
     + 'Select $text, datetime($dateTimeAnswered), Questions.Id, Users.Id from Users '
@@ -76,6 +76,40 @@ const DbService = {
         return runAll(GET_ANSWERED_QUESTIONS_SQL, callback);
     },
 
+    getQuestion(id) {
+        return new Promise((resolve, reject) => {
+            const db = new sqlite3.Database(AppDefaults.DbFilename);
+
+            db.get(GET_QUESTION_SQL, {
+                    $questionid : id
+                }, (err, question) => {
+                    if (err) {
+                        db.close();
+                        reject(err);
+                    } else {
+                        if (!question) {
+                            db.close();
+                            resolve(undefined); //TODO: Reject with 'question not found' error
+                        } else {
+                            db.all(GET_ANSWERS_FOR_QUESTION, {
+                                    $questionIdForAnswers : id
+                                }, (err, answers) => {
+                                    if (err) {
+                                        db.close();
+                                        reject(err);
+                                    } else {
+                                        db.close();
+
+                                        question.answers = answers;
+                                        resolve(question);                            
+                                    }
+                                });
+                        }
+                    }
+            });
+        });
+    },
+
     insertQuestion(question, callback) {
         const db = new sqlite3.Database(AppDefaults.DbFilename);
 
@@ -91,28 +125,6 @@ const DbService = {
                     db.close();
                     callback(err, this.lastID);
             });
-        });
-    },
-
-    getQuestion(id, callback) {
-        const db = new sqlite3.Database(AppDefaults.DbFilename);
-
-        //TODO: Retrieve question and its answers using join, not two queries
-        db.get(GET_QUESTION_SQL, { $questionid : id }, function (error, question) {
-            if (!question) {
-                db.close();
-                
-                callback(error, undefined);
-            } else {
-                db.all(GET_ANSWERS_FOR_QUESTION, {
-                        $questionIdForAnswers : id
-                    }, (err, answers) => {
-                        db.close();
-
-                        question.answers = answers;
-                        callback(err, question);
-                    });
-            }
         });
     },
 
