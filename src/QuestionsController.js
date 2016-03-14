@@ -123,27 +123,24 @@ QuestionsController.post('/questions', (request, response, next) => {
         question.dateTimeAsked = moment.utc()
             .format(AppDefaults.DateTimeFormat);
 
-        DbService.insertQuestion(question, (err, newQuestionId) => {
-            if (err) {
-                return next(err);
-            }
-            
-            question.id = newQuestionId;
-            question.answers = [];
+        DbService.insertQuestion(question)
+            .then((question) => {
+                const newQuestionURL = url.format({
+                    protocol : request.protocol,
+                    hostname : request.hostname,
+                    port : port,
+                    pathname : `${request.baseUrl !== '/' ?
+                        request.baseUrl : ''}/questions/${question.id}`
+                });
 
-            const newQuestionURL = url.format({
-                protocol : request.protocol,
-                hostname : request.hostname,
-                port : port,
-                pathname : `${request.baseUrl !== '/' ?
-                    request.baseUrl : ''}/questions/${newQuestionId}`
+                response.setHeader('Location', newQuestionURL);
+                response.sendStatus(201);
+
+                console.info('New question has been posted. Data is: %j', question);
+            })
+            .catch((err) => {
+                next(err);
             });
-
-            response.setHeader('Location', newQuestionURL);
-            response.sendStatus(201);
-
-            console.info(`New question has been posted. Data is: %j`, question);
-        });
     }
 });
 
