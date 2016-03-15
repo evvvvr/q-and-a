@@ -81,8 +81,6 @@ const DbService = {
         return new Promise((resolve, reject) => {
             const db = new sqlite3.Database(AppDefaults.DbFilename);
 
-            throw new QuestionNotFoundError();
-
             db.get(GET_QUESTION_SQL, {
                     $questionid : id
                 }, (err, question) => {
