@@ -48,43 +48,50 @@ QuestionsController.get('/questions', (request, response, next) => {
         }
     }
     
-    if (questionType === QuestionTypes.All) {
-        console.info('Retrieving all questions');
+    let loadQuestions;
 
-        DbService.getAllQuestions()
-            .then((res) => {
-                console.info(`Returning ${res.length} all question(s)`);
+    switch (questionType) {
+        case QuestionTypes.All:
+            console.info('Retrieving all questions');
 
-                response.json(res);
-            })
-            .catch((err) => {
-                next(err);
-            });
-    } else if (questionType === QuestionTypes.Unanswered) {
-        console.info('Retrieving unanswered question');
+            loadQuestions = DbService.getAllQuestions()
+                .then((res) => {
+                    console.info(`Returning ${res.length} all question(s)`);
 
-        DbService.getUnansweredQuestions()
-            .then((res) => {
-                console.info(`Returning ${res.length} unanswered question(s)`);
+                    return res;
+                });
+            break;
 
-                response.json(res);
-            })
-            .catch((err) => {
-                next(err);
-            });
-    } else if (questionType === QuestionTypes.Answered) {
-        console.info('Retrieving answered questions');
-        
-        DbService.getAnsweredQuestions()
-            .then((res) => {
-                console.info(`Returning ${res.length} answered question(s)`);
+        case QuestionTypes.Answered:
+            console.info('Retrieving answered questions');
+            
+            loadQuestions = DbService.getAnsweredQuestions()
+                .then((res) => {
+                    console.info(`Returning ${res.length} answered question(s)`);
 
-                response.json(res);
-            })
-            .catch((err) => {
-                next(err);
-            });
+                    return res;
+                });
+            break;
+
+        case QuestionTypes.Unanswered:
+            console.info('Retrieving unanswered question');
+
+            loadQuestions = DbService.getUnansweredQuestions()
+                .then((res) => {
+                    console.info(`Returning ${res.length} unanswered question(s)`);
+
+                    return res;
+                });
+            break;
     }
+
+    loadQuestions
+        .then((res) => {
+            response.json(res);
+        })
+        .catch((err) => {
+            next(err);
+        });
 });
 
 QuestionsController.get('/questions/:questionId(\\d+)', (request, response, next) => {
