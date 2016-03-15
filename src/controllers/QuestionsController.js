@@ -4,6 +4,7 @@ import DbService from '../DbService'
 import express from 'express'
 import jsonschema from 'jsonschema'
 import moment from 'moment'
+import QuestionNotFoundError from '../QuestionNotFoundError'
 import url from 'url'
 import { QuestionSchema } from '../json-schemas'
 
@@ -93,15 +94,15 @@ QuestionsController.get('/questions/:questionId(\\d+)', (request, response, next
 
     DbService.getQuestion(questionId)
         .then((question) => {
-            if (!question) {
-                console.error(`Question with id ${questionId} not found`);
-                response.sendStatus(404);                
-            } else {
-                response.json(question);
-            }
+            response.json(question);
         })
         .catch((err) => {
-            next(err);
+            if (err instanceof QuestionNotFoundError) {
+                console.error(`Question with id ${questionId} not found`);
+                response.sendStatus(404);
+            } else {
+                next(err);                
+            }
         });
 });
 

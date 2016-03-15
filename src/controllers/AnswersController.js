@@ -3,6 +3,7 @@ import DbService from '../DbService'
 import express from 'express'
 import jsonschema from 'jsonschema'
 import moment from 'moment'
+import QuestionNotFoundError from '../QuestionNotFoundError'
 import url from 'url'
 import { AnswerSchema } from '../json-schemas'
 
@@ -33,18 +34,18 @@ AnswersController.post('/', (request, response, next) => {
 
         DbService.insertAnswer(questionId, answer)
             .then((answer) => {
-                if (!answer) {
-                    console.error(`Question with id ${questionId} not found`);
-                    response.sendStatus(404);                    
-                } else {
-                    response.sendStatus(201);
+                response.sendStatus(201);
 
-                    console.info(`Answer for question with id ${questionId} has been posted.`
-                        + ` Data is: %j`, answer);                    
-                }
+                console.info(`Answer for question with id ${questionId} has been posted.`
+                    + ` Data is: %j`, answer);
             })
             .catch((err) => {
-                next(err);
+                if (err instanceof QuestionNotFoundError) {
+                    console.error(`Question with id ${questionId} not found`);
+                    response.sendStatus(404);
+                } else {
+                    next(err);
+                }
             });
     }
 });

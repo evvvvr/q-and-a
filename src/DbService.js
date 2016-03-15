@@ -1,5 +1,6 @@
 import AppDefaults from './AppDefaults'
 import Promise from 'bluebird'
+import QuestionNotFoundError from './QuestionNotFoundError' 
 import sqlite3 from 'sqlite3'
 
 const GET_ALL_QUESTIONS_SQL = 'Select  Questions.id as id, Questions.Text as text, '
@@ -80,6 +81,8 @@ const DbService = {
         return new Promise((resolve, reject) => {
             const db = new sqlite3.Database(AppDefaults.DbFilename);
 
+            throw new QuestionNotFoundError();
+
             db.get(GET_QUESTION_SQL, {
                     $questionid : id
                 }, (err, question) => {
@@ -89,7 +92,8 @@ const DbService = {
                     } else {
                         if (!question) {
                             db.close();
-                            resolve(undefined); //TODO: Reject with 'question not found' error
+
+                            reject(new QuestionNotFoundError());
                         } else {
                             db.all(GET_ANSWERS_FOR_QUESTION, {
                                     $questionIdForAnswers : id
@@ -158,7 +162,7 @@ const DbService = {
                             reject(err);
                         } else {
                             if (!this.lastID) {
-                                resolve(undefined); // TODO: Reject with 'question not found' error 
+                                reject(new QuestionNotFoundError());
                             } else {
                                 const res = Object.assign({
                                     id : this.lastID
