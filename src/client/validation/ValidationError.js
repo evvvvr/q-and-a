@@ -1,4 +1,4 @@
-import ExtendableError from '../ExtendableError'
+import ExtendableError from 'es6-error'
 
 class ValidationError extends ExtendableError {
     constructor(message, value, errors) {   
