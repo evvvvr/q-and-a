@@ -3,13 +3,13 @@ import NetworkError from './NetworkError'
 let hostURLValue, allQuestionsURL;
 
 function buildQuestionURL(questionId) {
-    return allQuestionsURL + '/' + questionId;
+    return `${allQuestionsURL}/${questionId}`;
 }
 
 const API = {
     init({ hostURL }) {
         hostURLValue = hostURL;
-        allQuestionsURL = hostURLValue + '/questions'
+        allQuestionsURL = `${hostURLValue}/questions`;
     },
 
     fetchAllQuestions() {
@@ -18,14 +18,14 @@ const API = {
     },
 
     fetchAnsweredQuestions() {
-        const answeredQuestionsURL = allQuestionsURL + '?isAnswered=yes';
+        const answeredQuestionsURL = `${allQuestionsURL}?isAnswered=yes`;
 
         return fetch(answeredQuestionsURL)
             .then((response) => response.json());
     },
 
     fetchUnansweredQuestions() {
-        const unansweredQuestionsURL = allQuestionsURL + '?isAnswered=no';
+        const unansweredQuestionsURL = `${allQuestionsURL}?isAnswered=no`;
 
         return fetch(unansweredQuestionsURL)
             .then((response) => response.json());
@@ -53,7 +53,7 @@ const API = {
     },
 
     submitAnswer(questionId, answer) {
-        const answersURL = buildQuestionURL(questionId) + '/answers';
+        const answersURL = `${buildQuestionURL(questionId)}/answers`;
 
         return fetch(answersURL, {
             method: 'POST',
