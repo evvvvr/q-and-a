@@ -1,8 +1,45 @@
+import AppDefaults from './AppDefaults'
+import moment from 'moment'
+import pg_promise from 'pg-promise'
 import Promise from 'bluebird'
 
+const Pg = pg_promise({
+    promiseLib: Promise
+});
+
+const GET_ALL_QUESTIONS_SQL = `select q.Id as id, q.Text as text, u.Login as user,
+    q.dateTimeAsked as dateTimeAsked
+    from Questions q
+        inner join Users u On u.Id = q.UserAsked
+    order by q.dateTimeAsked`;
+
+let connectionString;
+
 const DbService = {
+    init(connectionStringParam) {
+        connectionString = connectionStringParam;
+    },
+
     getAllQuestions() {
-        return Promise.resolve([]);
+        let db;
+
+        try {
+            db = Pg(connectionString)
+        } catch (err) {
+            return Promise.reject(err);
+        }
+
+        return db.manyOrNone(GET_ALL_QUESTIONS_SQL)
+            .then((res) => {
+                return res.map((q) => {
+                    return {
+                        id: q.id,
+                        text: q.text,
+                        dateTimeAsked: moment(q.datetimeasked).utc().toISOString(),
+                        user: q.user
+                    }
+                });
+            });
     },
 
     getUnansweredQuestions() {
@@ -16,7 +53,7 @@ const DbService = {
     getQuestion(id) {
         return Promise.resolve({
             id: -1,
-            dateTimeAsked: '2016-03-16 10:45:05',
+            dateTimeAsked: '2016-03-16T10:45:05+00:00',
             text: 'test question',
             user: 'voga',
             answers: []
@@ -26,7 +63,7 @@ const DbService = {
     insertQuestion(question) {
         return Promise.resolve({
             id: -1,
-            dateTimeAsked: '2016-03-16 10:45:05',
+            dateTimeAsked: '2016-03-16T10:45:05+00:00',
             text: 'test question',
             user: 'voga',
             answers: []
@@ -36,7 +73,7 @@ const DbService = {
     insertAnswer(questionId, answer) {
         return Promise.resolve({
             id: -1,
-            dateTimeAnswered: '2016-03-16 11:09:42',
+            dateTimeAnswered: '2016-03-16T11:09:42+00:00',
             text: 'test answer',
             user: 'voga',
             questionId: -1

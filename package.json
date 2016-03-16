@@ -30,6 +30,7 @@
     "keymirror": "^0.1.1",
     "moment": "^2.10.6",
     "normalize.css": "^3.0.3",
+    "pg-promise": "^3.3.0",
     "react": "^0.14.0",
     "react-dom": "^0.14.0",
     "react-immutable-proptypes": "^1.5.1",

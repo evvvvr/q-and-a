@@ -1,8 +1,9 @@
 import AppDefaults from './AppDefaults'
 import bodyParser from 'body-parser'
+import DbService from './DbService'
 import express from 'express'
-import { handleError } from './middleware'
 import QuestionsController from './controllers/QuestionsController'
+import { handleError } from './middleware'
 
 function shutdownGracefully() {
     console.info('Shutting down gracefully...');
@@ -21,6 +22,12 @@ function shutdownGracefully() {
 }
 
 console.info('Starting app...');
+
+if (!process.env.DATABASE_URL) {
+    cosole.error('Please, set DATABASE_URL environment variable');
+}
+
+DbService.init(process.env.DATABASE_URL);
 
 const port    = process.env.PORT || AppDefaults.Port;
 const timeout = process.env.TIMEOUT || AppDefaults.Timeout;
