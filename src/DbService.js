@@ -13,6 +13,24 @@ const GET_ALL_QUESTIONS_SQL = `select q.Id as id, q.Text as text, u.Login as use
         inner join Users u On u.Id = q.UserAsked
     order by q.dateTimeAsked`;
 
+const INSERT_QUESTION_SQL = `With user_asked_id As (
+    Insert Into users (
+        login
+    )
+    Values (
+        $(user)   
+    )
+    On Conflict (login) Do Update Set login=excluded.login
+    Returning Id
+)
+    Insert Into questions (text, userasked, datetimeasked)
+    Values (
+        $(text),
+        (Select id from user_asked_id),
+        $(dateTimeAsked)
+    )
+    Returning Id`;
+
 let connectionString;
 
 const DbService = {
@@ -30,16 +48,17 @@ const DbService = {
         }
 
         return db.manyOrNone(GET_ALL_QUESTIONS_SQL)
-            .then((res) => {
-                return res.map((q) => {
-                    return {
-                        id: q.id,
-                        text: q.text,
-                        dateTimeAsked: moment(q.datetimeasked).utc().toISOString(),
-                        user: q.user
-                    }
+                .then((res) => {
+                    return res.map((q) => {
+                        return {
+                            id: q.id,
+                            text: q.text,
+                            dateTimeAsked: moment(q.datetimeasked).utc()
+                                            .toISOString(),
+                            user: q.user
+                        }
+                    });
                 });
-            });
     },
 
     getUnansweredQuestions() {
@@ -61,13 +80,21 @@ const DbService = {
     },
 
     insertQuestion(question) {
-        return Promise.resolve({
-            id: -1,
-            dateTimeAsked: '2016-03-16T10:45:05+00:00',
-            text: 'test question',
-            user: 'voga',
-            answers: []
-        });
+        let db;
+
+        try {
+            db = Pg(connectionString)
+        } catch (err) {
+            return Promise.reject(err);
+        }
+
+        return db.one(INSERT_QUESTION_SQL, question)
+                .then((res) => {
+                    return Object.assign({
+                        id: res.id,
+                        answers: []
+                    }, question);
+                });
     },
 
     insertAnswer(questionId, answer) {
