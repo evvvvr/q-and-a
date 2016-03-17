@@ -1,0 +1,12 @@
+version: '2'
+services:
+  postgres:
+    image: "postgres:9.5"
+    volumes_from:
+      - data
+    ports:
+      - "5432:5432"
+  data:
+    image: cogniteev/echo
+    volumes:
+      - /var/lib/postgresql/data

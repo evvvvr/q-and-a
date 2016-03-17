@@ -29,7 +29,7 @@ AnswersController.post('/', (request, response, next) => {
         response.status(400).json({'error': validationErrorMessage});
     } else {
         const answer = Object.assign({
-            dateTimeAnswered: moment.utc().format(AppDefaults.DateTimeFormat)
+            dateTimeAnswered: moment.utc().toISOString()
         }, request.body);
 
         DbService.insertAnswer(questionId, answer)

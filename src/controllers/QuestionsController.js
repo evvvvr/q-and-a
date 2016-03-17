@@ -128,7 +128,7 @@ QuestionsController.post('/questions', (request, response, next) => {
         response.status(400).json({'error': validationErrorMessage});
     } else {
         const question = Object.assign({
-            dateTimeAsked: moment.utc().format(AppDefaults.DateTimeFormat) 
+            dateTimeAsked: moment.utc().toISOString()
         }, request.body);
 
         DbService.insertQuestion(question)

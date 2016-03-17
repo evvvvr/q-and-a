@@ -1,177 +1,204 @@
 import AppDefaults from './AppDefaults'
+import moment from 'moment'
+import pg_promise from 'pg-promise'
 import Promise from 'bluebird'
-import QuestionNotFoundError from './QuestionNotFoundError' 
-import sqlite3 from 'sqlite3'
+import QuestionNotFoundError from './QuestionNotFoundError'
 
-const GET_ALL_QUESTIONS_SQL = 'Select  Questions.id as id, Questions.Text as text, '
-    + 'Users.Login as user, Questions.DateTimeAsked as dateTimeAsked '
-    + 'From Questions '
-    + 'Inner Join Users On Users.Id = Questions.UserAsked '
-    + 'Order By datetime(Questions.DateTimeAsked) desc, id desc';
+const Pg = pg_promise({
+    promiseLib: Promise
+});
 
-const GET_UNANSWERED_QUESTIONS_SQL = 'Select  Questions.id as id, Questions.Text as text, '
-    + 'Users.Login as user, Questions.DateTimeAsked as dateTimeAsked '
-    + 'From Questions '
-    + 'Inner Join Users On Users.Id = Questions.UserAsked '
-    + 'Where Not Exists (Select * From Answers Where Answers.QuestionId = Questions.Id) '
-    + 'Order By datetime(Questions.DateTimeAsked) desc, id desc';
+const PgErrorCodes = {
+    FOREIGN_KEY_VIOLATION: '23503'
+};
 
-const GET_ANSWERED_QUESTIONS_SQL = 'Select  Questions.id as id, Questions.Text as text, '
-    + 'Users.Login as user, Questions.DateTimeAsked as dateTimeAsked '
-    + 'From Questions '
-    + 'Inner Join Users On Users.Id = Questions.UserAsked '
-    + 'Where Exists (Select * From Answers Where Answers.QuestionId = Questions.Id) '
-    + 'Order By datetime(Questions.DateTimeAsked) desc, id desc';
+const GET_ALL_QUESTIONS_SQL = `select q.id as question_id, q.text as question_text,
+    u.login as user_asked, q.datetime_asked as datetime_asked
+    from questions q
+        inner join users u on u.id = q.user_asked
+    order by q.datetime_asked`;
 
-const GET_QUESTION_SQL = 'Select Questions.Id as id, Users.Login as user, '
-    + 'Questions.Text as text, Questions.DateTimeAsked as dateTimeAsked '
-    + 'From Questions '
-    + 'Inner Join Users On Users.Id = Questions.UserAsked '
-    + 'Where Questions.Id = $questionid';
+const GET_UNANSWERED_QUESTIONS_SQL = `select q.id as question_id,
+    q.text as question_text, u.login as user_asked, q.datetime_asked as datetime_asked
+    from questions q
+        inner join users u on u.id = q.user_asked
+    where not exists (select id from answers a where a.question_id = q.id)
+    order by q.datetime_asked`;
 
-const GET_ANSWERS_FOR_QUESTION = 'Select Users.Login as user, '
-    + 'Answers.Id as id, Answers.Text as text, '
-    + 'Answers.DateTimeAnswered as dateTimeAnswered From Answers '
-    + 'Inner Join Users On Users.Id = Answers.UserAnswered '
-    + 'Where Answers.QuestionId = $questionIdForAnswers '
-    + 'Order By datetime(Answers.DateTimeAnswered) desc, '
-    + 'Answers.Id desc';
+const GET_ANSWERED_QUESTIONS_SQL = `select q.id as question_id,
+    q.text as question_text, u.login as user_asked, q.datetime_asked as datetime_asked
+    from questions q
+        inner join users u on u.id = q.user_asked
+    where exists (select id from answers a where a.question_id = q.id)
+    order by q.datetime_asked`;
 
-const INSERT_QUESTION_SQL = 'Insert Into Questions (Text, DateTimeAsked, UserAsked) ' 
-    + 'Select $text, datetime($dateTimeAsked), Id from Users '
-    + 'Where Login = $login';
+const GET_QUESTION_SQL = `select q.id as question_id, q.text as question_text,
+    user_asked.login as user_asked, q.datetime_asked as datetime_asked,
+    a.id as answer_id, a.text as answer_text, user_answered.login as user_answered,
+    a.datetime_answered as datetime_answered
+    from questions q
+        left join answers a on a.question_id = q.id
+        left join users user_answered on user_answered.id = a.user_answered
+        inner join users user_asked on user_asked.id = q.user_asked
+    where q.id = $(questionId)
+    order by datetime_answered`; 
 
-const INSERT_USER_SQL = 'Insert or Ignore Into "Users" (Login) Values ($login)';
+const INSERT_QUESTION_SQL = `with user_asked_id as (
+    insert into users (
+        login
+    )
+    values (
+        $(user)
+    )
+    on conflict (login) do update set login=excluded.login
+    returning id
+)
+    insert into questions (text, user_asked, datetime_asked)
+    values (
+        $(text),
+        (select id from user_asked_id),
+        $(dateTimeAsked)
+    )
+    returning id`;
 
-const INSERT_ANSWER_SQL = 'Insert Into Answers (Text, DateTimeAnswered, QuestionId, UserAnswered) ' 
-    + 'Select $text, datetime($dateTimeAnswered), Questions.Id, Users.Id from Users '
-    + 'cross join Questions '
-    + 'Where Users.Login = $login and Questions.Id = $questionid';
+const INSERT_ANSWER_SQL = `With user_answered_id As (
+    insert into users (
+        login
+    )
+    values (
+        $(user)
+    )
+    on conflict (login) do update set login=excluded.login
+    returning id
+)
+    insert into answers (question_id, text, user_answered, datetime_answered)
+    values (
+        $(questionId),
+        $(text),
+        (select id from user_answered_id),
+        $(dateTimeAnswered)
+    )
+    returning id`;
 
-function runAll(query) {
-    return new Promise((resolve, reject) => {
-        const db = new sqlite3.Database(AppDefaults.DbFilename);
+let connectionString;
 
-        db.all(query, (err, res) => {
-            db.close();
+function connectToPg() {
+    let db;
 
-            if (err) {
-                reject(err);
-            } else {
-                resolve(res);
-            }
-        });
-    });
+    try {
+        db = Pg(connectionString)
+    } catch (err) {
+        return Promise.reject(err);
+    }
+
+    return Promise.resolve(db);
+}
+
+function getQuestions(query) {
+    return connectToPg().then((db) => {
+        return db.any(query)
+                .then((res) => {
+                    return res.map((i) => {
+                        return extractQuestionFromRow(i);
+                    });
+                });
+            }); 
+}
+
+function extractQuestionFromRow(row) {
+    return {
+        id: row.question_id,
+        text: row.question_text,
+        dateTimeAsked: moment(row.datetime_asked).utc().toISOString(),
+        user: row.user_asked
+    };
+}
+
+function extractQuestionWithAnswersFromRes(res) {
+    const question = extractQuestionFromRow(res[0]);
+
+    if (res[0].answer_id) {
+        question.answers = res.map((i) => {
+            return {
+                id: i.answer_id,
+                text: i.answer_text,
+                user: i.user_answered,
+                dateTimeAnswered: moment(i.datetime_answered)
+                    .utc().toISOString()
+            };
+        })
+    } else {
+        question.answers = [];
+    }
+
+    return question;
 }
 
 const DbService = {
+    init(connectionStringParam) {
+        connectionString = connectionStringParam;
+    },
+
     getAllQuestions() {
-        return runAll(GET_ALL_QUESTIONS_SQL);
+        return getQuestions(GET_ALL_QUESTIONS_SQL);
     },
 
     getUnansweredQuestions() {
-        return runAll(GET_UNANSWERED_QUESTIONS_SQL);
+        return getQuestions(GET_UNANSWERED_QUESTIONS_SQL);
     },
 
     getAnsweredQuestions() {
-        return runAll(GET_ANSWERED_QUESTIONS_SQL);
+        return getQuestions(GET_ANSWERED_QUESTIONS_SQL);
     },
 
     getQuestion(id) {
-        return new Promise((resolve, reject) => {
-            const db = new sqlite3.Database(AppDefaults.DbFilename);
-
-            db.get(GET_QUESTION_SQL, {
-                    $questionid : id
-                }, (err, question) => {
-                    if (err) {
-                        db.close();
-                        reject(err);
+        return connectToPg().then((db) => {
+            return db.many(GET_QUESTION_SQL, {questionId: id})
+                .then((res) => {
+                    return extractQuestionWithAnswersFromRes(res);
+                })
+                .catch((err) => {
+                    if (err instanceof Pg.QueryResultError) {
+                        throw new QuestionNotFoundError(); 
                     } else {
-                        if (!question) {
-                            db.close();
-
-                            reject(new QuestionNotFoundError());
-                        } else {
-                            db.all(GET_ANSWERS_FOR_QUESTION, {
-                                    $questionIdForAnswers : id
-                                }, (err, answers) => {
-                                    if (err) {
-                                        db.close();
-                                        reject(err);
-                                    } else {
-                                        db.close();
-
-                                        question.answers = answers;
-                                        resolve(question);                            
-                                    }
-                                });
-                        }
+                        throw err;
                     }
+                });
             });
-        });
     },
 
     insertQuestion(question) {
-        return new Promise((resolve, reject) => {
-            const db = new sqlite3.Database(AppDefaults.DbFilename);
-
-            db.serialize(function () {
-                db.run(INSERT_USER_SQL, { $login: question.user });
-
-                db.run(INSERT_QUESTION_SQL, {
-                        $text: question.text,
-                        $login: question.user,
-                        $dateTimeAsked: question.dateTimeAsked
-                    }, function (err) {
-                        db.close();
-
-                        if (err) {
-                            reject(err);
-                        } else {
-                            const res = Object.assign({
-                                id: this.lastID,
-                                answers: []
-                            }, question);
-
-                            resolve(res);
-                        }
+        return connectToPg().then((db) => {
+            return db.one(INSERT_QUESTION_SQL, question)
+                    .then((res) => {
+                        return Object.assign({
+                            id: res.id,
+                            answers: []
+                        }, question);
+                    });
                 });
-            });
-        });
     },
 
     insertAnswer(questionId, answer) {
-        return new Promise((resolve, reject) => {
-            const db = new sqlite3.Database(AppDefaults.DbFilename);
+        const answerToInsert = Object.assign({
+            questionId: questionId
+        }, answer);
 
-            db.serialize(function () {
-                db.run(INSERT_USER_SQL, { $login: answer.user });
-
-                db.run(INSERT_ANSWER_SQL, {
-                        $text: answer.text,
-                        $login: answer.user,
-                        $questionid: questionId,
-                        $dateTimeAnswered: answer.dateTimeAnswered
-                    }, function (err) {
-                        db.close();
-
-                        if (err) {
-                            reject(err);
+        return connectToPg().then((db) => {
+            return db.one(INSERT_ANSWER_SQL, answerToInsert)
+                    .then((res) => {
+                        return Object.assign({
+                            id: res.id,
+                        }, answer);
+                    })
+                    .catch((err) => {
+                        if (err.code === PgErrorCodes.FOREIGN_KEY_VIOLATION) {
+                            throw new QuestionNotFoundError();
                         } else {
-                            if (!this.lastID) {
-                                reject(new QuestionNotFoundError());
-                            } else {
-                                const res = Object.assign({
-                                    id : this.lastID
-                                }, answer);
-
-                                resolve(res);
-                            }
+                            throw err;
                         }
+                    } );
                 });
-            })
-        });
     }
 };
 
