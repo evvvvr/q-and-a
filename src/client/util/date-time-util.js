@@ -1,12 +1,12 @@
 import moment from 'moment'
 
 export function formatDateTime(dateTime) {
- return moment.utc(dateTime).local().format();  
+    return moment.utc(dateTime).local().format();  
 }
 
 export function formatDateTimeForHuman(dateTime) {
- return moment.utc(dateTime).local()
-    .format('MMM Do YYYY, HH:mm');
+    return moment.utc(dateTime).local()
+        .format('MMM Do YYYY, HH:mm');
 }
 
 export function compareItemsChronologically(a, b) {
