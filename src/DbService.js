@@ -40,30 +40,36 @@ const INSERT_QUESTION_SQL = `With user_asked_id As (
 
 let connectionString;
 
+function connectToPg() {
+    let db;
+
+    try {
+        db = Pg(connectionString)
+    } catch (err) {
+        return Promise.reject(err);
+    }
+
+    return Promise.resolve(db);
+}
+
 const DbService = {
     init(connectionStringParam) {
         connectionString = connectionStringParam;
     },
 
     getAllQuestions() {
-        let db;
-
-        try {
-            db = Pg(connectionString)
-        } catch (err) {
-            return Promise.reject(err);
-        }
-
-        return db.manyOrNone(GET_ALL_QUESTIONS_SQL)
-                .then((res) => {
-                    return res.map((q) => {
-                        return {
-                            id: q.id,
-                            text: q.text,
-                            dateTimeAsked: moment(q.datetimeasked).utc()
-                                            .toISOString(),
-                            user: q.user
-                        }
+        return connectToPg().then((db) => {
+            return db.manyOrNone(GET_ALL_QUESTIONS_SQL)
+                    .then((res) => {
+                        return res.map((q) => {
+                            return {
+                                id: q.id,
+                                text: q.text,
+                                dateTimeAsked: moment(q.datetimeasked).utc()
+                                                .toISOString(),
+                                user: q.user
+                            }
+                        });
                     });
                 });
     },
@@ -77,49 +83,37 @@ const DbService = {
     },
 
     getQuestion(id) {
-        let db;
-
-        try {
-            db = Pg(connectionString)
-        } catch (err) {
-            return Promise.reject(err);
-        }
-
-        return db.one(GET_QUESTION_SQL, {questionId: id})
-            .then((res) => {
-                return {
-                    id: res.id,
-                    text: res.text,
-                    user: res.user,
-                    dateTimeAsked: moment(res.datetimeasked).utc()
-                                    .toISOString(),
-                    answers: []
-                } 
-            })
-            .catch((err) => {
-                if (err instanceof Pg.QueryResultError) {
-                    throw new QuestionNotFoundError(); 
-                } else {
-                    throw err;
-                }
+        return connectToPg().then((db) => {
+            return db.one(GET_QUESTION_SQL, {questionId: id})
+                .then((res) => {
+                    return {
+                        id: res.id,
+                        text: res.text,
+                        user: res.user,
+                        dateTimeAsked: moment(res.datetimeasked).utc()
+                                        .toISOString(),
+                        answers: []
+                    }
+                })
+                .catch((err) => {
+                    if (err instanceof Pg.QueryResultError) {
+                        throw new QuestionNotFoundError(); 
+                    } else {
+                        throw err;
+                    }
+                });
             });
     },
 
     insertQuestion(question) {
-        let db;
-
-        try {
-            db = Pg(connectionString)
-        } catch (err) {
-            return Promise.reject(err);
-        }
-
-        return db.one(INSERT_QUESTION_SQL, question)
-                .then((res) => {
-                    return Object.assign({
-                        id: res.id,
-                        answers: []
-                    }, question);
+        return connectToPg().then((db) => {
+            return db.one(INSERT_QUESTION_SQL, question)
+                    .then((res) => {
+                        return Object.assign({
+                            id: res.id,
+                            answers: []
+                        }, question);
+                    });
                 });
     },
 
