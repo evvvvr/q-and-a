@@ -4,6 +4,10 @@ import pg_promise from 'pg-promise'
 import Promise from 'bluebird'
 import QuestionNotFoundError from './QuestionNotFoundError'
 
+const PgErrorCodes = {
+    FOREIGN_KEY_VIOLATION: '23503'
+};
+
 const Pg = pg_promise({
     promiseLib: Promise
 });
@@ -35,6 +39,25 @@ const INSERT_QUESTION_SQL = `With user_asked_id As (
         $(text),
         (Select id from user_asked_id),
         $(dateTimeAsked)
+    )
+    Returning Id`;
+
+const INSERT_ANSWER_SQL = `With user_answered_id As (
+    Insert Into users (
+        login
+    )
+    Values (
+        $(user)
+    )
+    On Conflict (login) Do Update Set login=excluded.login
+    Returning Id
+)
+    Insert Into answers (questionid, text, useranswered, datetimeanswered)
+    Values (
+        $(questionId),
+        $(text),
+        (Select id from user_answered_id),
+        $(dateTimeAnswered)
     )
     Returning Id`;
 
@@ -118,13 +141,25 @@ const DbService = {
     },
 
     insertAnswer(questionId, answer) {
-        return Promise.resolve({
-            id: -1,
-            dateTimeAnswered: '2016-03-16T11:09:42+00:00',
-            text: 'test answer',
-            user: 'voga',
-            questionId: -1
-        });
+        const answerToInsert = Object.assign({
+            questionId: questionId
+        }, answer);
+
+        return connectToPg().then((db) => {
+            return db.one(INSERT_ANSWER_SQL, answerToInsert)
+                    .then((res) => {
+                        return Object.assign({
+                            id: res.id,
+                        }, answer);
+                    })
+                    .catch((err) => {
+                        if (err.code === PgErrorCodes.FOREIGN_KEY_VIOLATION) {
+                            throw new QuestionNotFoundError();
+                        } else {
+                            throw err;
+                        }
+                    } );
+                });
     }
 };
 
