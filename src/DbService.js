@@ -13,71 +13,72 @@ const PgErrorCodes = {
 };
 
 const GET_ALL_QUESTIONS_SQL = `select q.id as question_id, q.text as question_text,
-    u.login as user_asked, q.datetimeasked as datetime_asked
+    u.login as user_asked, q.datetime_asked as datetime_asked
     from questions q
-        inner join users u on u.id = q.userasked
-    order by q.datetimeasked`;
+        inner join users u on u.id = q.user_asked
+    order by q.datetime_asked`;
 
 const GET_UNANSWERED_QUESTIONS_SQL = `select q.id as question_id,
-    q.text as question_text, u.login as user_asked, q.datetimeasked as datetime_asked
+    q.text as question_text, u.login as user_asked, q.datetime_asked as datetime_asked
     from questions q
-        inner join users u on u.id = q.userasked
-    where not exists (select id from answers a where a.questionid = q.id)
-    order by q.datetimeasked`;
+        inner join users u on u.id = q.user_asked
+    where not exists (select id from answers a where a.question_id = q.id)
+    order by q.datetime_asked`;
 
 const GET_ANSWERED_QUESTIONS_SQL = `select q.id as question_id,
-    q.text as question_text, u.login as user_asked, q.datetimeasked as datetime_asked
+    q.text as question_text, u.login as user_asked, q.datetime_asked as datetime_asked
     from questions q
-        inner join users u on u.id = q.userasked
-    where exists (select id from answers a where a.questionid = q.id)
-    order by q.datetimeasked`;
+        inner join users u on u.id = q.user_asked
+    where exists (select id from answers a where a.question_id = q.id)
+    order by q.datetime_asked`;
 
 const GET_QUESTION_SQL = `select q.id as question_id, q.text as question_text,
-    user_asked.login as user_asked, q.datetimeasked as datetime_asked, a.id as answer_id, a.text as answer_text,
-    user_answered.login as user_answered, a.datetimeanswered as datetime_answered
+    user_asked.login as user_asked, q.datetime_asked as datetime_asked,
+    a.id as answer_id, a.text as answer_text, user_answered.login as user_answered,
+    a.datetime_answered as datetime_answered
     from questions q
-        left join answers a on a.questionid = q.id
-        left join users user_answered on user_answered.id = a.useranswered
-        inner join users user_asked on user_asked.id = q.userasked
+        left join answers a on a.question_id = q.id
+        left join users user_answered on user_answered.id = a.user_answered
+        inner join users user_asked on user_asked.id = q.user_asked
     where q.id = $(questionId)
     order by datetime_answered`; 
 
-const INSERT_QUESTION_SQL = `With user_asked_id As (
-    Insert Into users (
+const INSERT_QUESTION_SQL = `with user_asked_id as (
+    insert into users (
         login
     )
-    Values (
+    values (
         $(user)
     )
-    On Conflict (login) Do Update Set login=excluded.login
-    Returning Id
+    on conflict (login) do update set login=excluded.login
+    returning id
 )
-    Insert Into questions (text, userasked, datetimeasked)
-    Values (
+    insert into questions (text, user_asked, datetime_asked)
+    values (
         $(text),
-        (Select id from user_asked_id),
+        (select id from user_asked_id),
         $(dateTimeAsked)
     )
-    Returning Id`;
+    returning id`;
 
 const INSERT_ANSWER_SQL = `With user_answered_id As (
-    Insert Into users (
+    insert into users (
         login
     )
-    Values (
+    values (
         $(user)
     )
-    On Conflict (login) Do Update Set login=excluded.login
-    Returning Id
+    on conflict (login) do update set login=excluded.login
+    returning id
 )
-    Insert Into answers (questionid, text, useranswered, datetimeanswered)
-    Values (
+    insert into answers (question_id, text, user_answered, datetime_answered)
+    values (
         $(questionId),
         $(text),
-        (Select id from user_answered_id),
+        (select id from user_answered_id),
         $(dateTimeAnswered)
     )
-    Returning Id`;
+    returning id`;
 
 let connectionString;
 
