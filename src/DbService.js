@@ -4,19 +4,19 @@ import pg_promise from 'pg-promise'
 import Promise from 'bluebird'
 import QuestionNotFoundError from './QuestionNotFoundError'
 
-const PgErrorCodes = {
-    FOREIGN_KEY_VIOLATION: '23503'
-};
-
 const Pg = pg_promise({
     promiseLib: Promise
 });
 
-const GET_ALL_QUESTIONS_SQL = `select q.Id as id, q.Text as text, u.Login as user,
-    q.dateTimeAsked as dateTimeAsked
-    from Questions q
-        inner join Users u On u.Id = q.UserAsked
-    order by q.dateTimeAsked`;
+const PgErrorCodes = {
+    FOREIGN_KEY_VIOLATION: '23503'
+};
+
+const GET_ALL_QUESTIONS_SQL = `select q.id as question_id, q.text as question_text,
+    u.login as user_asked, q.datetimeasked as datetime_asked
+    from questions q
+        inner join users u on u.id = q.userasked
+    order by q.datetimeasked`;
 
 const GET_UNANSWERED_QUESTIONS_SQL = `select q.id as question_id,
     q.text as question_text, u.login as user_asked, q.datetimeasked as datetime_asked
@@ -93,89 +93,68 @@ function connectToPg() {
     return Promise.resolve(db);
 }
 
+function getQuestions(query) {
+    return connectToPg().then((db) => {
+        return db.any(query)
+                .then((res) => {
+                    return res.map((i) => {
+                        return extractQuestionFromRow(i);
+                    });
+                });
+            }); 
+}
+
+function extractQuestionFromRow(row) {
+    return {
+        id: row.question_id,
+        text: row.question_text,
+        dateTimeAsked: moment(row.datetime_asked).utc().toISOString(),
+        user: row.user_asked
+    };
+}
+
+function extractQuestionWithAnswersFromRes(res) {
+    const question = extractQuestionFromRow(res[0]);
+
+    if (res[0].answer_id) {
+        question.answers = res.map((i) => {
+            return {
+                id: i.answer_id,
+                text: i.answer_text,
+                user: i.user_answered,
+                dateTimeAnswered: moment(i.datetime_answered)
+                    .utc().toISOString()
+            };
+        })
+    } else {
+        question.answers = [];
+    }
+
+    return question;
+}
+
 const DbService = {
     init(connectionStringParam) {
         connectionString = connectionStringParam;
     },
 
     getAllQuestions() {
-        return connectToPg().then((db) => {
-            return db.manyOrNone(GET_ALL_QUESTIONS_SQL)
-                    .then((res) => {
-                        return res.map((q) => {
-                            return {
-                                id: q.id,
-                                text: q.text,
-                                dateTimeAsked: moment(q.datetimeasked).utc()
-                                                .toISOString(),
-                                user: q.user
-                            }
-                        });
-                    });
-                });
+        return getQuestions(GET_ALL_QUESTIONS_SQL);
     },
 
     getUnansweredQuestions() {
-        return connectToPg().then((db) => {
-            return db.any(GET_UNANSWERED_QUESTIONS_SQL)
-                    .then((res) => {
-                        return res.map((i) => {
-                            return {
-                                id: i.question_id,
-                                text: i.question_text,
-                                dateTimeAsked: moment(i.datetime_asked).utc()
-                                                .toISOString(),
-                                user: i.user_asked
-                            }
-                        });
-                    });
-                });
+        return getQuestions(GET_UNANSWERED_QUESTIONS_SQL);
     },
 
     getAnsweredQuestions() {
-        return connectToPg().then((db) => {
-            return db.any(GET_ANSWERED_QUESTIONS_SQL)
-                    .then((res) => {
-                        return res.map((i) => {
-                            return {
-                                id: i.question_id,
-                                text: i.question_text,
-                                dateTimeAsked: moment(i.datetime_asked).utc()
-                                                .toISOString(),
-                                user: i.user_asked
-                            }
-                        });
-                    });
-                });
+        return getQuestions(GET_ANSWERED_QUESTIONS_SQL);
     },
 
     getQuestion(id) {
         return connectToPg().then((db) => {
             return db.many(GET_QUESTION_SQL, {questionId: id})
                 .then((res) => {
-                    const question = {
-                        id: res[0].question_id,
-                        text: res[0].question_text,
-                        user: res[0].user_asked,
-                        dateTimeAsked: moment(res[0].datetime_asked).utc()
-                                        .toISOString()
-                    };
-
-                    if (res[0].answer_id) {
-                        question.answers = res.map((i) => {
-                            return {
-                                id: i.answer_id,
-                                text: i.answer_text,
-                                user: i.user_answered,
-                                dateTimeAnswered: moment(i.datetime_answered)
-                                    .utc().toISOString()
-                            };
-                        })
-                    } else {
-                        question.answers = [];
-                    }
-
-                    return question;
+                    return extractQuestionWithAnswersFromRes(res);
                 })
                 .catch((err) => {
                     if (err instanceof Pg.QueryResultError) {
