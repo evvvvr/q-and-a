@@ -18,11 +18,15 @@ const GET_ALL_QUESTIONS_SQL = `select q.Id as id, q.Text as text, u.Login as use
         inner join Users u On u.Id = q.UserAsked
     order by q.dateTimeAsked`;
 
-const GET_QUESTION_SQL = `select q.Id as id, q.Text as text, u.Login as user,
-    q.dateTimeAsked as dateTimeAsked
-    from Questions q
-        inner join Users u On u.Id = q.UserAsked
-    where q.id = $(questionId)`; 
+const GET_QUESTION_SQL = `select q.id as question_id, q.text as question_text,
+    user_asked.login as user_asked, q.datetimeasked as datetime_asked, a.id as answer_id, a.text as answer_text,
+    user_answered.login as user_answered, a.datetimeanswered as datetime_answered
+    from questions q
+        left join answers a on a.questionid = q.id
+        left join users user_answered on user_answered.id = a.useranswered
+        inner join users user_asked on user_asked.id = q.userasked
+    where q.id = $(questionId)
+    order by datetime_answered`; 
 
 const INSERT_QUESTION_SQL = `With user_asked_id As (
     Insert Into users (
@@ -107,16 +111,31 @@ const DbService = {
 
     getQuestion(id) {
         return connectToPg().then((db) => {
-            return db.one(GET_QUESTION_SQL, {questionId: id})
+            return db.many(GET_QUESTION_SQL, {questionId: id})
                 .then((res) => {
-                    return {
-                        id: res.id,
-                        text: res.text,
-                        user: res.user,
-                        dateTimeAsked: moment(res.datetimeasked).utc()
-                                        .toISOString(),
-                        answers: []
+                    const question = {
+                        id: res[0].question_id,
+                        text: res[0].question_text,
+                        user: res[0].user_asked,
+                        dateTimeAsked: moment(res[0].datetime_asked).utc()
+                                        .toISOString()
+                    };
+
+                    if (res[0].answer_id) {
+                        question.answers = res.map((i) => {
+                            return {
+                                id: i.answer_id,
+                                text: i.answer_text,
+                                user: i.user_answered,
+                                dateTimeAnswered: moment(i.datetime_answered)
+                                    .utc().toISOString()
+                            };
+                        })
+                    } else {
+                        question.answers = [];
                     }
+
+                    return question;
                 })
                 .catch((err) => {
                     if (err instanceof Pg.QueryResultError) {
