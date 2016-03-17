@@ -25,6 +25,13 @@ const GET_UNANSWERED_QUESTIONS_SQL = `select q.id as question_id,
     where not exists (select id from answers a where a.questionid = q.id)
     order by q.datetimeasked`;
 
+const GET_ANSWERED_QUESTIONS_SQL = `select q.id as question_id,
+    q.text as question_text, u.login as user_asked, q.datetimeasked as datetime_asked
+    from questions q
+        inner join users u on u.id = q.userasked
+    where exists (select id from answers a where a.questionid = q.id)
+    order by q.datetimeasked`;
+
 const GET_QUESTION_SQL = `select q.id as question_id, q.text as question_text,
     user_asked.login as user_asked, q.datetimeasked as datetime_asked, a.id as answer_id, a.text as answer_text,
     user_answered.login as user_answered, a.datetimeanswered as datetime_answered
@@ -126,7 +133,20 @@ const DbService = {
     },
 
     getAnsweredQuestions() {
-        return Promise.resolve([]);
+        return connectToPg().then((db) => {
+            return db.any(GET_ANSWERED_QUESTIONS_SQL)
+                    .then((res) => {
+                        return res.map((i) => {
+                            return {
+                                id: i.question_id,
+                                text: i.question_text,
+                                dateTimeAsked: moment(i.datetime_asked).utc()
+                                                .toISOString(),
+                                user: i.user_asked
+                            }
+                        });
+                    });
+                });
     },
 
     getQuestion(id) {
