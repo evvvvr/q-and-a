@@ -2,6 +2,7 @@ import AppDefaults from './AppDefaults'
 import moment from 'moment'
 import pg_promise from 'pg-promise'
 import Promise from 'bluebird'
+import QuestionNotFoundError from './QuestionNotFoundError'
 
 const Pg = pg_promise({
     promiseLib: Promise
@@ -13,12 +14,18 @@ const GET_ALL_QUESTIONS_SQL = `select q.Id as id, q.Text as text, u.Login as use
         inner join Users u On u.Id = q.UserAsked
     order by q.dateTimeAsked`;
 
+const GET_QUESTION_SQL = `select q.Id as id, q.Text as text, u.Login as user,
+    q.dateTimeAsked as dateTimeAsked
+    from Questions q
+        inner join Users u On u.Id = q.UserAsked
+    where q.id = $(questionId)`; 
+
 const INSERT_QUESTION_SQL = `With user_asked_id As (
     Insert Into users (
         login
     )
     Values (
-        $(user)   
+        $(user)
     )
     On Conflict (login) Do Update Set login=excluded.login
     Returning Id
@@ -70,13 +77,32 @@ const DbService = {
     },
 
     getQuestion(id) {
-        return Promise.resolve({
-            id: -1,
-            dateTimeAsked: '2016-03-16T10:45:05+00:00',
-            text: 'test question',
-            user: 'voga',
-            answers: []
-        });
+        let db;
+
+        try {
+            db = Pg(connectionString)
+        } catch (err) {
+            return Promise.reject(err);
+        }
+
+        return db.one(GET_QUESTION_SQL, {questionId: id})
+            .then((res) => {
+                return {
+                    id: res.id,
+                    text: res.text,
+                    user: res.user,
+                    dateTimeAsked: moment(res.datetimeasked).utc()
+                                    .toISOString(),
+                    answers: []
+                } 
+            })
+            .catch((err) => {
+                if (err instanceof Pg.QueryResultError) {
+                    throw new QuestionNotFoundError(); 
+                } else {
+                    throw err;
+                }
+            });
     },
 
     insertQuestion(question) {
