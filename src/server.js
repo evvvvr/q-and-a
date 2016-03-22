@@ -24,7 +24,9 @@ function shutdownGracefully() {
 console.info('Starting app...');
 
 if (!process.env.DATABASE_URL) {
-    cosole.error('Please, set DATABASE_URL environment variable');
+    console.error('Please, set DATABASE_URL environment variable');
+
+    process.exit(2);
 }
 
 DbService.init(process.env.DATABASE_URL);
