@@ -80,29 +80,15 @@ const INSERT_ANSWER_SQL = `With user_answered_id As (
     )
     returning id`;
 
-let connectionString;
-
-function connectToPg() {
-    let db;
-
-    try {
-        db = Pg(connectionString)
-    } catch (err) {
-        return Promise.reject(err);
-    }
-
-    return Promise.resolve(db);
-}
+let db;
 
 function getQuestions(query) {
-    return connectToPg().then((db) => {
-        return db.any(query)
-                .then((res) => {
-                    return res.map((i) => {
-                        return extractQuestionFromRow(i);
-                    });
-                });
-            }); 
+    return db.any(query)
+        .then((res) => {
+            return res.map((i) => {
+                return extractQuestionFromRow(i);
+            });
+        });
 }
 
 function extractQuestionFromRow(row) {
@@ -135,8 +121,8 @@ function extractQuestionWithAnswersFromRes(res) {
 }
 
 const DbService = {
-    init(connectionStringParam) {
-        connectionString = connectionStringParam;
+    init(connectionString) {
+        db = Pg(connectionString);
     },
 
     getAllQuestions() {
@@ -152,30 +138,26 @@ const DbService = {
     },
 
     getQuestion(id) {
-        return connectToPg().then((db) => {
-            return db.many(GET_QUESTION_SQL, {questionId: id})
-                .then((res) => {
-                    return extractQuestionWithAnswersFromRes(res);
-                })
-                .catch((err) => {
-                    if (err instanceof Pg.QueryResultError) {
-                        throw new QuestionNotFoundError(); 
-                    } else {
-                        throw err;
-                    }
-                });
+        return db.many(GET_QUESTION_SQL, {questionId: id})
+            .then((res) => {
+                return extractQuestionWithAnswersFromRes(res);
+            })
+            .catch((err) => {
+                if (err instanceof Pg.QueryResultError) {
+                    throw new QuestionNotFoundError(); 
+                } else {
+                    throw err;
+                }
             });
     },
 
     insertQuestion(question) {
-        return connectToPg().then((db) => {
-            return db.one(INSERT_QUESTION_SQL, question)
-                    .then((res) => {
-                        return Object.assign({
-                            id: res.id,
-                            answers: []
-                        }, question);
-                    });
+        return db.one(INSERT_QUESTION_SQL, question)
+                .then((res) => {
+                    return Object.assign({
+                        id: res.id,
+                        answers: []
+                    }, question);
                 });
     },
 
@@ -184,21 +166,19 @@ const DbService = {
             questionId: questionId
         }, answer);
 
-        return connectToPg().then((db) => {
-            return db.one(INSERT_ANSWER_SQL, answerToInsert)
-                    .then((res) => {
-                        return Object.assign({
-                            id: res.id,
-                        }, answer);
-                    })
-                    .catch((err) => {
-                        if (err.code === PgErrorCodes.FOREIGN_KEY_VIOLATION) {
-                            throw new QuestionNotFoundError();
-                        } else {
-                            throw err;
-                        }
-                    } );
-                });
+        return db.one(INSERT_ANSWER_SQL, answerToInsert)
+                .then((res) => {
+                    return Object.assign({
+                        id: res.id,
+                    }, answer);
+                })
+                .catch((err) => {
+                    if (err.code === PgErrorCodes.FOREIGN_KEY_VIOLATION) {
+                        throw new QuestionNotFoundError();
+                    } else {
+                        throw err;
+                    }
+                } );
     }
 };
 
